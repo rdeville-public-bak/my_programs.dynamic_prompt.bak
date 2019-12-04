@@ -21,30 +21,14 @@ _vcsh_info_short()
   fi
 }
 
-_vcsh_info_clr()
-{
-  echo "$(_vcsh_info)"
-}
-
-_vcsh_info_clr_short()
-{
-  echo "$(_vcsh_info_short)"
-}
-
-_vcsh_colorswitch()
-{
-  echo "${VCSH_BG/4/3}"
-}
-
-_vcsh_bg()
-{
-  echo "${VCSH_BG}"
-}
-
-_vcsh_fg()
-{
-  echo "${VCSH_FG}"
-}
+# Setting array value
+info_line[$iSegment]="$(_vcsh_info)"
+info_line_clr[$iSegment]="$(_vcsh_info)"
+info_line_short[$iSegment]="$(_vcsh_info_short)"
+info_line_clr_short[$iSegment]="$(_vcsh_info_short)"
+info_line_fg[$iSegment]="${VCSH_FG}"
+info_line_bg[$iSegment]="${VCSH_BG}"
+info_line_clr_switch[$iSegment]="${VCSH_BG/4/3}"
 
 # *****************************************************************************
 # EDITOR CONFIG

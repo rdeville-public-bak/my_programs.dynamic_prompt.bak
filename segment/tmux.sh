@@ -21,31 +21,14 @@ _tmux_info_short()
   fi
 }
 
-_tmux_info_clr()
-{
-  echo "$(_tmux_info)"
-}
-
-_tmux_info_clr_short()
-{
-  echo "$(_tmux_info_short)"
-}
-
-_tmux_colorswitch()
-{
-  echo "${TMUX_BG/4/3}"
-}
-
-_tmux_bg()
-{
-  echo "${TMUX_BG}"
-}
-
-_tmux_fg()
-{
-  echo "${TMUX_FG}"
-}
-
+# Setting array value
+info_line[$iSegment]="$(_tmux_info)"
+info_line_clr[$iSegment]="$(_tmux_info)"
+info_line_short[$iSegment]="$(_tmux_info_short)"
+info_line_clr_short[$iSegment]="$(_tmux_info_short)"
+info_line_fg[$iSegment]="${TMUX_FG}"
+info_line_bg[$iSegment]="${TMUX_BG}"
+info_line_clr_switch[$iSegment]="${TMUX_BG/4/3}"
 
 # *****************************************************************************
 # EDITOR CONFIG

@@ -12,26 +12,14 @@ _pwd_info()
   local pwd_info
 
   pwd_info=$(pwd)
-  if [[ ${pwd_info} =~ ^/home/$(whoami) ]]
-  then
-    pwd_info="${PWD_CHAR}~${pwd_info##/home/$(whoami)}"
-  elif [[ ${pwd_info} =~ /root ]] && [[ $(whoami) == root ]]
-  then
-    pwd_info="${PWD_CHAR}~${pwd_info##/root}"
-  else
-    pwd_info="${PWD_CHAR}${pwd_info}"
-  fi
-
+  pwd_info="${PWD_CHAR}${pwd_info/${HOME}/~}"
   echo "${pwd_info}"
 }
 
 _pwd_info_short()
 {
   # Showing pwd info
-  local PWD_CHAR="${PWD_CHAR:-" "}"
-  local SHOW_PWD_INFO="${SHOW_PWD_INFO:-true}"
   local local_hfill="$1"
-
   # Compute pwd and echo it.
   # Replace /home/$(whoami) by ~/ if not root and /root by ~/ if root
   local pwd_info
@@ -63,31 +51,14 @@ _pwd_info_short()
   echo "${pwd_info}"
 }
 
-
-_pwd_info_clr()
-{
-  echo "$(_pwd_info)"
-}
-
-_pwd_info_clr_short()
-{
-  echo "$(_pwd_info_short $@)"
-}
-
-_pwd_colorswitch()
-{
-  echo "${PWD_BG/4/3}"
-}
-
-_pwd_bg()
-{
-  echo "${PWD_BG}"
-}
-
-_pwd_fg()
-{
-  echo "${PWD_FG}"
-}
+# Setting array value
+info_line[$iSegment]="$(_pwd_info)"
+info_line_clr[$iSegment]="$(_pwd_info)"
+info_line_short[$iSegment]="$(_pwd_info_short)"
+info_line_clr_short[$iSegment]="$(_pwd_info_short)"
+info_line_fg[$iSegment]="${PWD_FG}"
+info_line_bg[$iSegment]="${PWD_BG}"
+info_line_clr_switch[$iSegment]="${PWD_BG/4/3}"
 
 # *****************************************************************************
 # EDITOR CONFIG

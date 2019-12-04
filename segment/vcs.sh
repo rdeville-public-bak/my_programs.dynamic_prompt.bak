@@ -74,25 +74,14 @@ _vcs_info_clr()
   echo ${vcs_info}
 }
 
-_vcs_info_clr_short()
-{
-  echo "$(_vcs_info_short)"
-}
-
-_vcs_colorswitch()
-{
-  echo "${VCS_BG/4/3}"
-}
-
-_vcs_bg()
-{
-  echo "${VCS_BG}"
-}
-
-_vcs_fg()
-{
-  echo "${VCS_FG}"
-}
+# Setting array value
+info_line[$iSegment]="$(_vcs_info)"
+info_line_clr[$iSegment]="$(_vcs_info_clr)"
+info_line_short[$iSegment]="$(_vcs_info_short)"
+info_line_clr_short[$iSegment]="$(_vcs_info_short)"
+info_line_fg[$iSegment]="${VCS_FG}"
+info_line_bg[$iSegment]="${VCS_BG}"
+info_line_clr_switch[$iSegment]="${VCS_BG/4/3}"
 
 # *****************************************************************************
 # EDITOR CONFIG

@@ -12,13 +12,6 @@
 # METHODS =====================================================================
 _git_get_prompt_info()
 {
-  _git_get_symbolic_ref()
-  {
-    # Get symbolic ref
-    git symbolic-ref -q HEAD 2> /dev/null
-    return
-  }
-
   _git_get_tag()
   {
     # Get tags that contains commit
@@ -46,15 +39,6 @@ _git_get_prompt_info()
     # Try the checked-out branch first to avoid collision with branches pointing
     # to the same ref.
     _git_get_branch || _git_get_tag || _git_get_commit_description || _git_get_short_sha
-    return
-  }
-
-  _git_get_upstream()
-  {
-    # Get upgstream of repo
-    local ref
-    ref="$(_git_get_symbolic_ref)" || return 1
-    git for-each-ref --format="%(upstream:short)" "${ref}"
     return
   }
 

@@ -16,7 +16,6 @@ _openstack_info()
   echo "${openstack_info}"
 }
 
-
 _openstack_info_short()
 {
   if [[ -n "${OS_PROJECT_NAME}" ]] && [[ -n "${OS_USER_DOMAIN_NAME}" ]]
@@ -25,31 +24,14 @@ _openstack_info_short()
   fi
 }
 
-_openstack_info_clr()
-{
-  echo "$(_openstack_info)"
-}
-
-_openstack_info_clr_short()
-{
-  echo "$(_openstack_info_short)"
-}
-
-_openstack_colorswitch()
-{
-  echo "${OPENSTACK_BG/4/3}"
-}
-
-_openstack_bg()
-{
-  echo "${OPENSTACK_BG}"
-}
-
-_openstack_fg()
-{
-  echo "${OPENSTACK_FG}"
-}
-
+# Setting array value
+info_line[$iSegment]="$(_openstack_info)"
+info_line_clr[$iSegment]="$(_openstack_info)"
+info_line_short[$iSegment]="$(_openstack_info_short)"
+info_line_clr_short[$iSegment]="$(_openstack_info_short)"
+info_line_fg[$iSegment]="${OPENSTACK_FG}"
+info_line_bg[$iSegment]="${OPENSTACK_BG}"
+info_line_clr_switch[$iSegment]="${OPENSTACK_BG/4/3}"
 
 # *****************************************************************************
 # EDITOR CONFIG

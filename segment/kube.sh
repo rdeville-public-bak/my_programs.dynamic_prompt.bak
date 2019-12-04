@@ -36,31 +36,14 @@ _kube_info_short()
   fi
 }
 
-_kube_info_clr()
-{
-  echo "$(_kube_info)"
-}
-
-_kube_info_clr_short()
-{
-  echo "$(_kube_info_short)"
-}
-
-_kube_colorswitch()
-{
-  echo "${KUBE_BG/4/3}"
-}
-
-_kube_bg()
-{
-  echo "${KUBE_BG}"
-}
-
-_kube_fg()
-{
-  echo "${KUBE_FG}"
-}
-
+# Setting array value
+info_line[$iSegment]="$(_kube_info)"
+info_line_clr[$iSegment]="$(_kube_info)"
+info_line_short[$iSegment]="$(_kube_info_short)"
+info_line_clr_short[$iSegment]="$(_kube_info_short)"
+info_line_fg[$iSegment]="${KUBE_FG}"
+info_line_bg[$iSegment]="${KUBE_BG}"
+info_line_clr_switch[$iSegment]="${KUBE_BG/4/3}"
 
 # *****************************************************************************
 # EDITOR CONFIG

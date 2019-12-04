@@ -21,30 +21,15 @@ _keepass_info_short()
   fi
 }
 
-_keepass_info_clr()
-{
-  echo $(_keepass_info)
-}
+# Setting array value
+info_line[$iSegment]="$(_keepass_info)"
+info_line_clr[$iSegment]="$(_keepass_info)"
+info_line_short[$iSegment]="$(_keepass_info_short)"
+info_line_clr_short[$iSegment]="$(_keepass_info_short)"
+info_line_fg[$iSegment]="${KEEPASS_FG}"
+info_line_bg[$iSegment]="${KEEPASS_BG}"
+info_line_clr_switch[$iSegment]="${KEEPASS_BG/4/3}"
 
-_keepass_info_clr_short()
-{
-  echo $(_keepass_info_short)
-}
-
-_keepass_colorswitch()
-{
-  echo "${KEEPASS_BG/4/3}"
-}
-
-_keepass_bg()
-{
-  echo "${KEEPASS_BG}"
-}
-
-_keepass_fg()
-{
-  echo "${KEEPASS_FG}"
-}
 
 # *****************************************************************************
 # EDITOR CONFIG

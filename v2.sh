@@ -14,8 +14,11 @@
 
 precmd()
 {
+  local start_precmd=$(date +%S%N)
+  debug "Starting precmd"
   _prompt_printf()
   {
+    debug "Starting _prompt_printf"
     # Repeat a string $1 for $2 amount of times
     str=$1
     num=$2
@@ -24,9 +27,32 @@ precmd()
     return
   }
 
+  _load_segment()
+  {
+    local segment=$1
+    if [[ ${segment} != "hfill" ]]
+    then
+      debug "Load ${segment}"
+      local start_load_segment=$(date +%S%N)
+      source <(cat "${PROMPT_DIR}/segment/${segment}.sh")
+      debug "End sourcing segment ${segment} $(( ( $(date +%S%N) - start_load_segment ) / 1000000 ))ms"
+      if [[ -n "${info_line[$iSegment]}" ]]
+      then
+        echo "info_line[$iSegment]=\"${info_line[$iSegment]}\"" >> ${PROMPT_DIR}/.info.sh
+        echo "info_line_clr[$iSegment]=\"${info_line_clr[$iSegment]}\"" >> ${PROMPT_DIR}/.info.sh
+        echo "info_line_short[$iSegment]=\"${info_line_short[$iSegment]}\"" >> ${PROMPT_DIR}/.info.sh
+        echo "info_line_clr_short[$iSegment]=\"${info_line_clr_short[$iSegment]}\"" >> ${PROMPT_DIR}/.info.sh
+        echo "info_line_fg[$iSegment]=\"${info_line_fg[$iSegment]}\"" >> ${PROMPT_DIR}/.info.sh
+        echo "info_line_bg[$iSegment]=\"${info_line_bg[$iSegment]}\"" >> ${PROMPT_DIR}/.info.sh
+        echo "info_line_clr_switch[$iSegment]=\"${info_line_clr_switch[$iSegment]}\"" >> ${PROMPT_DIR}/.info.sh
+      fi
+    fi
+  }
+
   _prompt_info_line()
   {
-
+    debug "String _prompt_info_line"
+    local start_prompt_inf_line=$(date +%S%N)
     # Prompt the first line with information such as pwd, keepass, user,
     # hostname
     local termsize
@@ -46,15 +72,20 @@ precmd()
     local segment
     local segment_priority
     local info_line
-    local info_line_color
+    local info_line_short
+    local info_line_clr
+    local info_line_clr_short
     local info_line_shorten
     local first_line_prompt=false
+    local pids
 
     if [[ $1 -eq 0 ]]
     then
       first_line_prompt=true
     fi
 
+    debug "Set variables and get segment"
+    local start_init=$(date +%S%N)
     if [[ ${SHELL} == bash ]]
     then
       segment_idx=$1
@@ -64,10 +95,13 @@ precmd()
       idx_stop=${#segment[@]}
       idx_stop_prioriy=${#segment_priority[@]}
       declare -A info_line
-      declare -A info_line_color
+      declare -A info_line_short
+      declare -A info_line_clr
+      declare -A info_line_clr_short
       declare -A info_line_fg
       declare -A info_line_bg
       declare -A info_line_clr_switch
+      declare -A pids
     else
       segment_idx=$(( $1 + 1 ))
       IFS=', ' read -r -A segment <<< "${SEGMENT[$segment_idx]}"
@@ -76,48 +110,53 @@ precmd()
       idx_stop=$(( ${#segment[@]} + 1 ))
       idx_stop_prioriy=${#segment_priority[@]}
       typeset -A info_line
-      typeset -A info_line_color
+      typeset -A info_line_short
+      typeset -A info_line_clr
+      typeset -A info_line_clr_short
       typeset -A info_line_fg
       typeset -A info_line_bg
       typeset -A info_line_clr_switch
+      typeset -A pids
     fi
+    debug "End getting segment $(( ( $(date +%S%N) - start_init ) / 1000000 ))ms"
 
     # Loag segment source files
+    debug "Load all segment"
+    start_init=$(date +%S%N)
     all_info=""
     prompt_env_right=""
     prompt_env_left="${PROMPT_ENV_LEFT}"
-    for iSegment in "${segment[@]}"
+    echo "#!/bin/bash" > ${PROMPT_DIR}/.info.sh
+    for iSegment in ${segment[@]}
     do
-      if [[ ${iSegment} != "hfill" ]]
+      _load_segment ${iSegment} &
+    done
+    wait
+    local start=$(date +%S%N)
+    source <(cat "${PROMPT_DIR}/.info.sh")
+    debug "End load all segments $(( ( $(date +%S%N) - start_init ) / 1000000 ))ms"
+    if [[ "${info_line[@]}" == "" ]]
+    then
+      debug "End of precmd as info_line is empty"
+      echo ""
+      return
+    fi
+
+    for iSegment in ${segment[@]}
+    do
+      if [[ ${iSegment} != "hfill" ]] && [[ -n ${info_line[$iSegment]} ]]
       then
-        source <(cat "${SHELL_DIR}/lib/prompt/segment/${iSegment}.sh")
-        info="$(_${iSegment}_info)"
-        if [[ -n ${info} ]]
+        if [[ -n "${info_line_clr_switch[$iSegment]}" ]]
         then
-          info_line[$iSegment]="${info}"
-          info_line_color[$iSegment]="$(_${iSegment}_info_clr)"
-          info_line_fg[$iSegment]="$(_${iSegment}_fg)"
-          info_line_bg[$iSegment]="$(_${iSegment}_bg)"
-          info_line_clr_switch[$iSegment]="$(_${iSegment}_colorswitch)"
-          if [[ -n "${info_line_clr_switch[$iSegment]}" ]]
-          then
-            all_info+="${prompt_env_right} ${info_line[$iSegment]} ${prompt_env_left}"
-          else
-            all_info+=" ${info_line[$iSegment]} "
-          fi
+          all_info+="${prompt_env_right} ${info_line[$iSegment]} ${prompt_env_left}"
+        else
+          all_info+=" ${info_line[$iSegment]} "
         fi
       else
         prompt_env_left=""
         prompt_env_right="${PROMPT_ENV_RIGHT}"
       fi
     done
-    echo "All info, no color, first call: ${all_info}" >> ~/shell.log
-
-    if [[ ${info_line[@]} == "" ]]
-    then
-      echo ""
-      return
-    fi
 
     # Compute size of terminal
     termsize=$(tput cols)
@@ -137,34 +176,22 @@ precmd()
       do
         iSegment="${segment_priority[idx]}"
         # If segment not empty
-        if [[ -n "${info_line[$iSegment]}" ]]
+        if [[ -n "${info_line[$iSegment]}" ]] &&  ! [[ "${info_line_shorten[@]}" =~ ${iSegment} ]]
         then
-          # Compare current segment with shorten verion and empty string
-          iSegment_curr="${info_line[$iSegment]}"
-          # If current segment is not empty
-          if [[ -n ${iSegment_curr} ]]
-          then
-            iSegment_short="$(_${iSegment}_info_short ${hfill})"
-            # If current segment is not already the shorten version
-            if ! [[ "${info_line_shorten[@]}" =~ ${iSegment} ]]
-            then
-              info_line[$iSegment]="${iSegment_short}"
-              info_line_color[$iSegment]="${iSegment_short}"
-              info_line_shorten+=("${iSegment}")
-              shorten=true
-            # If all segment have already been shorten
-            elif [[ "${#info_line_shorten[@]}" == "$(( ${#segment[@]} - 1 ))" ]]
-            then
-              info_line[$iSegment]=""
-              info_line_color[$iSegment]=""
-              shorten=true
-            fi
-          fi
+          info_line[$iSegment]="${info_line_short[$iSegment]}"
+          info_line_clr[$iSegment]="${info_line_clr_short[$iSegment]}"
+          info_line_shorten+=("${iSegment}")
+          shorten=true
+        # If all segment have already been shorten
+        elif [[ "${#info_line_shorten[@]}" == "$(( ${#segment[@]} - 1 ))" ]]
+        then
+          info_line[$iSegment]=""
+          info_line_clr[$iSegment]=""
+          shorten=true
         fi
         # Update segment separator
         idx=$(( idx + 1 ))
       done
-
       # Construct line from newly computed segment
       prompt_env_right=""
       prompt_env_left="${PROMPT_ENV_LEFT}"
@@ -212,76 +239,79 @@ precmd()
       iSegment="${segment[idx]}"
       if [[ ${iSegment} != "hfill" ]]
       then
-        clr_next_bg=""
-        temp_idx=$(( idx + 1 ))
-        iNext_segment="${segment[temp_idx]}"
-        while [[ "$(( temp_idx ))" -lt "${idx_stop}" ]] \
-            && [[ "${iNext_segment}" != "hfill" ]] \
-            && [[ -z "${info_line_color[$iNext_segment]}" ]]
-        do
-          temp_idx=$(( temp_idx + 1 ))
+        if [[ -n "${info_line[$iSegment]}" ]]
+        then
+          clr_next_bg=""
+          temp_idx=$(( idx + 1 ))
           iNext_segment="${segment[temp_idx]}"
-        done
-        if [[ "${iNext_segment}" == "hfill" ]]
-        then
-          if [[ "${first_line_prompt}" == true ]]
+          while [[ "$(( temp_idx ))" -lt "${idx_stop}" ]] \
+              && [[ "${iNext_segment}" != "hfill" ]] \
+              && [[ -z "${info_line_clr[$iNext_segment]}" ]]
+          do
+            temp_idx=$(( temp_idx + 1 ))
+            iNext_segment="${segment[temp_idx]}"
+          done
+          if [[ "${iNext_segment}" == "hfill" ]]
           then
-            clr_next_bg="${CLR_PREFIX}${DEFAULT_BG}${CLR_SUFFIX}"
-          else
-            clr_next_bg="${E_NORMAL_BG}"
-          fi
-        elif [[ $(( temp_idx )) -lt ${idx_stop} ]]
-        then
-          if [[ -n "${info_line_bg[$iNext_segment]}" ]]
+            if [[ "${first_line_prompt}" == true ]]
+            then
+              clr_next_bg="${CLR_PREFIX}${DEFAULT_BG}${CLR_SUFFIX}"
+            else
+              clr_next_bg="${E_NORMAL_BG}"
+            fi
+          elif [[ $(( temp_idx )) -lt ${idx_stop} ]]
           then
-            clr_next_bg="${CLR_PREFIX}${info_line_bg[$iNext_segment]}${CLR_SUFFIX}"
+            if [[ -n "${info_line_bg[$iNext_segment]}" ]]
+            then
+              clr_next_bg="${CLR_PREFIX}${info_line_bg[$iNext_segment]}${CLR_SUFFIX}"
+            else
+              clr_next_bg=""
+            fi
           else
             clr_next_bg=""
           fi
-        else
-          clr_next_bg=""
-        fi
-        # Get info colored
-        info="${info_line_color[$iSegment]}"
-        if [[ -n "${info}" ]]
-        then
-          # Reset segment separator
-          prompt_right=""
-          prompt_left=""
-          # Get colors
-          if [[ -n ${info_line_clr_switch[$iSegment]} ]]
+          # Get info colored
+          info="${info_line_clr[$iSegment]}"
+          if [[ -n "${info}" ]]
           then
-            clr_switch="${CLR_PREFIX}${info_line_clr_switch[$iSegment]}${CLR_SUFFIX}"
-          fi
-          if [[ -n "${info_line_bg[$iSegment]}" ]]
-          then
-            clr_bg="${CLR_PREFIX}${info_line_bg[$iSegment]}${CLR_SUFFIX}"
-          else
-            clr_fg="${CLR_PREFIX}${DEFAULT_BG}${CLR_SUFFIX}"
-          fi
-          if [[ -n "${info_line_fg[$iSegment]}" ]]
-          then
-            clr_fg="${CLR_PREFIX}${info_line_fg[$iSegment]}${CLR_SUFFIX}"
-          else
-            clr_fg="${CLR_PREFIX}${DEFAULT_FG}${CLR_SUFFIX}"
-          fi
-          # Comput segment separator colors
-          if [[ -n ${info_line_clr_switch[$iSegment]} ]]
-          then
-            if [[ -n "${prompt_env_right}" ]]
-            then
-              prompt_right="${CLR_PREFIX}${info_line_clr_switch[$iSegment]}${CLR_SUFFIX}${prompt_env_right}"
-            fi
-            if [[ -n "${prompt_env_left}" ]]
-            then
-              prompt_left="${CLR_PREFIX}${info_line_clr_switch[$iSegment]}${CLR_SUFFIX}${clr_next_bg}${prompt_env_left}"
-            fi
-          else
-            prompt_left=""
+            # Reset segment separator
             prompt_right=""
+            prompt_left=""
+            # Get colors
+            if [[ -n ${info_line_clr_switch[$iSegment]} ]]
+            then
+              clr_switch="${CLR_PREFIX}${info_line_clr_switch[$iSegment]}${CLR_SUFFIX}"
+            fi
+            if [[ -n "${info_line_bg[$iSegment]}" ]]
+            then
+              clr_bg="${CLR_PREFIX}${info_line_bg[$iSegment]}${CLR_SUFFIX}"
+            else
+              clr_fg="${CLR_PREFIX}${DEFAULT_BG}${CLR_SUFFIX}"
+            fi
+            if [[ -n "${info_line_fg[$iSegment]}" ]]
+            then
+              clr_fg="${CLR_PREFIX}${info_line_fg[$iSegment]}${CLR_SUFFIX}"
+            else
+              clr_fg="${CLR_PREFIX}${DEFAULT_FG}${CLR_SUFFIX}"
+            fi
+            # Comput segment separator colors
+            if [[ -n ${info_line_clr_switch[$iSegment]} ]]
+            then
+              if [[ -n "${prompt_env_right}" ]]
+              then
+                prompt_right="${CLR_PREFIX}${info_line_clr_switch[$iSegment]}${CLR_SUFFIX}${prompt_env_right}"
+              fi
+              if [[ -n "${prompt_env_left}" ]]
+              then
+                prompt_left="${CLR_PREFIX}${info_line_clr_switch[$iSegment]}${CLR_SUFFIX}${clr_next_bg}${prompt_env_left}"
+              fi
+            else
+              prompt_left=""
+              prompt_right=""
+            fi
+            # Add colored info to line
+            all_info+="${prompt_right}${clr_fg}${clr_bg} ${info} ${prompt_left}"
           fi
-          # Add colored info to line
-          all_info+="${prompt_right}${clr_fg}${clr_bg} ${info} ${prompt_left}"
         fi
       else
         if [[ ${first_line_prompt} == true ]]
@@ -300,6 +330,7 @@ precmd()
     done
     all_info+="${E_NORMAL}"
     echo -e "${all_info}"
+    debug "Ending _prompt_info_line in $(( ( $(date +%S%N) - start_precmd ) / 1000000 ))ms"
     return
   }
 
@@ -399,6 +430,11 @@ precmd()
 
   # Compute final prompt
   local final_prompt
+  if [[ -n ${DEBUG_MODE} ]] && [[ ${DEBUG_MODE} == true ]]
+  then
+    final_prompt+=$(debug )
+  fi
+
   for (( idx=0;idx<${#SEGMENT[@]};idx++))
   do
     line="$(_prompt_info_line ${idx})"
@@ -441,12 +477,10 @@ precmd()
     export SPROMPT=$(echo -e "Correct ${CLR_PREFIX}${CORRECT_WRONG_FG}${CLR_SUFFIX}%R%f to ${CLR_PREFIX}${CORRECT_RIGHT_FG}${CLR_SUFFIX}%r%f [nyae]? ")
   fi
 
-  echo ${final_prompt} >> ~/shell.log
-
   # Unset function to not be shown as autocompletion
   unset -f _prompt_printf
   unset -f _prompt_info_line
-
+  debug "Ending precmd in $(( ( $(date +%S%N) - start_precmd ) / 1000000 ))ms"
 }
 
 # *****************************************************************************

@@ -29,30 +29,14 @@ _virtualenv_info_short()
   echo "${VIRTUALENV_CHAR}"
 }
 
-_virtualenv_info_clr()
-{
-  echo "$(_virtualenv_info)"
-}
-
-_virtualenv_info_clr_short()
-{
-  echo "$(_virtualenv_info_short)"
-}
-
-_virtualenv_colorswitch()
-{
-  echo "${VIRTUALENV_BG/4/3}"
-}
-
-_virtualenv_bg()
-{
-  echo "${VIRTUALENV_BG}"
-}
-
-_virtualenv_fg()
-{
-  echo "${VIRTUALENV_FG}"
-}
+# Setting array value
+info_line[$iSegment]="$(_virtualenv_info)"
+info_line_clr[$iSegment]="$(_virtualenv_info)"
+info_line_short[$iSegment]="$(_virtualenv_info_short)"
+info_line_clr_short[$iSegment]="$(_virtualenv_info_short)"
+info_line_fg[$iSegment]="${VIRTUALENV_FG}"
+info_line_bg[$iSegment]="${VIRTUALENV_BG}"
+info_line_clr_switch[$iSegment]="${VIRTUALENV_BG/4/3}"
 
 # *****************************************************************************
 # EDITOR CONFIG

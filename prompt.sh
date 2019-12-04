@@ -12,6 +12,8 @@
 # METHODS
 # =============================================================================
 
+export PROMPT_DIR="$(cd `dirname $0` && pwd)"
+
 which_term(){
   # Method to determine which terminal emulator is used. Also set supported list
   # of terminal emulator that support unicode char.
@@ -73,11 +75,13 @@ fi
 # direnv
 if [[ -n ${DEBUG_MODE} ]] && [[ ${DEBUG_MODE} == true ]]
 then
+  echo "[LOG] Sourcing ${SHELL_DIR}/lib/prompt/debug.sh"
+  source "${SHELL_DIR}/lib/prompt/debug.sh"
+  echo "Sourcing ${SHELL_DIR}/lib/prompt/v${PROMPT_VERSION}_debug.sh"
   source "${SHELL_DIR}/lib/prompt/v${PROMPT_VERSION}_debug.sh"
-  echo source "${SHELL_DIR}/lib/prompt/v${PROMPT_VERSION}_debug.sh"
 else
+  source "${SHELL_DIR}/lib/prompt/debug.sh"
   source "${SHELL_DIR}/lib/prompt/v${PROMPT_VERSION}.sh"
-  echo source "${SHELL_DIR}/lib/prompt/v${PROMPT_VERSION}.sh"
 fi
 
 # *****************************************************************************
