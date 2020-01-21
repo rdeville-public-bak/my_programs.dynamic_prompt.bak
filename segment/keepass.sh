@@ -5,7 +5,7 @@ local KEEPASS_CHAR="${KEEPASS_CHAR:-" "}"
 local KEEPASS_FG="${KEEPASS_FG:-""}"
 local KEEPASS_BG="${KEEPASS_BG:-""}"
 
-_keepass_info()
+_compute_keepass_info()
 {
   if [[ -n ${KEEPASS_TYPE} ]]
   then
@@ -13,7 +13,7 @@ _keepass_info()
   fi
 }
 
-_keepass_info_short()
+_compute_keepass_info_short()
 {
   if [[ -n ${KEEPASS_TYPE} ]]
   then
@@ -21,15 +21,28 @@ _keepass_info_short()
   fi
 }
 
-# Setting array value
-info_line[$iSegment]="$(_keepass_info)"
-info_line_clr[$iSegment]="$(_keepass_info)"
-info_line_short[$iSegment]="$(_keepass_info_short)"
-info_line_clr_short[$iSegment]="$(_keepass_info_short)"
-info_line_fg[$iSegment]="${KEEPASS_FG}"
-info_line_bg[$iSegment]="${KEEPASS_BG}"
-info_line_clr_switch[$iSegment]="${KEEPASS_BG/4/3}"
+_keepass_info()
+{
+  local info=$(_compute_keepass_info)
+  if [[ -n "${info}" ]]
+  then
+    info_line[$iSegment]="${info}"
+    info_line_clr[$iSegment]="${info}"
+    info_line_fg[$iSegment]="${KEEPASS_FG}"
+    info_line_bg[$iSegment]="${KEEPASS_BG}"
+    info_line_clr_switch[$iSegment]="${KEEPASS_BG/4/3}"
+  fi
+}
 
+_keepass_info_short()
+{
+  local info=$(_compute_keepass_info_short)
+  if [[ -n "${info}" ]]
+  then
+    info_line_short[$iSegment]="${info}"
+    info_line_clr_short[$iSegment]="${info}"
+  fi
+}
 
 # *****************************************************************************
 # EDITOR CONFIG
