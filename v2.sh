@@ -43,6 +43,7 @@ precmd()
   {
     # Prompt the first line with information such as pwd, keepass, user,
     # hostname
+    local termsize
     local hfill
     local all_info
     local prompt_env_right
@@ -88,7 +89,7 @@ precmd()
         declare -A pids
         if [[ $1 -eq 0 ]]
         then
-          first_line_prompt=true
+          first_line_prompt="true"
         fi
         IFS=', ' read -r -a segment <<< "${SEGMENT[$segment_idx]}"
         IFS=', ' read -r -a segment_priority <<< "${SEGMENT_PRIORITY[$segment_idx]}"
@@ -108,7 +109,7 @@ precmd()
         IFS=', ' read -r -A segment_priority <<< "${SEGMENT_PRIORITY[$segment_idx]}"
         if [[ ${segment_idx} -eq 1 ]]
         then
-          first_line_prompt=true
+          first_line_prompt="true"
         fi
     esac
     idx_start=0
@@ -228,7 +229,7 @@ precmd()
       all_info="${BOLD}"
     fi
 
-    if [[ "${first_line_prompt}" == true ]]
+    if [[ "${first_line_prompt}" == "true" ]]
     then
       all_info+="${CLR_PREFIX}${DEFAULT_BG}${CLR_SUFFIX}"
     fi
@@ -255,7 +256,7 @@ precmd()
           done
           if [[ "${iNext_segment}" == "hfill" ]]
           then
-            if [[ "${first_line_prompt}" == true ]]
+            if [[ "${first_line_prompt}" == "true" ]]
             then
               clr_next_bg="${CLR_PREFIX}${DEFAULT_BG}${CLR_SUFFIX}"
             else
@@ -318,13 +319,18 @@ precmd()
         # Reset segment separator
         prompt_right=""
         prompt_left=""
-        if [[ ${first_line_prompt} == true ]]
+        if [[ ${first_line_prompt} == "true" ]]
         then
           clr_switch="${CLR_PREFIX}${DEFAULT_BG/4/3}${CLR_SUFFIX}"
           all_info+="${clr_switch}${CLR_PREFIX}${DEFAULT_BG}${CLR_SUFFIX}${hfill}"
           clr_switch=""
         else
-          all_info+="${E_NORMAL}${hfill}"
+          if [[ $(whoami) == "root" ]]
+          then
+            all_info+="${E_NORMAL}${E_BOLD}${hfill}"
+          else
+            all_info+="${E_NORMAL}${hfill}"
+          fi
           clr_switch=""
         fi
         prompt_env_right="${PROMPT_ENV_RIGHT}"
@@ -338,12 +344,9 @@ precmd()
       clr_fg="${CLR_PREFIX}${info_line_fg[$iSegment]}${CLR_SUFFIX}"
       clr_bg="${CLR_PREFIX}${info_line_bg[$iSegment]}${CLR_SUFFIX}"
       prompt_right="${CLR_PREFIX}${info_line_clr_switch[$iSegment]}${CLR_SUFFIX}${prompt_env_right}"
-      #all_info+="${prompt_right}"
       all_info+="${prompt_right}${clr_fg}${clr_bg} ${info} ${prompt_left}"
-    else
-      all_info+="${E_NORMAL}"
     fi
-    echo -e "${all_info}"
+    echo -e "${all_info}${E_NORMAL}"
     return
   }
 
@@ -374,7 +377,7 @@ precmd()
   then
     local SEGMENT=(
       "tmux, pwd, hfill, keepass, whoami, hostname"
-      "vcsh, virtualenv, vcs, kube, openstack"
+      "vcsh, virtualenv, vcs, kube, openstack, hfill"
     )
   fi
   if [[ -z ${SEGMENT_PRIORITY} ]]
@@ -470,9 +473,9 @@ precmd()
     *bash)
       if [[ $(whoami) == "root" ]]
       then
-        final_prompt+="${BOLD}${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${NORMAL}${BOLD}﬌ "
+        final_prompt+="$(echo -e " ${BOLD}${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${NORMAL}${BOLD}﬌ ")"
       else
-        final_prompt+=" ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${NORMAL}﬌ "
+        final_prompt+="$(echo -e " ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${NORMAL}﬌ ")"
       fi
       export PS1=$(echo -e "${final_prompt}")
       ;;
@@ -483,7 +486,7 @@ precmd()
       else
         zle_highlight=(default:normal)
       fi
-      final_prompt+="$(echo -e "${NORMAL}﬌ ")"
+      final_prompt+="$(echo -e "﬌ ")"
       export PROMPT=$(echo -e "${final_prompt}")
       export RPROMPT=$(echo -e "${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}%(?..%? ↵)%{${E_NORMAL}%}")
       export SPROMPT=$(echo -e "Correct ${CLR_PREFIX}${CORRECT_WRONG_FG}${CLR_SUFFIX}%R%f to ${CLR_PREFIX}${CORRECT_RIGHT_FG}${CLR_SUFFIX}%r%f [nyae]? ")
