@@ -5,7 +5,7 @@ local OPENSTACK_CHAR="${OPENSTACK_CHAR:-" "}"
 local OPENSTACK_FG="${OPENSTACK_FG:-""}"
 local OPENSTACK_BG="${OPENSTACK_BG:-""}"
 
-_openstack_info()
+_compute_openstack_info()
 {
   # Compute the openstack information
   local openstack_info=""
@@ -16,8 +16,7 @@ _openstack_info()
   echo "${openstack_info}"
 }
 
-
-_openstack_info_short()
+_compute_openstack_info_short()
 {
   if [[ -n "${OS_PROJECT_NAME}" ]] && [[ -n "${OS_USER_DOMAIN_NAME}" ]]
   then
@@ -25,31 +24,28 @@ _openstack_info_short()
   fi
 }
 
-_openstack_info_clr()
+_openstack_info()
 {
-  echo "$(_openstack_info)"
+  local info=$(_compute_openstack_info)
+  if [[ -n "${info}" ]]
+  then
+    info_line[$iSegment]="${info}"
+    info_line_clr[$iSegment]="${info}"
+    info_line_fg[$iSegment]="${OPENSTACK_FG}"
+    info_line_bg[$iSegment]="${OPENSTACK_BG}"
+    info_line_clr_switch[$iSegment]="${OPENSTACK_BG/4/3}"
+  fi
 }
 
-_openstack_info_clr_short()
+_openstack_info_short()
 {
-  echo "$(_openstack_info_short)"
+  local info=$(_compute_openstack_info_short)
+  if [[ -n "${info}" ]]
+  then
+    info_line_short[$iSegment]="${info}"
+    info_line_clr_short[$iSegment]="${info}"
+  fi
 }
-
-_openstack_colorswitch()
-{
-  echo "${OPENSTACK_BG/4/3}"
-}
-
-_openstack_bg()
-{
-  echo "${OPENSTACK_BG}"
-}
-
-_openstack_fg()
-{
-  echo "${OPENSTACK_FG}"
-}
-
 
 # *****************************************************************************
 # EDITOR CONFIG

@@ -5,7 +5,7 @@ local KUBE_CHAR="${KUBE_CHAR:-"⎈ "}"
 local KUBE_FG="${KUBE_FG:-""}"
 local KUBE_BG="${KUBE_BG:-""}"
 
-_kube_info()
+_compute_kube_info()
 {
   # Compute the kubernetes information
   local kube_context
@@ -24,44 +24,48 @@ _kube_info()
     else
       kube_info=""
     fi
+  elif [[ -n "${KUBE_CONTEXT}" ]]
+  then
+    # Variable set by direnv for debug purpose
+    kube_info=${KUBE_CHAR}${KUBE_CONTEXT}
   fi
   echo "${kube_info}"
 }
 
-_kube_info_short()
+_compute_kube_info_short()
 {
   if [[ -n "${KUBE_ENV}" ]] && [[ ${KUBE_ENV} -ne 0 ]]
   then
     echo "${KUBE_CHAR}"
+  elif [[ -n "${KUBE_CONTEXT}" ]]
+  then
+    # Variable set by direnv for debug purpose
+    echo "${KUBE_CHAR}"
   fi
 }
 
-_kube_info_clr()
+_kube_info()
 {
-  echo "$(_kube_info)"
+  local info=$(_compute_kube_info)
+  if [[ -n "${info}" ]]
+  then
+    info_line[$iSegment]="${info}"
+    info_line_clr[$iSegment]="${info}"
+    info_line_fg[$iSegment]="${KUBE_FG}"
+    info_line_bg[$iSegment]="${KUBE_BG}"
+    info_line_clr_switch[$iSegment]="${KUBE_BG/4/3}"
+  fi
 }
 
-_kube_info_clr_short()
+_kube_info_short()
 {
-  echo "$(_kube_info_short)"
+  local info=$(_compute_kube_info_short)
+  if [[ -n "${info}" ]]
+  then
+    info_line_short[$iSegment]="${info}"
+    info_line_clr_short[$iSegment]="${info}"
+  fi
 }
-
-_kube_colorswitch()
-{
-  echo "${KUBE_BG/4/3}"
-}
-
-_kube_bg()
-{
-  echo "${KUBE_BG}"
-}
-
-_kube_fg()
-{
-  echo "${KUBE_FG}"
-}
-
-
 # *****************************************************************************
 # EDITOR CONFIG
 # vim: ft=sh: ts=2: sw=2: sts=2

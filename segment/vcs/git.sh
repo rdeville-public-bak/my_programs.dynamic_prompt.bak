@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # *****************************************************************************
 # File    : ~/.shellrc.d/lib/git.sh
 # License : GNU General Public License v3.0
@@ -12,13 +12,6 @@
 # METHODS =====================================================================
 _git_get_prompt_info()
 {
-  _git_get_symbolic_ref()
-  {
-    # Get symbolic ref
-    git symbolic-ref -q HEAD 2> /dev/null
-    return
-  }
-
   _git_get_tag()
   {
     # Get tags that contains commit
@@ -49,19 +42,10 @@ _git_get_prompt_info()
     return
   }
 
-  _git_get_upstream()
-  {
-    # Get upgstream of repo
-    local ref
-    ref="$(_git_get_symbolic_ref)" || return 1
-    git for-each-ref --format="%(upstream:short)" "${ref}"
-    return
-  }
-
   _git_get_upstream_behind_ahead()
   {
     # Get if the current branch is behind or above HEAD
-    git rev-list --left-right --count "origin/$(_git_get_branch)...$(_git_get_branch)" 2> /dev/null
+    git rev-list --left-right --count "origin/${git_branch}...${git_branch}" 2> /dev/null
     return
   }
 
@@ -132,8 +116,9 @@ _git_get_prompt_info()
     local git_state
 
     git_commit="$(_git_get_short_sha)"
-    git_branch="${GIT_BRANCH_PREFIX}$(_git_get_friendly_ref)"
-    if ! _git_get_branch &> /dev/null
+    git_branch="${GIT_BRANCH_PREFIX}$(_git_get_branch)"
+    git_friendly_name="${GIT_BRANCH_PREFIX}$(_git_get_friendly_ref)"
+    if [[ ${git_friendly_name} != ${git_branch} ]]
     then
       if _git_get_tag &> /dev/null; then
         detached_prefix="${GIT_TAG_PREFIX}"
@@ -209,7 +194,12 @@ _git_get_prompt_info()
       git_info+="${staged_count}"
       git_info+=" ${git_state}"
     else
-      git_info="${CLR_PREFIX}${VCS_FG}${CLR_SUFFIX}${GIT_CHAR}"
+      if [[ -n "${VCS_FG}" ]]
+      then
+        git_info="${CLR_PREFIX}${VCS_FG}${CLR_SUFFIX}${GIT_CHAR}"
+      else
+        git_info="${CLR_PREFIX}${DEFAULT_FG}${CLR_SUFFIX}${GIT_CHAR}"
+      fi
       if [[ ${short} == "false" ]]
       then
         git_info+=" ${VCS_DETACHED_FG}${detached_prefix}"

@@ -5,39 +5,20 @@ local HOSTNAME_CHAR="${HOSTNAME_CHAR:-" "}"
 local HOSTNAME_FG="${HOSTNAME_FG:-""}"
 local HOSTNAME_BG="${HOSTNAME_BG:-""}"
 
+# Setting array value
 _hostname_info()
 {
-  echo "${HOSTNAME_CHAR}$(hostname)"
+  info_line[$iSegment]="${HOSTNAME_CHAR}$(hostname)"
+  info_line_clr[$iSegment]="${HOSTNAME_CHAR}$(hostname)"
+  info_line_fg[$iSegment]="${HOSTNAME_FG}"
+  info_line_bg[$iSegment]="${HOSTNAME_BG}"
+  info_line_clr_switch[$iSegment]="${HOSTNAME_BG/4/3}"
 }
 
 _hostname_info_short()
 {
-  echo "${HOSTNAME_CHAR}"
-}
-
-_hostname_info_clr()
-{
-  echo "$(_hostname_info)"
-}
-
-_hostname_info_clr_short()
-{
-  echo "$(_hostname_info_short)"
-}
-
-_hostname_colorswitch()
-{
-  echo "${HOSTNAME_BG/4/3}"
-}
-
-_hostname_bg()
-{
-  echo "${HOSTNAME_BG}"
-}
-
-_hostname_fg()
-{
-  echo "${HOSTNAME_FG}"
+  info_line_short[$iSegment]="${HOSTNAME_CHAR}"
+  info_line_clr_short[$iSegment]="${HOSTNAME_CHAR}"
 }
 
 # *****************************************************************************

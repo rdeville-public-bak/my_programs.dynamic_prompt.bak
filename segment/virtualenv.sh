@@ -5,7 +5,7 @@ local VIRTUALENV_CHAR="${VIRTUALENV_CHAR:-" "}"
 local VIRTUALENV_FG="${VIRTUALENV_FG:-""}"
 local VIRTUALENV_BG="${VIRTUALENV_BG:-""}"
 
-_virtualenv_info()
+_compute_virtualenv_info()
 {
   # Compute the virtual environment info
   local virtualenv
@@ -24,34 +24,33 @@ _virtualenv_info()
   echo "${virtualenv_info}"
 }
 
-_virtualenv_info_short()
+_compute_virtualenv_info_short()
 {
   echo "${VIRTUALENV_CHAR}"
 }
 
-_virtualenv_info_clr()
+
+_virtualenv_info()
 {
-  echo "$(_virtualenv_info)"
+  local info=$(_compute_virtualenv_info)
+  if [[ -n "${info}" ]]
+  then
+    info_line[$iSegment]="${info}"
+    info_line_clr[$iSegment]="${info}"
+    info_line_fg[$iSegment]="${VIRTUALENV_FG}"
+    info_line_bg[$iSegment]="${VIRTUALENV_BG}"
+    info_line_clr_switch[$iSegment]="${VIRTUALENV_BG/4/3}"
+  fi
 }
 
-_virtualenv_info_clr_short()
+_virtualenv_info_short()
 {
-  echo "$(_virtualenv_info_short)"
-}
-
-_virtualenv_colorswitch()
-{
-  echo "${VIRTUALENV_BG/4/3}"
-}
-
-_virtualenv_bg()
-{
-  echo "${VIRTUALENV_BG}"
-}
-
-_virtualenv_fg()
-{
-  echo "${VIRTUALENV_FG}"
+  local info=$(_compute_virtualenv_info_short)
+  if [[ -n "${info}" ]]
+  then
+    info_line_short[$iSegment]="${info}"
+    info_line_clr_short[$iSegment]="${info}"
+  fi
 }
 
 # *****************************************************************************
