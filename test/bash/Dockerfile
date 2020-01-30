@@ -8,7 +8,7 @@ RUN apt-get update \
 ENV LANG en_US.UTF-8 
 ENV LC_ALL en_US.UTF-8
 
-COPY . /root/
+WORKDIR /root
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -18,9 +18,7 @@ RUN apt-get update \
         git \
         python
 
-RUN cd /root && direnv allow
-RUN cd /root 
-RUN mv /root/hosts/common.sh /root/hosts/common.sh.bak
-RUN mv /root/test/bash/.bashrc /root/.bashrc
+COPY ./test/bash/.bashrc /root/.bashrc
+COPY ./test/.envrc /root/.envrc
+RUN direnv allow
 RUN chsh -s /bin/bash  root
-# ENTRYPOINT /bin/bash -c 'source ~/.bashrc && echo "$PS1"'
