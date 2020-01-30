@@ -27,19 +27,16 @@ precmd()
   _load_segment()
   {
     local segment=$1
-    if [[ ${segment} != "hfill" ]]
-    then
-      local start_load_segment=$(date +%S%N)
-      source <(cat "${PROMPT_DIR}/segment/${segment}.sh")
-      if [[ -n "${info_line[$iSegment]}" ]]
-      then
-        echo "info_line[$iSegment]=\"${info_line[$iSegment]}\"" >> ${PROMPT_DIR}/.info.sh
-        echo "info_line_clr[$iSegment]=\"${info_line_clr[$iSegment]}\"" >> ${PROMPT_DIR}/.info.sh
-        echo "info_line_short[$iSegment]=\"${info_line_short[$iSegment]}\"" >> ${PROMPT_DIR}/.info.sh
-        echo "info_line_clr_short[$iSegment]=\"${info_line_clr_short[$iSegment]}\"" >> ${PROMPT_DIR}/.info.sh
-        echo "info_line_fg[$iSegment]=\"${info_line_fg[$iSegment]}\"" >> ${PROMPT_DIR}/.info.sh
-      fi
-    fi
+    cat "${PROMPT_DIR}/segment/${segment}.sh"
+  }
+
+  _load_all_segment()
+  {
+    for iSegment in ${segment[@]}
+    do
+      _load_segment ${iSegment} &
+    done
+    wait
   }
 
   _prompt_info_line()
@@ -64,61 +61,81 @@ precmd()
     local info_line_clr
     local info_line_clr_short
     local info_line_shorten
+    local info_line_removed
+    local info_line_segment_full
+    local info_line_segment_full_short
     local first_line_prompt=false
+    local options
+    local declaration
 
-    if [[ $1 -eq 0 ]]
-    then
-      first_line_prompt=true
-    fi
-
-    local start_init=$(date +%S%N)
-    if [[ ${SHELL} == bash ]]
-    then
-      segment_idx=$1
-      IFS=', ' read -r -a segment <<< "${SEGMENT[$segment_idx]}"
-      IFS=', ' read -r -a segment_priority <<< "${SEGMENT_PRIORITY[$segment_idx]}"
-      idx_start=0
-      idx_stop=${#segment[@]}
-      idx_stop_prioriy=${#segment_priority[@]}
-      declare -A info_line
-      declare -A info_line_short
-      declare -A info_line_clr
-      declare -A info_line_clr_short
-      declare -A info_line_fg
-      declare -A info_line_bg
-      declare -A info_line_clr_switch
-      declare -A pids
-    else
-      segment_idx=$(( $1 + 1 ))
-      IFS=', ' read -r -A segment <<< "${SEGMENT[$segment_idx]}"
-      IFS=', ' read -r -A segment_priority <<< "${SEGMENT_PRIORITY[$segment_idx]}"
-      idx_start=1
-      idx_stop=$(( ${#segment[@]} + 1 ))
-      idx_stop_prioriy=${#segment_priority[@]}
-      typeset -A info_line
-      typeset -A info_line_short
-      typeset -A info_line_clr
-      typeset -A info_line_clr_short
-      typeset -A info_line_fg
-      typeset -A info_line_bg
-      typeset -A info_line_clr_switch
-      typeset -A pids
-    fi
+    # Set variable and associative array depending on the shell
+    segment_idx=$1
+    case ${SHELL} in
+      *bash)
+        options="-a"
+        declaration="declare"
+        declare -A info_line
+        declare -A info_line_segment_full
+        declare -A info_line_segment_full_short
+        declare -A info_line_short
+        declare -A info_line_clr
+        declare -A info_line_clr_short
+        declare -A info_line_fg
+        declare -A info_line_bg
+        declare -A info_line_clr_switch
+        declare -A pids
+        if [[ $1 -eq 0 ]]
+        then
+          first_line_prompt="true"
+        fi
+        IFS=', ' read -r -a segment <<< "${SEGMENT[$segment_idx]}"
+        IFS=', ' read -r -a segment_priority <<< "${SEGMENT_PRIORITY[$segment_idx]}"
+        ;;
+      *zsh)
+        typeset -A info_line
+        typeset -A info_line_segment_full
+        typeset -A info_line_segment_full_short
+        typeset -A info_line_short
+        typeset -A info_line_clr
+        typeset -A info_line_clr_short
+        typeset -A info_line_fg
+        typeset -A info_line_bg
+        typeset -A info_line_clr_switch
+        typeset -A pids
+        IFS=', ' read -r -A segment <<< "${SEGMENT[$segment_idx]}"
+        IFS=', ' read -r -A segment_priority <<< "${SEGMENT_PRIORITY[$segment_idx]}"
+        if [[ ${segment_idx} -eq 1 ]]
+        then
+          first_line_prompt="true"
+        fi
+    esac
+    idx_start=0
+    idx_stop=${#segment[@]}
+    idx_stop_priority=${#segment_priority[@]}
+    case ${SHELL} in
+      *zsh)
+        idx_start=$(( idx_start + 1 ))
+        idx_stop=$(( idx_stop + 1 ))
+        idx_stop_priority=$(( idx_stop_priority + 1 ))
+        ;;
+    esac
 
     # Loag segment source files
-    start_init=$(date +%S%N)
     all_info=""
-    prompt_env_right=""
-    prompt_env_left="${PROMPT_ENV_LEFT}"
-    echo "#!/bin/bash" > ${PROMPT_DIR}/.info.sh
+    prompt_env_right="${PROMPT_ENV_LEFT}"
+    prompt_env_left="${PROMPT_ENV_RIGHT}"
+    source <(_load_all_segment)
+
     for iSegment in ${segment[@]}
     do
-      _load_segment ${iSegment} &
+      if [[ $iSegment != "hfill" ]]
+      then
+        _${iSegment}_info ${iSegment}
+        _${iSegment}_info_short
+      fi
     done
-    wait
-    local start=$(date +%S%N)
-    source <(cat "${PROMPT_DIR}/.info.sh")
-    if [[ "${info_line[@]}" == "" ]]
+
+    if [[ "${#info_line[@]}" -eq 0 ]]
     then
       echo ""
       return
@@ -128,69 +145,72 @@ precmd()
     do
       if [[ ${iSegment} != "hfill" ]] && [[ -n ${info_line[$iSegment]} ]]
       then
-        if [[ -n "${info_line_clr_switch[$iSegment]}" ]]
+        if [[ "${iSegment}" == "pwd" ]]
         then
-          all_info+="${prompt_env_right} ${info_line[$iSegment]} ${prompt_env_left}"
+          info_line_segment_full[$iSegment]=" ${info_line[$iSegment]} "
         else
-          all_info+=" ${info_line[$iSegment]} "
+          info_line_segment_full[$iSegment]="${prompt_env_right}${info_line[$iSegment]}${prompt_env_left}"
         fi
-      else
-        prompt_env_left=""
-        prompt_env_right="${PROMPT_ENV_RIGHT}"
+        all_info+="${info_line_segment_full[$iSegment]}"
       fi
     done
 
-    # Compute size of terminal
-    termsize=$(tput cols)
-    # Compute size of blank space
-    hfill=$(( termsize - ${#all_info} ))
-    # Shorten line if not enough place
-    idx_total=0
-    info_line_shorten=()
-    while [[ ${hfill} -lt 5 ]] && [[ ${#all_info} -gt 0 ]]
-    do
-      shorten=false
-      idx=${idx_start}
-      # While no segment shorten or not pass through all priority
-      while [[ ${idx} -le ${idx_stop_prioriy} ]] && [[ ${shorten} == false ]]
+    if [[ " ${segment[@]} " =~ " hfill " ]]
+    then
+      # Showing vcsh info
+      local HFILL_FG="${DEFAULT_FG:-""}"
+      local HFILL_BG="${DEFAULT_BG:-""}"
+      local hfill=""
+      local hfill=$(( ${COLUMNS} - ${#all_info} ))
+      local idx_total=0
+      local info_line_shorten=()
+      local info_line_removed=()
+      local gain=${hfill}
+      local idx=${idx_start}
+      while [[ ${gain} -lt 5 ]] && [[ ${#info_line_removed[@]} -ne ${#segment[@]} ]]
       do
         iSegment="${segment_priority[idx]}"
-        # If segment not empty
-        if [[ -n "${info_line[$iSegment]}" ]] &&  ! [[ "${info_line_shorten[@]}" =~ ${iSegment} ]]
+        if ! [[ " ${info_line_shorten[@]} " =~ " ${iSegment} " ]]
         then
-          info_line[$iSegment]="${info_line_short[$iSegment]}"
-          info_line_clr[$iSegment]="${info_line_clr_short[$iSegment]}"
+          _${iSegment}_info_short ${gain}
+          if ! [[ ${iSegment} == "pwd" ]]
+          then
+            info_line_segment_full_short[$iSegment]=" ${info_line_short[$iSegment]} "
+          else
+            info_line_segment_full_short[$iSegment]="${prompt_env_right}${info_line_short[$iSegment]}${prompt_env_left}"
+          fi
+          gain=$(( gain + (${#info_line_segment_full[$iSegment]} - ${#info_line_segment_full_short[$iSegment]}) ))
+          info_line[$iSegment]=${info_line_short[$iSegment]}
+          info_line_clr[$iSegment]=${info_line_clr_short[$iSegment]}
           info_line_shorten+=("${iSegment}")
-          shorten=true
-        # If all segment have already been shorten
-        elif [[ "${#info_line_shorten[@]}" == "$(( ${#segment[@]} - 1 ))" ]]
-        then
+        else
+          gain=$(( gain + ${#info_line_segment_full_short[$iSegment]} ))
+          if [[ " ${segment_priority[@]} " =~ "pwd" ]]
+          then
+            _pwd_info_short ${gain}
+            if [[ -n "${info_line[pwd]}" ]]
+            then
+              info_line_segment_full_short[pwd]=" ${info_line_short[pwd]} "
+            fi
+            info_line[pwd]=${info_line_short[pwd]}
+            info_line_clr[pwd]=${info_line_clr_short[pwd]}
+          fi
           info_line[$iSegment]=""
           info_line_clr[$iSegment]=""
-          shorten=true
+          info_line_removed+=("${iSegment}")
         fi
         # Update segment separator
         idx=$(( idx + 1 ))
-      done
-      # Construct line from newly computed segment
-      all_info=""
-      for iSegment in "${segment[@]}"
-      do
-        if [[ ${iSegment} == "hfill" ]]
+        if [[ $idx -ge ${idx_stop_priority} ]]
         then
-          if [[ ${first_line_prompt} == true ]]
-          then
-            all_info+="${PROMPT_ENV_LEFT}${info_line[$iSegment]}${PROMPT_ENV_RIGHT}"
-          else
-            all_info+=" ${info_line[$iSegment]} "
-          fi
+          idx=${idx_start}
         fi
       done
-      all_info+=" "
-      hfill=$(( termsize - ${#all_info} + 1 ))
-    done
-    # Compute the space that will be stored in hfill
-    hfill="$(_prompt_printf " " ${hfill})"
+      # Compute the space that will be stored in hfill
+      hfill="$(_prompt_printf " " ${gain})"
+    else
+      hfill=false
+    fi
 
     # Compute the line depending on the shell (bash or zsh) and the user.
     # If user is root, the full line will be BOLD
@@ -200,7 +220,8 @@ precmd()
     then
       all_info="${BOLD}"
     fi
-    if [[ ${first_line_prompt} == true ]]
+
+    if [[ "${first_line_prompt}" == "true" ]]
     then
       all_info+="${CLR_PREFIX}${DEFAULT_BG}${CLR_SUFFIX}"
     else
@@ -212,7 +233,8 @@ precmd()
       iSegment="${segment[idx]}"
       if [[ ${iSegment} != "hfill" ]]
       then
-        if [[ -n "${info_line[$iSegment]}" ]]
+        if [[ -n "${info_line[$iSegment]}" ]] \
+          && ! [[ " ${info_line_removed[@]} " =~ " ${iSegment} " ]]
         then
           # Get colors
           if [[ -n "${info_line_fg[$iSegment]}" ]]
@@ -223,7 +245,7 @@ precmd()
           fi
           # Comput segment separator colors
           # Add colored info to line
-          if [[ ${first_line_prompt} == true ]]
+          if [[ ${iSegment} == "pwd" ]]
           then
             all_info+="${clr_fg} ${info_line_clr[$iSegment]} "
           else
@@ -231,11 +253,16 @@ precmd()
           fi
         fi
       else
-        if [[ ${first_line_prompt} == true ]]
+        if [[ ${first_line_prompt} == "true" ]]
         then
           all_info+="${hfill}"
         else
-          all_info+="${hfill}"
+          if [[ $(whoami) == "root" ]]
+          then
+            all_info+="${E_NORMAL}${E_BOLD}${hfill}"
+          else
+            all_info+="${E_NORMAL}${hfill}"
+          fi
         fi
       fi
     done
@@ -244,25 +271,24 @@ precmd()
     return
   }
 
-  local host_dir="${SHELL_DIR}/hosts"
   local HOST=$(hostname)
   local UNICODE_SUPPORTED_TERM=("st" "terminator" "xterm")
   local TRUE_COLOR_TERM=("st" "terminator")
 
-  if [ -f "${host_dir}/common.sh" ]
+  if [ -f "${PROMPT_DIR}/hosts/common.sh" ]
   then
     # shellcheck disable=SC1090
     # SC1090: Can't follow non-constant source. Use a directive to specify
     #         location.
-    source <(cat "${host_dir}/common.sh")
+    source <(cat "${PROMPT_DIR}/hosts/common.sh")
   fi
 
-  if [ -f "${host_dir}/${HOST}.sh" ]
+  if [ -f "${PROMPT_DIR}/hosts/${HOST}.sh" ]
   then
     # shellcheck disable=SC1090
     # SC1090: Can't follow non-constant source. Use a directive to specify
     #         location.
-    source <(cat "${host_dir}/${HOST}.sh")
+    source <(cat "${PROMPT_DIR}/hosts/${HOST}.sh")
   fi
 
   # PROMPT VARIABLE THAT CAN BE OVERLOADED BY THE USER
@@ -271,51 +297,52 @@ precmd()
   if [[ -z ${SEGMENT} ]]
   then
     local SEGMENT=(
-      "pwd, hfill, keepass, whoami, hostname"
-      "tmux, virtualenv, vcs, hfill, kube, openstack"
+      "tmux, pwd, hfill, keepass, whoami, hostname"
+      "vcsh, virtualenv, vcs, kube, openstack"
     )
   fi
   if [[ -z ${SEGMENT_PRIORITY} ]]
   then
     local SEGMENT_PRIORITY=(
-      "whoami, hostname, keepass, pwd"
-      "tmux, virtualenv, vcs, hfill, kube, openstack"
+      "tmux, whoami, hostname, keepass, pwd"
+      "vcsh, virtualenv, kube, openstack, vcs"
     )
   fi
 
   if [[ "${TRUE_COLOR_TERM[@]}" =~ ${SHELL_APP} ]]
   then
-    if [[ "${SHELL}" == bash ]]
-    then
-      local CLR_PREFIX="\x1b["
-      local CLR_SUFFIX="m"
-      local BASE_CLR_PREFIX="\[\e["
-      local BASE_CLR_SUFFIX="m\]"
-    elif [[ "${SHELL}" == zsh ]]
-    then
-      local CLR_PREFIX="%{\x1b["
-      local CLR_SUFFIX="m%}"
-      local BASE_CLR_PREFIX="%{\033["
-      local BASE_CLR_SUFFIX="m%}"
-    fi
+    case ${SHELL} in
+      *bash)
+        local CLR_PREFIX="\x1b["
+        local CLR_SUFFIX="m"
+        local BASE_CLR_PREFIX="\[\e["
+        local BASE_CLR_SUFFIX="m\]"
+        ;;
+      *zsh)
+        local CLR_PREFIX="%{\x1b["
+        local CLR_SUFFIX="m%}"
+        local BASE_CLR_PREFIX="%{\033["
+        local BASE_CLR_SUFFIX="m%}"
+        ;;
+    esac
     local DEFAULT_CLR_FG="38;2;255;255;255"
     local DEFAULT_CLR_BG="48;2;0;0;0"
     local DEFAULT_NORMAL="0"
     local DEFAULT_BOLD="1"
   else
-    if [[ "${SHELL}" == bash ]]
-    then
-      local CLR_PREFIX="\[\e["
-      local CLR_SUFFIX="m\]"
-      local BASE_CLR_PREFIX="\[\e["
-      local BASE_CLR_SUFFIX="m\]"
-    elif [[ "${SHELL}" == zsh ]]
-    then
-      local CLR_PREFIX="%{\033["
-      local CLR_SUFFIX="m%}"
-      local BASE_CLR_PREFIX="%{\033["
-      local BASE_CLR_SUFFIX="m%}"
-    fi
+    case ${SHELL} in
+      *bash)
+        local CLR_PREFIX="\[\e["
+        local CLR_SUFFIX="m\]"
+        local BASE_CLR_PREFIX="\[\e["
+        local BASE_CLR_SUFFIX="m\]"
+        ;;
+      *zsh)
+        local CLR_PREFIX="%{\033["
+        local CLR_SUFFIX="m%}"
+        local BASE_CLR_PREFIX="%{\033["
+        local BASE_CLR_SUFFIX="m%}"
+    esac
     local DEFAULT_CLR_FG="38;5;15"
     local DEFAULT_CLR_BG="48;5;0"
     local DEFAULT_NORMAL="0"
@@ -337,36 +364,52 @@ precmd()
 
   # Compute final prompt
   local final_prompt
-  if [[ -n ${DEBUG_MODE} ]] && [[ ${DEBUG_MODE} == true ]]
-  then
-    final_prompt+=$(debug )
-  fi
-
-  for (( idx=0;idx<${#SEGMENT[@]};idx++))
+  local idx_start_segment
+  local idx_stop_segment
+  case ${SHELL} in
+    *bash)
+      idx_start_segment=0
+      idx_stop_segment=${#SEGMENT[@]}
+      ;;
+    *zsh)
+      idx_start_segment=1
+      idx_stop_segment=$(( ${#SEGMENT[@]} + 1 ))
+      ;;
+  esac
+  debug "for (( idx=$(( ${idx_stop_segment} - 1 )); idx >= ${idx_start_segment} ; idx--))"
+  for (( idx=$(( ${idx_stop_segment} - 1 )); idx >= ${idx_start_segment} ; idx--))
   do
+    local start_info_line=$(date +%S%N)
     line="$(_prompt_info_line ${idx})"
-    if [[ -n ${line} ]]
+    if [[ -n "${line}" ]]
     then
-      if  [[ $(tput cols) -lt 25 ]]
-      then
-        final_prompt+="${line}\n"
-      else
-        final_prompt+="${line}"
-      fi
+      final_prompt="${line}\n${final_prompt}"
     fi
   done
+
   # Compute end of final prompt  depending on the terminal
-  if [[ "${SHELL}" =~ bash ]]
-  then
-    final_prompt+="$(echo -e "\n${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX} \$? ↵ ${NORMAL}﬌ ")"
-    export PS1=${final_prompt}
-  elif [[ "${SHELL}" =~ zsh ]]
-  then
-    final_prompt+="$(echo -e "\n ﬌ ")"
-    export PROMPT=${final_prompt}
-    export RPROMPT=$(echo -e "${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}%(?..%? ↵)%{${E_NORMAL}%}")
-    export SPROMPT=$(echo -e "Correct ${CLR_PREFIX}${CORRECT_WRONG_FG}${CLR_SUFFIX}%R%f to ${CLR_PREFIX}${CORRECT_RIGHT_FG}${CLR_SUFFIX}%r%f [nyae]? ")
-  fi
+  case ${SHELL} in
+    *bash)
+      if [[ $(whoami) == "root" ]]
+      then
+        final_prompt+="$(echo -e "${NORMAL}${BOLD} ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${NORMAL}${BOLD}﬌ ")"
+      else
+        final_prompt+="$(echo -e "${NORMAL} ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${NORMAL}﬌ ")"
+      fi
+      export PS1=$(echo -e "${final_prompt}")
+      ;;
+    *zsh)
+      if [[ $(whoami) == "root" ]]
+      then
+        zle_highlight=(default:bold)
+      else
+        zle_highlight=(default:normal)
+      fi
+      final_prompt+="$(echo -e "${NORMAL}﬌ ")"
+      export PROMPT=$(echo -e "${final_prompt}")
+      export RPROMPT=$(echo -e "${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}%(?..%? ↵)%{${NORMAL}%}")
+      export SPROMPT=$(echo -e "Correct ${CLR_PREFIX}${CORRECT_WRONG_FG}${CLR_SUFFIX}%R%f to ${CLR_PREFIX}${CORRECT_RIGHT_FG}${CLR_SUFFIX}%r%f [nyae]? ")
+  esac
 
   # Unset function to not be shown as autocompletion
   unset -f _prompt_printf
