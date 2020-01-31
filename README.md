@@ -43,7 +43,8 @@ The aim of this prompt are :
     once. Moreover, my personnal computer use `zsh` while most server I work on
     use `bash`, so I must support both with only one file.
 
-**Why this new prompt while there exists similar project like [liquidprompt][liquidprompt]**
+**Why this new prompt while there exists similar project like
+[liquidprompt][liquidprompt]**
 
 When I started this prompt, I did not know liquidprompt. After quickly checking
 the code, here are the main difference I saw:
@@ -68,17 +69,21 @@ supported shell:
   * The _v1_ is "classic" as show below for bash and zsh.
 
 ``zsh``
+
 ![default_prompt_zsh_v1][default_prompt_zsh_v1]
 
 ``bash``
+
 ![default_prompt_bash_v1][default_prompt_bash_v1]
 
   * The _v2_ is more "powerline" look alike as show below for bash and zsh.
 
 ``zsh``
+
 ![default_prompt_zsh_v2][default_prompt_zsh_v2]
 
 ``bash``
+
 ![default_prompt_bash_v2][default_prompt_bash_v2]
 
 In both case, (almost) all parts (colors, character, show segment or not, etc.)
@@ -97,18 +102,23 @@ visually that I am `root` and things I do can be dangerous. See below for an
 example.
 
   * The v1 is "classic" as show below for bash and zsh.
+
 ``zsh``
+
 ![root_default_prompt_zsh_v1][root_default_prompt_zsh_v1]
 
 ``bash``
+
 ![root_default_prompt_bash_v1][root_default_prompt_bash_v1]
 
   * The _v2_ is more "powerline" look alike as show below for bash and zsh.
 
 ``zsh``
+
 ![root_default_prompt_zsh_v2][root_default_prompt_zsh_v2]
 
 ``bash``
+
 ![root_default_prompt_bash_v2][root_default_prompt_bash_v2]
 
 As you can see, `bash` version and `zsh` version are almost the same, only the
@@ -121,11 +131,13 @@ Below is what prompt look like when all supported segments are loaded.
   * The v1 is "classic" as show below for bash and zsh.
 
 ![default_full_option_zsh_v1][default_full_option_zsh_v1]
+
 ![default_full_option_zsh_v1_desc][default_full_option_zsh_v1_desc]
 
   * The v2 is more "powerline" look alike as show below for bash and zsh.
 
 ![default_full_option_zsh_v2][default_full_option_zsh_v2]
+
 ![default_full_option_zsh_v2_desc][default_full_option_zsh_v2_desc]
 
 Here you can see my prompts when all segments are loaded. Supported
@@ -376,6 +388,11 @@ the documentation [doc/add_segment.md][doc_add_segment].
 
 # Know Issues
 
+  * When using `direnv`, segment that shoudl be shown because global variables
+    are set by `direnv` are not shown directly. User must press `<Enter>` once
+    again to view them (or enter any command). This is due to the fact that the
+    direnv hook is executed after `precmd`.
+
 
 [testing]: #testing
 [configuration]: #configuration
@@ -396,19 +413,19 @@ the documentation [doc/add_segment.md][doc_add_segment].
 [docker_Fedora]: https://docs.docker.com/install/linux/docker-ce/fedora/
 [docker_Ubuntu]: https://docs.docker.com/install/linux/docker-ce/ubuntu/
 
-[default_prompt_zsh_v1]: doc/imgdefault_prompt_zsh_v1.png
-[default_prompt_bash_v1]: doc/imgdefault_prompt_bash_v1.png
-[default_prompt_zsh_v2]: doc/imgdefault_prompt_zsh_v2.png
-[default_prompt_bash_v2]: doc/imgdefault_prompt_bash_v2.png
-[root_default_prompt_zsh_v1]: doc/imgroot_default_prompt_zsh_v1.png
-[root_default_prompt_bash_v1]: doc/imgroot_default_prompt_bash_v1.png
-[root_default_prompt_zsh_v2]: doc/imgroot_default_prompt_zsh_v2.png
-[root_default_prompt_bash_v2]: doc/imgroot_default_prompt_bash_v2.png
-[default_full_option_zsh_v1]: doc/imgdefault_full_option_zsh_v1.png
-[default_full_option_zsh_v1_desc]: doc/imgdefault_full_option_zsh_v1_desc.png
-[default_full_option_zsh_v2]: doc/imgdefault_full_option_zsh_v2.png
-[default_full_option_zsh_v2_desc]: doc/imgdefault_full_option_zsh_v2_desc.png
-[shrink_prompt_zsh_v1]: doc/imgshrink_prompt_zsh_v1.png
-[shrink_prompt_zsh_v2]: doc/imgshrink_prompt_zsh_v2.png
-[base_nocolor_prompt_v1]: doc/imgbase_nocolor_prompt_v1.png
-[base_nocolor_prompt_v2]: doc/imgbase_nocolor_prompt_v2.png
+[default_prompt_zsh_v1]: doc/img/default_prompt_zsh_v1.png
+[default_prompt_bash_v1]: doc/img/default_prompt_bash_v1.png
+[default_prompt_zsh_v2]: doc/img/default_prompt_zsh_v2.png
+[default_prompt_bash_v2]: doc/img/default_prompt_bash_v2.png
+[root_default_prompt_zsh_v1]: doc/img/root_default_prompt_zsh_v1.png
+[root_default_prompt_bash_v1]: doc/img/root_default_prompt_bash_v1.png
+[root_default_prompt_zsh_v2]: doc/img/root_default_prompt_zsh_v2.png
+[root_default_prompt_bash_v2]: doc/img/root_default_prompt_bash_v2.png
+[default_full_option_zsh_v1]: doc/img/default_full_option_zsh_v1.png
+[default_full_option_zsh_v1_desc]: doc/img/default_full_option_zsh_v1_desc.png
+[default_full_option_zsh_v2]: doc/img/default_full_option_zsh_v2.png
+[default_full_option_zsh_v2_desc]: doc/img/default_full_option_zsh_v2_desc.png
+[shrink_prompt_zsh_v1]: doc/img/shrink_prompt_zsh_v1.png
+[shrink_prompt_zsh_v2]: doc/img/shrink_prompt_zsh_v2.png
+[base_nocolor_prompt_v1]: doc/img/base_nocolor_prompt_v1.png
+[base_nocolor_prompt_v2]: doc/img/base_nocolor_prompt_v2.png

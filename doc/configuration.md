@@ -9,8 +9,6 @@ chars, etc.
 
 # Table of content
 
-<!-- vim-markdown-toc GitLab -->
-
 * [Global variables](#global-variables)
 * [How to configure your workstations](#how-to-configure-your-workstations)
 * [Configuring Prompt Line](#configuring-prompt-line)
@@ -36,8 +34,6 @@ chars, etc.
         * [kube](#kube)
         * [openstack](#openstack)
 * [Additional notes](#additional-notes)
-
-<!-- vim-markdown-toc -->
 
 # Global variables
 
@@ -130,15 +126,25 @@ All variables in these files are optional. If not set, my scripts will load
 default value written as comment in files `common.exemple.sh`.
 
   * The _v1_ is "classic" as show below for bash and zsh.
-    * ``zsh``
-![Default_zsh_prompt_v1][default_zsh_prompt_v1]
-    * ``bash``
-![Default_bash_prompt_v1][default_zsh_prompt_v1]
+
+`zsh`
+
+![default_prompt_zsh_v1][default_zsh_prompt_v1]
+
+`bash`
+
+![default_prompt_bash_v1][default_bash_prompt_v1]
+
   * The _v2_ is more "powerline" look alike as show below for bash and zsh.
-    * ``zsh``
-![Default_zsh_prompt_v2][default_zsh_prompt_v2]
-    * ``bash``
-![Default_bash_prompt_v2][default_zsh_prompt_v2]
+
+`zsh`
+
+![default_prompt_zsh_v2][default_zsh_prompt_v2]
+
+`bash`
+
+![default_prompt_bash_v2][default_bash_prompt_v2]
+
 
 All modifications done in files in `hosts` folder will be loaded dynamically.
 
@@ -894,10 +900,10 @@ value to make it your own.
 [direnv]: https://direnv.net/
 
 
-[Default_zsh_prompt_v1]: doc/img/default_zsh_prompt_v1.png
-[Default_bash_prompt_v1]: doc/img/default_zsh_prompt_v1.png
-[Default_zsh_prompt_v2]: doc/img/default_zsh_prompt_v2.png
-[Default_bash_prompt_v2]: doc/img/default_zsh_prompt_v2.png
+[default_prompt_zsh_v1]: doc/img/default_prompt_zsh_v1.png
+[default_prompt_bash_v1]: doc/img/default_prompt_bash_v1.png
+[default_prompt_zsh_v2]: doc/img/default_prompt_zsh_v2.png
+[default_prompt_bash_v2]: doc/img/default_prompt_bash_v2.png
 [mininmal_segment_zsh_prompt_v1]: doc/img/mininmal_segment_zsh_prompt_v1.png
 [mininmal_segment_bash_prompt_v1]: doc/img/mininmal_segment_bash_prompt_v1.png
 [mininmal_segment_zsh_prompt_v2]: doc/img/mininmal_segment_zsh_prompt_v2.png
@@ -906,10 +912,6 @@ value to make it your own.
 [mininmal_segment_fulline_bash_prompt_v1]: doc/img/mininmal_segment_fulline_bash_prompt_v1.png
 [mininmal_segment_fulline_zsh_prompt_v2]: doc/img/mininmal_segment_fulline_zsh_prompt_v2.png
 [mininmal_segment_fulline_bash_prompt_v2]: doc/img/mininmal_segment_fulline_bash_prompt_v2.png
-[default_prompt_zsh_v1]: doc/img/default_prompt_zsh_v1.png
-[default_prompt_bash_v1]: doc/img/default_prompt_bash_v1.png
-[default_prompt_zsh_v2]: doc/img/default_prompt_zsh_v2.png
-[default_prompt_bash_v2]: doc/img/default_prompt_bash_v2.png
 [default_prompt_zsh_v1_home]: doc/img/default_prompt_zsh_v1_home.png
 [default_prompt_zsh_v2_home]: doc/img/default_prompt_zsh_v2_home.png
 [default_prompt_zsh_v1_workdir]: doc/img/default_prompt_zsh_v1_workdir.png
