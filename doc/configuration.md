@@ -897,9 +897,9 @@ value to make it your own.
 
 
 [vcsh]: https://github.com/RichiH/vcsh
-[bash-it]: https://github.com/Bash-it/bash-it)
+[bash-it]: https://github.com/Bash-it/bash-it
 [oh-my-zsh]: https://github.com/robbyrussell/oh-my-zsh
-[prezto]: https://github.com/sorin-ionescu/prezto)
+[prezto]: https://github.com/sorin-ionescu/prezto
 [tldp.org_array]: https://www.tldp.org/LDP/abs/html/arrays.html
 [color_syntaxt]: https://misc.flogisoft.com/bash/tip_colors_and_formatting
 [direnv]: https://direnv.net/
