@@ -252,7 +252,7 @@ $ git clone https://framagit.org/rdeville/dotfiles.shell.git ~/.shell/prompt
 Finally, you will only need to add the following lines:
 
   * In your `~/.bashrc`:
-```
+```bash
 # Or whereever you clone this repo
 export PROMPT_DIR="${HOME}/.shell/prompt"
 # The prompt version you want to use, "1" or "2"
@@ -274,7 +274,7 @@ fi
 ```
 
   * In your `~/.zshrc`
-```
+```bash
 # Or whereever you clone this repo
 export PROMPT_DIR="${HOME}/.shell/prompt"
 # The prompt version you want to use, "1" or "2"
@@ -315,7 +315,7 @@ To install it, docker provide a documentation for multiple systems:
 
 Once done, simply go to whereever you cloned this repo and run the `test.sh`:
 
-```
+```bash
 cd ~/.shell/prompt
 ./test.sh
 ```
@@ -329,7 +329,7 @@ asked confirmation and you will be prompt the command line to avoid passing
 through the interactive mode the next time.
 
 To see more option of the script, type the following command :
-```
+```bash
 ./test.sh -h
 ```
 Or read the following documentation [doc/test.sh.md][doc_test]
