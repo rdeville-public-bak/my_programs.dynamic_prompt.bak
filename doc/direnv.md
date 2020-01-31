@@ -61,6 +61,10 @@ start, copy it:
   $ cp .envrc.tpl .envrc
 ```
 
+**REMARK** Do not do this directly on the prompt repo, otherwise, you will break
+the existing `.envrc` file that force activating all segments prompt (for debug
+purpose) when in this repo.
+
 Normally, after this command, you will have this line that will be prompt after
 each command you type while in the repo :
 

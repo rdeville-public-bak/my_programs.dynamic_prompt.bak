@@ -478,10 +478,10 @@ SEGMENT_PRIORITY=(
 ```
 
 _v1_
-![example1_shrink_prompt_zsh_v1][example1_minimal_shrink_prompt_zsh_v1]
+![example1_shrink_prompt_zsh_v1][example1_shrink_prompt_zsh_v1]
 
 _v2_
-![example1_shrink_prompt_zsh_v2][example1_minimal_shrink_prompt_zsh_v2]
+![example1_shrink_prompt_zsh_v2][example1_shrink_prompt_zsh_v2]
 
   * 2 lines filling full terminal size with all segment reparted on the line:
 
@@ -497,10 +497,10 @@ SEGMENT_PRIORITY=(
 ```
 
 _v1_
-![example2_shrink_prompt_zsh_v1][example2_minimal_shrink_prompt_zsh_v1]
+![example2_shrink_prompt_zsh_v1][example2_shrink_prompt_zsh_v1]
 
 _v2_
-![example2_shrink_prompt_zsh_v2][example2_minimal_shrink_prompt_zsh_v2]
+![example2_shrink_prompt_zsh_v2][example2_shrink_prompt_zsh_v2]
 
   * Let's go crazy, use 4 lines filling full terminal size with all segment
     reparted on the lines and add some comment in the array to remember why each
@@ -530,10 +530,10 @@ SEGMENT_PRIORITY=(
 ```
 
 _v1_
-![example3_shrink_prompt_zsh_v1][example3_minimal_shrink_prompt_zsh_v1]
+![example3_shrink_prompt_zsh_v1][example3_shrink_prompt_zsh_v1]
 
 _v2_
-![example3_shrink_prompt_zsh_v2][example3_minimal_shrink_prompt_zsh_v2]
+![example3_shrink_prompt_zsh_v2][example3_shrink_prompt_zsh_v2]
 
 Now, you are ready to configure each segment, but before going deeper on
 variables configuration per segments, some remark about special unicode
@@ -864,18 +864,8 @@ emulator. You can copy it to your desire `$(hostname).sh` or simply modify its
 value to make it your own.
 
 
-[Global variables]: #global-variables
-[How to configure your workstations]: #how-to-configure-your-workstations
-[Configuring Prompt Line]: #configuring-prompt-line
-[Variable `SEGMENT`]: #variable-segment
-[Some other examples]: #some-other-examples
-[Variable `SEGMENT_PRIORITY`]: #variable-segment_priority
-[Some other examples]: #some-other-examples-1
-[Remark about character]: #remark-about-character
-[Remark about colors in terminal]: #remark-about-colors-in-terminal
-[Variables descriptions]: #variables-descriptions
-[Global configuration]: #global-configuration
-[Per segment configuration]: #per-segment-configuration
+[configuring-prompt-line]: #configuring-prompt-line
+[per-segment-configuration]:#per-segment-configuration
 [hfill]: #hfill
 [pwd]: #pwd
 [username]: #username
@@ -885,11 +875,10 @@ value to make it your own.
 [vcsh]: #vcsh
 [virtualenv]: #virtualenv
 [vcs]: #vcs
-[git specific variable for vcs segment]: #git-specific-variable-for-vcs-segment
+[git-specific-variable-for-vcs-segment]: #git-specific-variable-for-vcs-segment
 [kube]: #kube
 [openstack]: #openstack
 [Additional notes]: #additional-notes
-
 
 [README.md]: README.md
 [Testing]: README.md#testing

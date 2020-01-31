@@ -37,14 +37,13 @@ The aim of this prompt are :
   * **Being extensible**, if user need to add a personal segment, it should be
    easy enough to do so.
   * **Support `bash` and `zsh` in a transparent way**, before using this prompt
-   I used shell framework [`bash-it`](https://github.com/Bash-it/bash-it) and
-   [`oh-my-zsh`](https://github.com/robbyrussell/oh-my-zsh), which ended to
-   work on two prompt configuration each time I need a modification on my own
-   prompt. I wanted to centralize this to manage both at once. Moreover, my
-   personnal computer use `zsh` while most server I work on use `bash`, so I
-   must support both with only one file.
+    I used shell framework [`bash-it`][bash-it] and [`oh-my-zsh`][oh-my-zsh],
+    which ended to work on two prompt configuration each time I need a
+    modification on my own prompt. I wanted to centralize this to manage both at
+    once. Moreover, my personnal computer use `zsh` while most server I work on
+    use `bash`, so I must support both with only one file.
 
-**Why this new prompt while there exists similar project like [liquidprompt](https://github.com/nojhan/liquidprompt)**
+**Why this new prompt while there exists similar project like [liquidprompt][liquidprompt]**
 
 When I started this prompt, I did not know liquidprompt. After quickly checking
 the code, here are the main difference I saw:
@@ -69,18 +68,18 @@ supported shell:
   * The _v1_ is "classic" as show below for bash and zsh.
 
 ``zsh``
-![Prompt v1_zsh](doc/img/v1_base_prompt.png)
+![default_prompt_zsh_v1][default_prompt_zsh_v1]
 
 ``bash``
-![Prompt v1_bash](doc/img/v1_base_prompt.png)
+![default_prompt_bash_v1][default_prompt_bash_v1]
 
   * The _v2_ is more "powerline" look alike as show below for bash and zsh.
 
 ``zsh``
-![Prompt v2_zsh](doc/img/v2_base_prompt.png)
+![default_prompt_zsh_v2][default_prompt_zsh_v2]
 
 ``bash``
-![Prompt v2_bash](doc/img/v2_base_prompt.png)
+![default_prompt_bash_v2][default_prompt_bash_v2]
 
 In both case, (almost) all parts (colors, character, show segment or not, etc.)
 are configurable. You can either choose to show only some informations or change
@@ -98,20 +97,19 @@ visually that I am `root` and things I do can be dangerous. See below for an
 example.
 
   * The v1 is "classic" as show below for bash and zsh.
-    * ``zsh``
+``zsh``
+![root_default_prompt_zsh_v1][root_default_prompt_zsh_v1]
 
-![Prompt v1_zsh_root](doc/img/v1_root.png)
-    * ``bash``
+``bash``
+![root_default_prompt_bash_v1][root_default_prompt_bash_v1]
 
-![Prompt v1_bash_root](doc/img/v1_root.png)
+  * The _v2_ is more "powerline" look alike as show below for bash and zsh.
 
-  * The v2 is more "powerline" look alike as show below for bash and zsh.
-    * ``zsh``
+``zsh``
+![root_default_prompt_zsh_v2][root_default_prompt_zsh_v2]
 
-![Prompt v2_zsh_root](doc/img/v2_root.png)
-    * ``bash``
-
-![Prompt v2_bash_root](doc/img/v2_root.png)
+``bash``
+![root_default_prompt_bash_v2][root_default_prompt_bash_v2]
 
 As you can see, `bash` version and `zsh` version are almost the same, only the
 return code has different position (the part `TODO RETURN CODE` for `bash` and
@@ -122,13 +120,13 @@ Below is what prompt look like when all supported segments are loaded.
 
   * The v1 is "classic" as show below for bash and zsh.
 
-![v1 Full options shown](doc/img/v1_full_option.png)
-![v1 Full options desc](doc/img/v1_desc_shell.png)
+![default_full_option_zsh_v1][default_full_option_zsh_v1]
+![default_full_option_zsh_v1_desc][default_full_option_zsh_v1_desc]
 
   * The v2 is more "powerline" look alike as show below for bash and zsh.
 
-![v2 Full options shown](doc/img/v2_full_option.png)
-![v2 Full options desc](doc/img/v2_desc_shell.png)
+![default_full_option_zsh_v2][default_full_option_zsh_v2]
+![default_full_option_zsh_v2_desc][default_full_option_zsh_v2_desc]
 
 Here you can see my prompts when all segments are loaded. Supported
 environment are :
@@ -159,11 +157,11 @@ for both prompt.
 
   * The v1 is "classic" as show below for bash and zsh.
 
-![Hidden options if not enough space](doc/img/v1_concat_shell.png)
+![shrink_prompt_zsh_v1][shrink_prompt_zsh_v1]
 
   * The v2 is more "powerline" look alike as show below for bash and zsh.
 
-![Hidden options if not enough space](doc/img/v2_concat_shell.png)
+![shrink_prompt_zsh_v2][shrink_prompt_zsh_v2]
 
 **Default prompt when no colors sets**
 
@@ -173,11 +171,11 @@ versions.
 
   * The v1 is "classic" as show below for bash and zsh.
 
-![Default no color prompt v1](doc/img/v1_default_no_color.png)
+![base_nocolor_prompt_v1][base_nocolor_prompt_v1]
 
   * The v2 is more "powerline" look alike as show below for bash and zsh.
 
-![Default no color prompt v2](doc/img/v2_default_no_color.png)
+![base_nocolor_prompt_v2][base_nocolor_prompt_v2]
 
 # Files and folders
 
@@ -222,7 +220,7 @@ folder which is automatically used by script `test.sh`
 
 # How to use it ?
 
-This repo is versioned using [git](https://git-scm.com/). First install it on
+This repo is versioned using [git][git]. First install it on
 your computer. If your distro is not shown below is because I did not testing
 command. Feel free to contribute ;-).
 
@@ -282,28 +280,26 @@ source "${PROMPT_DIR}/prompt.sh"
 user to type command.
 ```
 
-**REMARK** If you use shell framework, like
-[bash-it](https://github.com/Bash-it/bash-it),
-[oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) or
-[prezto](https://github.com/sorin-ionescu/prezto). Their support is not tested
-yet and can lead to messing your prompt.
+**REMARK** If you use shell framework, like [bash-it][bash-it],
+[oh-my-zsh][oh-my-zsh] or [prezto][prezto]. Their support is not tested yet and
+can lead to messing your prompt.
 
 If you do not want to mess your prompt, you can first testing it in a docker
-container. see section [Testing](#testing) before updating your files `~/.bashrc`
+container. see section [Testing][testing] before updating your files `~/.bashrc`
 and `~/.zshrc`
 
 Finally, you can configure the prompt to your need. To do so, continue to
-section [Configuration](#configuration)
+section [Configuration][configuration]
 
 ## Testing
 
 In order to test this prompt or your prompt config, you will just need docker.
 To install it, docker provide a documentation for multiple systems:
 
-  * [Debian](https://docs.docker.com/install/linux/docker-ce/debian/)
-  * [CentOS](https://docs.docker.com/install/linux/docker-ce/centos/)
-  * [Fedora](https://docs.docker.com/install/linux/docker-ce/fedora/)
-  * [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+  * [Debian][docker_Debian]
+  * [CentOS][docker_CentOS]
+  * [Fedora][docker_Fedora]
+  * [Ubuntu][docker_Ubuntu]
 
 Once done, simply go to whereever you cloned this repo and run the `test.sh`:
 
@@ -324,7 +320,7 @@ To see more option of the script, type the following command :
 ```
 ./test.sh -h
 ```
-Or read the following documentation [doc/test.sh.md](doc/test.sh.md)
+Or read the following documentation [doc/test.sh.md][doc_test]
 
 Once run, you will automatically be in the container. The repo is mounted as
 volume in the container, in `~/.prompt`. So every configuration you will made in
@@ -335,31 +331,29 @@ directly use your configuration once finished in the container.
 ## Configuration
 
 All configuration are done within folder `hosts/`, first, read following
-section [hosts/](#hosts) to know what there is in this folder.
+section [hosts][hosts] to know what there is in this folder.
 
 Once done, you can read the complete configuration documentation which is in
-[doc/configuration.md](doc/configuration.md). In this file is
+[doc/configuration.md][doc_configuration]. In this file is
 describe what you can configure and how.
 
 ## Add your own segments
 
 If you feel like the prompt lack a segment you can add your own, this can be
-done in folder `segment`, see section [segment](#segment) first to know what
+done in folder `segment`, see section [segment][segment] first to know what
 there is in this folder.
 
 Once done, you can read the complete documentation about adding your own segment
-in [doc/add_segment.md](doc/add_segment.md). In this file is
+in [doc/add_segment.md][doc_add_segment]. In this file is
 describe how to develop your own segment.
 
 Finally, if you want to publish your segment, you can propose a merge request.
-To do so, see [CONTRIBUTING.md](CONTRIBUTING.md)
+To do so, see [CONTRIBUTING.md][contributing].
 
 # FAQ
 
-**Why not using some prompt framework like
-[bash-it](https://github.com/Bash-it/bash-it),
-[oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) or
-[prezto](https://github.com/sorin-ionescu/prezto) ?**
+**Why not using some prompt framework like [bash-it][bash-it]
+[oh-my-zsh][oh-my-zsh] or [prezto][prezto] ?**
 
 I used to use bash-it and oh-my-zsh, but I was overhelmed by all their options,
 plugins, etc., that I not fully used. Moreover, I had to manage two
@@ -376,10 +370,45 @@ distribution, allowing me to get my own prompt on most GNU/Linux distro.
 
 It is intended. I do not need date in my terminal, but I have prepared this
 segment. It is the tutorial in documentation
-[doc/add_segment.md](doc/add_segment.md) to show how to add your own segment.
+[doc/add_segment.md][doc_add_segment] to show how to add your own segment.
 This segment is simple to code, so you will need to add it yourself by reading
-the documentation [doc/add_segment.md](doc/add_segment.md).
+the documentation [doc/add_segment.md][doc_add_segment].
 
 # Know Issues
 
 
+[testing]: #testing
+[configuration]: #configuration
+[doc_test]: doc/test.sh.md
+[hosts]: #hosts
+[doc_configuration]: doc/configuration.md
+[segment]: #segment
+[doc_add_segment]: doc/add_segment.md
+[contributing]: CONTRIBUTING.md
+
+[bash-it]: https://github.com/Bash-it/bash-it
+[oh-my-zsh]: https://github.com/robbyrussell/oh-my-zsh
+[prezto]: https://github.com/sorin-ionescu/prezto
+[liquidprompt]: https://github.com/nojhan/liquidprompt
+[git]: https://git-scm.com/
+[docker_Debian]: https://docs.docker.com/install/linux/docker-ce/debian/
+[docker_CentOS]: https://docs.docker.com/install/linux/docker-ce/centos/
+[docker_Fedora]: https://docs.docker.com/install/linux/docker-ce/fedora/
+[docker_Ubuntu]: https://docs.docker.com/install/linux/docker-ce/ubuntu/
+
+[default_prompt_zsh_v1]: doc/imgdefault_prompt_zsh_v1.png
+[default_prompt_bash_v1]: doc/imgdefault_prompt_bash_v1.png
+[default_prompt_zsh_v2]: doc/imgdefault_prompt_zsh_v2.png
+[default_prompt_bash_v2]: doc/imgdefault_prompt_bash_v2.png
+[root_default_prompt_zsh_v1]: doc/imgroot_default_prompt_zsh_v1.png
+[root_default_prompt_bash_v1]: doc/imgroot_default_prompt_bash_v1.png
+[root_default_prompt_zsh_v2]: doc/imgroot_default_prompt_zsh_v2.png
+[root_default_prompt_bash_v2]: doc/imgroot_default_prompt_bash_v2.png
+[default_full_option_zsh_v1]: doc/imgdefault_full_option_zsh_v1.png
+[default_full_option_zsh_v1_desc]: doc/imgdefault_full_option_zsh_v1_desc.png
+[default_full_option_zsh_v2]: doc/imgdefault_full_option_zsh_v2.png
+[default_full_option_zsh_v2_desc]: doc/imgdefault_full_option_zsh_v2_desc.png
+[shrink_prompt_zsh_v1]: doc/imgshrink_prompt_zsh_v1.png
+[shrink_prompt_zsh_v2]: doc/imgshrink_prompt_zsh_v2.png
+[base_nocolor_prompt_v1]: doc/imgbase_nocolor_prompt_v1.png
+[base_nocolor_prompt_v2]: doc/imgbase_nocolor_prompt_v2.png
