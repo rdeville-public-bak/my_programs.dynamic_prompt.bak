@@ -339,6 +339,9 @@ volume in the container, in `~/.prompt`. So every configuration you will made in
 the container will be kept outside of the container. Thus, you will be able to
 directly use your configuration once finished in the container.
 
+If you want to keep your configuration versionned, please read [Keep your
+configuration][keep-your-configuration].
+
 
 ## Configuration
 
@@ -402,6 +405,7 @@ the documentation [doc/add_segment.md][doc_add_segment].
 [segment]: #segment
 [doc_add_segment]: doc/add_segment.md
 [contributing]: CONTRIBUTING.md
+[keep-your-configuration]: doc/keep_your_configuration.md
 
 [bash-it]: https://github.com/Bash-it/bash-it
 [oh-my-zsh]: https://github.com/robbyrussell/oh-my-zsh

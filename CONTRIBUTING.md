@@ -54,6 +54,10 @@ configuration, etc. then open issues if you find some bugs, to propose
 improvement, new features, etc., propose a merge request on the `develop`
 branch.
 
+But it is not an obligation to fork this repo, you can directly work on it if
+you want, but branches that are pushed on this repo and that will not follow the
+branching model as well as not following prefix described above will be deleted.
+
 Here is a little workflow describing how to do:
 
    1. Fork this repo, to do so, first read
@@ -71,8 +75,8 @@ Here is a little workflow describing how to do:
       complete description of what you have done.
 
 For more information, you can check [Developpers Guide][developpers_guide] which
-provide you a tutorial following in details this workflow. It also describe how
-to raise an issues, etc.
+provide you guidelines and a tutorial following in details this workflow. It
+also describe how to raise an issues, etc.
 
 
 [developpers_guide]: doc/developpers_guide.md
