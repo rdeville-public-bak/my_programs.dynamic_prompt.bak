@@ -47,6 +47,9 @@ NEWTCOLS=(
   helpline=black,gray
 )
 
+WORK=false
+DEBUG=false
+
 usage(){
   # Manual page describing usage of script
   echo -e "\
@@ -324,6 +327,16 @@ run_docker()
   local prompt_version=$3
   local image_name="ubuntu-test-${shell}"
   local container_name="${image_name}"
+  local environment=""
+  if [[ ${DEBUG} == "true" ]]
+  then
+    environment+="-e DEBUG='true'"
+  fi
+  if [[ ${WORK} == "true" ]]
+  then
+    cp ${SCRIPTPATH}/hosts/common.example.sh ${SCRIPTPATH}/host/${container_name}.sh
+  fi
+
   case ${shell} in
     bash)
       echo -e "${E_INFO}[INFO] Running container ${container_name}${E_NORMAL}"
@@ -473,6 +486,14 @@ main(){
   while [[ $# -gt 0 ]]
   do
     case $1 in
+      -w|--work)
+        work="true"
+        shift
+        ;;
+      -d|--debug)
+        debug="true"
+        shift
+        ;;
       -s|--shell)
         shift
         shell=$1
