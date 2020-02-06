@@ -241,6 +241,7 @@ precmd()
           then
             clr_fg="${CLR_PREFIX}${info_line_fg[$iSegment]}${CLR_SUFFIX}"
           else
+    if [[ "${first_line_prompt}" == "true" ]]
             clr_fg="${CLR_PREFIX}${DEFAULT_FG}${CLR_SUFFIX}"
           fi
           # Comput segment separator colors

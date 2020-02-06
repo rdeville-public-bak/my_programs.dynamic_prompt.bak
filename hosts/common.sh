@@ -12,13 +12,13 @@
 # file.
 
 local SEGMENT=(
-    "tmux, pwd, hfill, keepass, whoami, hostname"
-    "vcsh, virtualenv, vcs, hfill, kube, openstack"
+  "tmux, pwd, hfill, keepass, username, hostname"
+  "vcsh, virtualenv, vcs, hfill, kube, openstack"
 )
 
 local SEGMENT_PRIORITY=(
-    "tmux, whoami, hostname, keepass, pwd"
-    "vcsh, virtualenv, kube, openstack, vcs"
+  "tmux, username, hostname, keepass, pwd"
+  "vcsh, virtualenv, kube, openstack, vcs"
 )
 
 # CHARACTER ENVIRONMENT SETUP
@@ -71,7 +71,7 @@ else
     local PROMPT_ENV_RIGHT="]"    # v2 Default " " | v1 Default "["
   else
     local PROMPT_ENV_LEFT=" "    # v2 Default " " | v1 Default "]"
-    local PROMPT_ENV_RIGHT=""   # v2 Default " " | v1 Default "["
+    local PROMPT_ENV_RIGHT=" "   # v2 Default " " | v1 Default "["
   fi
   local KEEPASS_CHAR=" "         # Default " "
   local TMUX_CHAR=" "            # Default " "

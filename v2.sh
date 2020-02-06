@@ -161,7 +161,7 @@ precmd()
       fi
     done
 
-    if [[ " ${segment[@]} " =~ " hfill " ]]
+    if [[ " ${segment[@]} " =~ "hfill" ]]
     then
       # Showing vcsh info
       local HFILL_FG="${DEFAULT_FG:-""}"
@@ -218,7 +218,7 @@ precmd()
       # Compute the space that will be stored in hfill
       hfill="$(_prompt_printf " " ${gain})"
     else
-      hfill=false
+      hfill="false"
     fi
 
     # Compute the line depending on the shell (bash or zsh) and the user.
@@ -260,7 +260,7 @@ precmd()
             then
               clr_next_bg="${CLR_PREFIX}${DEFAULT_BG}${CLR_SUFFIX}"
             else
-              clr_next_bg="${E_NORMAL}${CLR_PREFIX}${info_line_bg[$iSegment]/4/3}${CLR_SUFFIX}"
+              clr_next_bg="${NORMAL}${CLR_PREFIX}${info_line_bg[$iSegment]/4/3}${CLR_SUFFIX}"
             fi
           elif [[ -n "${iNext_segment}" ]]
           then
@@ -327,9 +327,9 @@ precmd()
         else
           if [[ $(whoami) == "root" ]]
           then
-            all_info+="${E_NORMAL}${E_BOLD}${hfill}"
+            all_info+="${NORMAL}${BOLD}${hfill}"
           else
-            all_info+="${E_NORMAL}${hfill}"
+            all_info+="${NORMAL}${hfill}"
           fi
           clr_switch=""
         fi
@@ -339,14 +339,10 @@ precmd()
     done
     if [[ ${hfill} == false ]]
     then
-      clr_next_bg="${E_NORMAL}${CLR_PREFIX}${info_line_bg[$iSegment]/4/3}${CLR_SUFFIX}"
       clr_switch="${CLR_PREFIX}${info_line_clr_switch[$iSegment]}${CLR_SUFFIX}"
-      clr_fg="${CLR_PREFIX}${info_line_fg[$iSegment]}${CLR_SUFFIX}"
-      clr_bg="${CLR_PREFIX}${info_line_bg[$iSegment]}${CLR_SUFFIX}"
-      prompt_right="${CLR_PREFIX}${info_line_clr_switch[$iSegment]}${CLR_SUFFIX}${prompt_env_right}"
-      all_info+="${prompt_right}${clr_fg}${clr_bg} ${info} ${prompt_left}"
+      all_info+="${NORMAL}${clr_switch}${SINGLE_LINE_PROMPT_END}${NORMAL}"
     fi
-    echo -e "${all_info}${E_NORMAL}"
+    echo -e "${all_info}${NORMAL}"
     return
   }
 
@@ -376,14 +372,14 @@ precmd()
   if [[ -z ${SEGMENT} ]]
   then
     local SEGMENT=(
-      "tmux, pwd, hfill, keepass, whoami, hostname"
+      "tmux, pwd, hfill, keepass, username, hostname"
       "vcsh, virtualenv, vcs, kube, openstack, hfill"
     )
   fi
   if [[ -z ${SEGMENT_PRIORITY} ]]
   then
     local SEGMENT_PRIORITY=(
-      "tmux, whoami, hostname, keepass, pwd"
+      "tmux, username, hostname, keepass, pwd"
       "vcsh, virtualenv, kube, openstack, vcs"
     )
   fi
@@ -457,14 +453,19 @@ precmd()
       idx_stop_segment=$(( ${#SEGMENT[@]} + 1 ))
       ;;
   esac
-  debug "for (( idx=$(( ${idx_stop_segment} - 1 )); idx >= ${idx_start_segment} ; idx--))"
   for (( idx=$(( ${idx_stop_segment} - 1 )); idx >= ${idx_start_segment} ; idx--))
   do
-    local start_info_line=$(date +%S%N)
     line="$(_prompt_info_line ${idx})"
-    if [[ -n "${line}" ]]
+    if [[ ${SHELL} =~ "bash" ]]
     then
       final_prompt="${line}\n${final_prompt}"
+    elif [[ -n "${line}" ]] \
+      && [[ ${#SEGMENT[idx]} -eq 1 ]] \
+      && [[ ${SEGMENT[idx]} =~ "hfill" ]]
+    then
+      final_prompt="${line}\n${final_prompt}"
+    else
+      final_prompt="${line}${final_prompt}"
     fi
   done
 
@@ -486,9 +487,13 @@ precmd()
       else
         zle_highlight=(default:normal)
       fi
-      final_prompt+="$(echo -e "﬌ ")"
+
+      if [[ ${#SEGMENT[@]} -ne 1 ]] || [[ ${SEGMENT[@]} =~ "hfill" ]]
+      then
+        final_prompt+="$(echo -e "﬌ ")"
+      fi
       export PROMPT=$(echo -e "${final_prompt}")
-      export RPROMPT=$(echo -e "${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}%(?..%? ↵)%{${E_NORMAL}%}")
+      export RPROMPT=$(echo -e "${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}%(?..%? ↵)${NORMAL}")
       export SPROMPT=$(echo -e "Correct ${CLR_PREFIX}${CORRECT_WRONG_FG}${CLR_SUFFIX}%R%f to ${CLR_PREFIX}${CORRECT_RIGHT_FG}${CLR_SUFFIX}%r%f [nyae]? ")
   esac
 
