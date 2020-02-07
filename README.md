@@ -430,8 +430,7 @@ the documentation [doc/add_segment.md][doc_add_segment].
 [docker_Fedora]: https://docs.docker.com/install/linux/docker-ce/fedora/
 [docker_Ubuntu]: https://docs.docker.com/install/linux/docker-ce/ubuntu/
 
-[default_prompt_zsh_v1]: doc/img/default_prompt_zsh_v1.png
-[default_prompt_zsh_v1]: doc/img/term.git
+[default_prompt_zsh_v1]: doc/img/term.gif
 [default_prompt_bash_v1]: doc/img/default_prompt_bash_v1.png
 [default_prompt_zsh_v2]: doc/img/default_prompt_zsh_v2.png
 [default_prompt_bash_v2]: doc/img/default_prompt_bash_v2.png
