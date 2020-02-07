@@ -9,13 +9,26 @@ dynamically show information about your folder environment.
 
 # Table of content
 
+* [Description](#description)
+* [Prompt description](#prompt-description)
+* [Files and folders](#files-and-folders)
+    * [doc/](#doc)
+    * [hosts/](#hosts)
+    * [segment/](#segment)
+    * [test/](#test)
+* [How to use it ?](#how-to-use-it-)
+    * [Testing](#testing)
+    * [Configuration](#configuration)
+    * [Add your own segments](#add-your-own-segments)
+* [FAQ](#faq)
+* [Know Issues](#know-issues)
 
 # Description
 
-This folder are scripts allow to setup a dynamic prompt line. As I live mainly
-in terminal and I do sysadmin, I need to know quickly on which kind of computer
-I am, personnal, professional, workstation, server, which OpenStack pool
-variable are loaded, etc.
+This folder contains scripts allowing to setup a dynamic prompt line. As I live
+mainly in terminal and I am adminsys, I need to know quickly on which kind of
+computer I am, personnal, professional, workstation, server, which OpenStack
+pool variables are loaded, etc.
 
 Its part of my dotfiles repos which optimize my terminal usage. For now, all my
 dotfiles are not yet clean and documented, but once done, a link will be
@@ -23,42 +36,42 @@ provided if you want to learn more about how to optimize your terminal usage.
 
 The aim of this prompt are :
 
-  * **Being dynamic**, show only variable of the current folder, for instance
-   python environment information only when activated, git information, k8s
-   cluster namespace when set.
-  * **Being fast**, prompt line with all segments must be shown in less than
-   250ms in average.
-  * **Being responsive**, when terminal emulator in to short, the prompt must
-   shrink information until hiding it completely when there is no space, to keep
-   it form.
-  * **Being fully customizable**, as I used multiple computer, I need to be able
-   to quickly set a common share configuration (colors, character, etc) and
-   computer specific configuration.
-  * **Being extensible**, if user need to add a personal segment, it should be
-   easy enough to do so.
-  * **Support `bash` and `zsh` in a transparent way**, before using this prompt
-    I used shell framework [`bash-it`][bash-it] and [`oh-my-zsh`][oh-my-zsh],
-    which ended to work on two prompt configuration each time I need a
-    modification on my own prompt. I wanted to centralize this to manage both at
-    once. Moreover, my personnal computer use `zsh` while most server I work on
-    use `bash`, so I must support both with only one file.
+  * **Being dynamic**: show information of the current folder, only if there
+    exists. For instance, show python environment information or git information
+    only when there exists,  k8s cluster namespace only when set, etc.
+  * **Being fast**: prompt with all segments must be shown in less than
+    250ms in average.
+  * **Being responsive**: when terminal emulator is to short, the prompt must
+    shrink informations until hiding them completely when there is no space.
+  * **Being fully customizable**: as I used multiple computers, I need to be able
+    to quickly set a common shared configuration (colors, character, etc) and
+    some computer specific configuration. This must be done by modifiying the
+    less possible files.
+  * **Being extensible**: if user need to add a enw segment, it should be
+    easy enough to do so.
+  * **Support `bash` and `zsh` in a transparent way**: before using this prompt,
+    I used shell framework [`bash-it`][bash-it] and [`oh-my-zsh`][oh-my-zsh].
+    So, when a needed to add something, I needed to work on two prompt
+    configuration. I wanted to centralize this to manage both at once. Moreover,
+    my personnal computer use `zsh` while most server I work on use `bash`, so I
+    must support both with only one repo and the less files possible.
 
 **Why this new prompt while there exists similar project like
 [liquidprompt][liquidprompt]**
 
 When I started this prompt, I did not know liquidprompt. After quickly checking
-the code, here are the main difference I saw:
+the code, here are some differences I saw (but I may be wrong):
 
   * Almost all variables used to show this prompt are not exported and so do not
-   add useless variable in your shell environment.
+    add useless variables in your shell environment.
   * This prompt allow you to easily add your own segment.
   * This folder propose you two versions, one quite "classic" and one more
-   "powerline" lool alike. Choosing which version to use is done simply by
-   changing variable `PROMPT_VERSION` (see TODO:configuration).
+    "powerline" lool alike. Choosing which version to use is done simply by
+    changing variable `PROMPT_VERSION` (see TODO:configuration).
 
 # Prompt description
 
-In the following section, I will describe the prompts with default prompt line,
+In the following section, I will describe the prompt with default prompt line,
 i.e. default segment organisation, and with the colors provided by the file
 `host/common.exemple.sh`. But you will be able change segment organisation and
 colors, this is descibe in TODO:configuration.
@@ -86,9 +99,9 @@ supported shell:
 
 ![default_prompt_bash_v2][default_prompt_bash_v2]
 
-In both case, (almost) all parts (colors, character, show segment or not, etc.)
-are configurable. You can either choose to show only some informations or change
-its colors depending on what you what.
+In both case, (almost) all parts (colors, character, which segment to show, in
+which order, etc.) are configurable. You can either choose to show only some
+informations or change its colors depending on what you what.
 
 The above show my prompt when no "environment" is loaded. The colored horizontal
 line is here to help me know quickly on which type of computer I am (for
@@ -123,8 +136,8 @@ example.
 
 As you can see, `bash` version and `zsh` version are almost the same, only the
 return code has different position (the part `TODO RETURN CODE` for `bash` and
-`TODO RETURN CODE` for `zsh`, in white square above). So following exemple will
-mainly present prompt when using `zsh`.
+`TODO RETURN CODE` for `zsh`, in the white square above). So following exemples
+will mainly present prompt when using `zsh`.
 
 Below is what prompt look like when all supported segments are loaded.
 
@@ -418,6 +431,7 @@ the documentation [doc/add_segment.md][doc_add_segment].
 [docker_Ubuntu]: https://docs.docker.com/install/linux/docker-ce/ubuntu/
 
 [default_prompt_zsh_v1]: doc/img/default_prompt_zsh_v1.png
+[default_prompt_zsh_v1]: doc/img/term.git
 [default_prompt_bash_v1]: doc/img/default_prompt_bash_v1.png
 [default_prompt_zsh_v2]: doc/img/default_prompt_zsh_v2.png
 [default_prompt_bash_v2]: doc/img/default_prompt_bash_v2.png
