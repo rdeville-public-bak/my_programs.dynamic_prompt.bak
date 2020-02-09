@@ -182,7 +182,7 @@ return code has different position (the part in red `130 ↵ ` in `bash` on the
 left, and the part in red `130 ↵ ` in the right in `zsh`) . So following
 exemples will mainly present prompt when using `zsh`.
 
-**REMARK** When on `tty` or in unsupported terminal emulator, prompt will
+**_REMARK_** When on `tty` or in unsupported terminal emulator, prompt will
 automatically fall back to prompt _v1_.
 
 **Environment contraction**
@@ -191,7 +191,7 @@ When there is not enough space to show all environment informations completely,
 they will be contracted to show only the character of the environment. The more
 your terminal will shorten, the less options will be shown. Order on which
 segments are contracted are always in the same order, defined by user (see
-[doc/configuramtion.md][doc_configuration]). Finally, if there is really not
+[doc/configuration.md][doc_configuration]). Finally, if there is really not
 enough space, some information will be completely hidden. Exemple of contraction
 are shown below for both prompt version.
 
@@ -203,15 +203,27 @@ are shown below for both prompt version.
 
 ![shrink_prompt_v2][shrink_prompt_v2]
 
-**DISCLAIMER**: Gifs above only show contraction, but as variable `PS1` for bash
-and `PROMPT` for zsh are only computed before printing them, when you resize
-your terminal emulator, you will need to press `Enter` once to recompute the
-size of your prompt. So, when resizing your terminal emulator, before pressing
-`Enter`, you prompt might look like shown below:
+**_DISCLAIMER_**: Gifs above only show contraction behaviour, but as variable
+`PS1` for bash and `PROMPT` for zsh are only computed before printing them, when
+you resize your terminal emulator, you will need to press `Enter` once to
+recompute the size of your prompt. So, when resizing your terminal emulator,
+before pressing `Enter`, you prompt might look like shown below:
 
-![resized_terminal_emulator_plus][resized_terminal_emulator_plus]
+  * The _v1_, "classic" version, when increasing size of terminal emulator
 
-![resized_terminal_emulator_minus][resized_terminal_emulator_minus]
+![resized_terminal_emulator_plus_v1][resized_terminal_emulator_plus_v1]
+
+  * The _v1_, "classic" version, when decreasing size of terminal emulator
+
+![resized_terminal_emulator_minus_v1][resized_terminal_emulator_minus_v1]
+
+  * The _v2_, "classic" version, when increasing size of terminal emulator
+
+![resized_terminal_emulator_plus_v2][resized_terminal_emulator_plus_v2]
+
+  * The _v2_, "classic" version, when decreasing size of terminal emulator
+
+![resized_terminal_emulator_minus_v2][resized_terminal_emulator_minus_v2]
 
 **Default prompt when no colors sets**
 
@@ -330,7 +342,7 @@ source "${PROMPT_DIR}/prompt.sh"
 user to type command.
 ```
 
-**REMARK** If you use shell framework, like [bash-it][bash-it],
+**_REMARK_** If you use shell framework, like [bash-it][bash-it],
 [oh-my-zsh][oh-my-zsh] or [prezto][prezto]. Their support is not tested yet and
 can lead to messing your prompt.
 
@@ -478,6 +490,6 @@ the documentation [doc/add_segment.md][doc_add_segment].
 [resized_terminal_emulator_plus_v2]: doc/img/resize_plus_zsh_v2.png
 [resized_terminal_emulator_minus_v2]: doc/img/resize_minus_zsh_v2.png
 
-[base_nocolor_prompt_v1]: doc/img/base_nocolor_prompt_v1.png
-[base_nocolor_prompt_v2]: doc/img/base_nocolor_prompt_v2.png
+[base_nocolor_prompt_v1]: doc/img/default_no_color_zsh_v1.png
+[base_nocolor_prompt_v2]: doc/img/default_no_color_zsh_v2.png
 
