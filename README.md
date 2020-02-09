@@ -116,17 +116,25 @@ Below is what prompt looks like when almost all supported segments are loaded.
 Well, all supported segment when writing this README.md. Some segments might not
 be shown below if added later on.
 
-  * The v1 is "classic" as show below for bash and zsh.
+  * The _v1_, "classic" version
+
+`bash`
+
+![default_full_option_bash_v1][default_full_option_bash_v1]
+
+`zsh`
 
 ![default_full_option_zsh_v1][default_full_option_zsh_v1]
 
-![default_full_option_zsh_v1_desc][default_full_option_zsh_v1_desc]
+  * The _v2_, "powerline" version
 
-  * The v2 is more "powerline" look alike as show below for bash and zsh.
+`bash`
+
+![default_full_option_bash_v2][default_full_option_bash_v2]
+
+`zsh`
 
 ![default_full_option_zsh_v2][default_full_option_zsh_v2]
-
-![default_full_option_zsh_v2_desc][default_full_option_zsh_v2_desc]
 
 Here you can see my prompts when all segments are loaded. Supported
 segments/environment are :
@@ -149,25 +157,25 @@ Moreover, when logged as `root` all the prompt shift to bold, thus I know
 visually that I am `root` and things I do can be dangerous. See below for an
 example.
 
-  * The v1 is "classic" as show below for bash and zsh.
-
-``zsh``
-
-![root_default_prompt_zsh_v1][root_default_prompt_zsh_v1]
+  * The _v2_, "classic" version
 
 ``bash``
 
 ![root_default_prompt_bash_v1][root_default_prompt_bash_v1]
 
-  * The _v2_ is more "powerline" look alike as show below for bash and zsh.
-
 ``zsh``
 
-![root_default_prompt_zsh_v2][root_default_prompt_zsh_v2]
+![root_default_prompt_zsh_v1][root_default_prompt_zsh_v1]
+
+  * The _v2_, "powerline" version
 
 ``bash``
 
 ![root_default_prompt_bash_v2][root_default_prompt_bash_v2]
+
+``zsh``
+
+![root_default_prompt_zsh_v2][root_default_prompt_zsh_v2]
 
 As you can see, `bash` version and `zsh` version are almost the same, only the
 return code has different position (the part `TODO RETURN CODE` for `bash` and
