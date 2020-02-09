@@ -109,7 +109,41 @@ line is here to help me know quickly on which type of computer I am (for
 instance, red for professional workstation, magenta for professional servers,
 green for personnal workstation, yellow for personal servers, etc.). All colors
 of the prompt (the current directory, the username, etc.) can be easily change
-for each computer based on its hostname (see TODO:configuration)
+for each computer based on its hostname (see
+[doc/configuration.md][doc_configuration]).
+
+Below is what prompt looks like when almost all supported segments are loaded.
+Well, all supported segment when writing this README.md. Some segments might not
+be shown below if added later on.
+
+  * The v1 is "classic" as show below for bash and zsh.
+
+![default_full_option_zsh_v1][default_full_option_zsh_v1]
+
+![default_full_option_zsh_v1_desc][default_full_option_zsh_v1_desc]
+
+  * The v2 is more "powerline" look alike as show below for bash and zsh.
+
+![default_full_option_zsh_v2][default_full_option_zsh_v2]
+
+![default_full_option_zsh_v2_desc][default_full_option_zsh_v2_desc]
+
+Here you can see my prompts when all segments are loaded. Supported
+segments/environment are :
+
+  - tmux
+  - pwd
+  - keepass
+  - username
+  - hostname
+  - vcsh
+  - virtualenv (for now only python)
+  - vcs (for now only git)
+  - openstack
+  - kubernetes
+
+Every environment information, colors and character can be configure
+individually to be shown or not (see [doc/configuration.md][doc_configuration]).
 
 Moreover, when logged as `root` all the prompt shift to bold, thus I know
 visually that I am `root` and things I do can be dangerous. See below for an
@@ -139,37 +173,6 @@ As you can see, `bash` version and `zsh` version are almost the same, only the
 return code has different position (the part `TODO RETURN CODE` for `bash` and
 `TODO RETURN CODE` for `zsh`, in the white square above). So following exemples
 will mainly present prompt when using `zsh`.
-
-Below is what prompt look like when all supported segments are loaded.
-
-  * The v1 is "classic" as show below for bash and zsh.
-
-![default_full_option_zsh_v1][default_full_option_zsh_v1]
-
-![default_full_option_zsh_v1_desc][default_full_option_zsh_v1_desc]
-
-  * The v2 is more "powerline" look alike as show below for bash and zsh.
-
-![default_full_option_zsh_v2][default_full_option_zsh_v2]
-
-![default_full_option_zsh_v2_desc][default_full_option_zsh_v2_desc]
-
-Here you can see my prompts when all segments are loaded. Supported
-environment are :
-
-  - tmux
-  - pwd
-  - keepass
-  - username
-  - hostname
-  - vcsh
-  - python
-  - git
-  - openstack
-  - kubernetes
-
-Every environment information, colors and character can be configure
-individually to be shown or not (see TODO:Configuration)
 
 **Environment contraction**
 
@@ -435,14 +438,17 @@ the documentation [doc/add_segment.md][doc_add_segment].
 [default_prompt_zsh_v1]: doc/img/default_prompt_zsh_v1.png
 [default_prompt_bash_v2]: doc/img/default_prompt_bash_v2.png
 [default_prompt_zsh_v2]: doc/img/default_prompt_zsh_v2.png
-[root_default_prompt_zsh_v1]: doc/img/root_default_prompt_zsh_v1.png
-[root_default_prompt_bash_v1]: doc/img/root_default_prompt_bash_v1.png
-[root_default_prompt_zsh_v2]: doc/img/root_default_prompt_zsh_v2.png
-[root_default_prompt_bash_v2]: doc/img/root_default_prompt_bash_v2.png
-[default_full_option_zsh_v1]: doc/img/default_full_option_zsh_v1.png
-[default_full_option_zsh_v1_desc]: doc/img/default_full_option_zsh_v1_desc.png
-[default_full_option_zsh_v2]: doc/img/default_full_option_zsh_v2.png
-[default_full_option_zsh_v2_desc]: doc/img/default_full_option_zsh_v2_desc.png
+
+[default_full_option_zsh_v1]: doc/img/default_prompt_full_option_zsh_v1.png
+[default_full_option_bash_v1]: doc/img/default_prompt_full_option_bash_v1.png
+[default_full_option_zsh_v2]: doc/img/default_prompt_full_option_zsh_v2.png
+[default_full_option_bash_v2]: doc/img/default_prompt_full_option_bash_v2.png
+
+[root_default_prompt_bash_v1]: doc/img/root_full_option_bash_v1.png
+[root_default_prompt_zsh_v1]: doc/img/root_full_option_zsh_v1.png
+[root_default_prompt_bash_v2]: doc/img/root_full_option_bash_v2.png
+[root_default_prompt_zsh_v2]: doc/img/root_full_option_zsh_v2.png
+
 [shrink_prompt_zsh_v1]: doc/img/shrink_prompt_zsh_v1.png
 [shrink_prompt_zsh_v2]: doc/img/shrink_prompt_zsh_v2.png
 [base_nocolor_prompt_v1]: doc/img/base_nocolor_prompt_v1.png
