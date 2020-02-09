@@ -392,9 +392,9 @@ precmd()
     *bash)
       if [[ $(whoami) == "root" ]]
       then
-        final_prompt+="$(echo -e "${NORMAL}${BOLD} ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${NORMAL}${BOLD}﬌ ")"
+        final_prompt+="$(echo -e "${E_NORMAL}${E_BOLD} ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${E_NORMAL}${E_BOLD}﬌ ")"
       else
-        final_prompt+="$(echo -e "${NORMAL} ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${NORMAL}﬌ ")"
+        final_prompt+="$(echo -e "${E_NORMAL} ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${E_NORMAL}﬌ ")"
       fi
       export PS1=$(echo -e "${final_prompt}")
       ;;
