@@ -92,13 +92,13 @@ supported shell:
 
   * The _v2_ is more "powerline" look alike as show below for bash and zsh.
 
-``zsh``
-
-![default_prompt_zsh_v2][default_prompt_zsh_v2]
-
 ``bash``
 
 ![default_prompt_bash_v2][default_prompt_bash_v2]
+
+``zsh``
+
+![default_prompt_zsh_v2][default_prompt_zsh_v2]
 
 In both case, (almost) all parts (colors, character, which segment to show, in
 which order, etc.) are configurable. You can either choose to show only some
@@ -431,10 +431,10 @@ the documentation [doc/add_segment.md][doc_add_segment].
 [docker_Fedora]: https://docs.docker.com/install/linux/docker-ce/fedora/
 [docker_Ubuntu]: https://docs.docker.com/install/linux/docker-ce/ubuntu/
 
-[default_prompt_zsh_v1]: doc/img/term.gif
 [default_prompt_bash_v1]: doc/img/default_prompt_bash_v1.png
-[default_prompt_zsh_v2]: doc/img/default_prompt_zsh_v2.png
+[default_prompt_zsh_v1]: doc/img/default_prompt_zsh_v1.png
 [default_prompt_bash_v2]: doc/img/default_prompt_bash_v2.png
+[default_prompt_zsh_v2]: doc/img/default_prompt_zsh_v2.png
 [root_default_prompt_zsh_v1]: doc/img/root_default_prompt_zsh_v1.png
 [root_default_prompt_bash_v1]: doc/img/root_default_prompt_bash_v1.png
 [root_default_prompt_zsh_v2]: doc/img/root_default_prompt_zsh_v2.png
