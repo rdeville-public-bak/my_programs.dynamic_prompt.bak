@@ -157,7 +157,7 @@ Moreover, when logged as `root` all the prompt shift to bold, thus I know
 visually that I am `root` and things I do can be dangerous. See below for an
 example.
 
-  * The _v2_, "classic" version
+  * The _v1_, "classic" version
 
 ``bash``
 
@@ -178,9 +178,12 @@ example.
 ![root_default_prompt_zsh_v2][root_default_prompt_zsh_v2]
 
 As you can see, `bash` version and `zsh` version are almost the same, only the
-return code has different position (the part `TODO RETURN CODE` for `bash` and
-`TODO RETURN CODE` for `zsh`, in the white square above). So following exemples
-will mainly present prompt when using `zsh`.
+return code has different position (the part in red `130 ↵ ` in `bash` on the
+left, and the part in red `130 ↵ ` in the right in `zsh`) . So following
+exemples will mainly present prompt when using `zsh`.
+
+**REMARK** When on `tty` or in unsupported terminal emulator, prompt will
+automatically fall back to prompt _v1_.
 
 **Environment contraction**
 
@@ -188,17 +191,27 @@ When there is not enough space to show all environment informations completely,
 they will be contracted to show only the character of the environment. The more
 your terminal will shorten, the less options will be shown. Order on which
 segments are contracted are always in the same order, defined by user (see
-TODO:configuration). Finally, if there is really not enough space, some
-information will be completely hidden. Exemple of contraction are shown below
-for both prompt.
+[doc/configuramtion.md][doc_configuration]). Finally, if there is really not
+enough space, some information will be completely hidden. Exemple of contraction
+are shown below for both prompt version.
 
-  * The v1 is "classic" as show below for bash and zsh.
+  * The _v1_, "classic" version
 
-![shrink_prompt_zsh_v1][shrink_prompt_zsh_v1]
+![shrink_prompt_v1][shrink_prompt_v1]
 
-  * The v2 is more "powerline" look alike as show below for bash and zsh.
+  * The _v2_, "powerline" version
 
-![shrink_prompt_zsh_v2][shrink_prompt_zsh_v2]
+![shrink_prompt_v2][shrink_prompt_v2]
+
+**DISCLAIMER**: Gifs above only show contraction, but as variable `PS1` for bash
+and `PROMPT` for zsh are only computed before printing them, when you resize
+your terminal emulator, you will need to press `Enter` once to recompute the
+size of your prompt. So, when resizing your terminal emulator, before pressing
+`Enter`, you prompt might look like shown below:
+
+![resized_terminal_emulator_plus][resized_terminal_emulator_plus]
+
+![resized_terminal_emulator_minus][resized_terminal_emulator_minus]
 
 **Default prompt when no colors sets**
 
@@ -457,7 +470,14 @@ the documentation [doc/add_segment.md][doc_add_segment].
 [root_default_prompt_bash_v2]: doc/img/root_full_option_bash_v2.png
 [root_default_prompt_zsh_v2]: doc/img/root_full_option_zsh_v2.png
 
-[shrink_prompt_zsh_v1]: doc/img/shrink_prompt_zsh_v1.png
-[shrink_prompt_zsh_v2]: doc/img/shrink_prompt_zsh_v2.png
+[shrink_prompt_v1]: doc/img/shrink_prompt_v1.gif
+[shrink_prompt_v2]: doc/img/shrink_prompt_v2.gif
+
+[resized_terminal_emulator_plus_v1]: doc/img/resize_plus_zsh_v1.png
+[resized_terminal_emulator_minus_v1]: doc/img/resize_minus_zsh_v1.png
+[resized_terminal_emulator_plus_v2]: doc/img/resize_plus_zsh_v2.png
+[resized_terminal_emulator_minus_v2]: doc/img/resize_minus_zsh_v2.png
+
 [base_nocolor_prompt_v1]: doc/img/base_nocolor_prompt_v1.png
 [base_nocolor_prompt_v2]: doc/img/base_nocolor_prompt_v2.png
+
