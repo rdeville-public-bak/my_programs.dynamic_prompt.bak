@@ -373,7 +373,7 @@ precmd()
   then
     local SEGMENT=(
       "tmux, pwd, hfill, keepass, username, hostname"
-      "vcsh, virtualenv, vcs, kube, openstack, hfill"
+      "vcsh, virtualenv, vcs, hfill, kube, openstack"
     )
   fi
   if [[ -z ${SEGMENT_PRIORITY} ]]
@@ -390,8 +390,8 @@ precmd()
       *bash)
         local CLR_PREFIX="\x1b["
         local CLR_SUFFIX="m"
-        local BASE_CLR_PREFIX="\[\e["
-        local BASE_CLR_SUFFIX="m\]"
+        local BASE_CLR_PREFIX="\e["
+        local BASE_CLR_SUFFIX="m"
         ;;
       *zsh)
         local CLR_PREFIX="%{\x1b["
@@ -424,8 +424,8 @@ precmd()
     local DEFAULT_BOLD="1"
   fi
 
-  local NORMAL="${BASE_CLR_PREFIX}${NORMAL:-${DEFAULT_NORMAL}}${BASE_CLR_SUFFIX}"
-  local BOLD="${BASE_CLR_PREFIX}${BOLD:-${DEFAULT_BOLD}}${BASE_CLR_SUFFIX}"
+  local NORMAL="${BASE_CLR_PREFIX}${DEFAULT_NORMAL}${BASE_CLR_SUFFIX}"
+  local BOLD="${BASE_CLR_PREFIX}${DEFAULT_BOLD}${BASE_CLR_SUFFIX}"
   local REVERSE="${BASE_CLR_PREFIX}${REVERSE:-${DEFAULT_REVERSE}}${BASE_CLR_SUFFIX}"
 
   # Prompt Colors
@@ -456,11 +456,7 @@ precmd()
   for (( idx=$(( ${idx_stop_segment} - 1 )); idx >= ${idx_start_segment} ; idx--))
   do
     line="$(_prompt_info_line ${idx})"
-    if [[ ${SHELL} =~ "bash" ]]
-    then
-      final_prompt="${line}\n${final_prompt}"
-    elif [[ -n "${line}" ]] \
-      && [[ ${#SEGMENT[idx]} -eq 1 ]] \
+    if [[ -n "${line}" ]] \
       && [[ ${SEGMENT[idx]} =~ "hfill" ]]
     then
       final_prompt="${line}\n${final_prompt}"

@@ -155,7 +155,7 @@ precmd()
       fi
     done
 
-    if [[ " ${segment[@]} " =~ " hfill " ]]
+    if [[ " ${segment[@]} " =~ "hfill" ]]
     then
       # Showing vcsh info
       local HFILL_FG="${DEFAULT_FG:-""}"
@@ -209,7 +209,7 @@ precmd()
       # Compute the space that will be stored in hfill
       hfill="$(_prompt_printf " " ${gain})"
     else
-      hfill=false
+      hfill="false"
     fi
 
     # Compute the line depending on the shell (bash or zsh) and the user.
@@ -218,14 +218,12 @@ precmd()
     all_info=""
     if [[ "$(whoami)" == root ]]
     then
-      all_info="${BOLD}"
+      all_info+="${BOLD}"
     fi
 
     if [[ "${first_line_prompt}" == "true" ]]
     then
       all_info+="${CLR_PREFIX}${DEFAULT_BG}${CLR_SUFFIX}"
-    else
-      all_info+="${E_NORMAL}"
     fi
     # Generate first line without colors
     for ((idx=${idx_start}; idx < ${idx_stop}; idx++))
@@ -241,11 +239,11 @@ precmd()
           then
             clr_fg="${CLR_PREFIX}${info_line_fg[$iSegment]}${CLR_SUFFIX}"
           else
-    if [[ "${first_line_prompt}" == "true" ]]
             clr_fg="${CLR_PREFIX}${DEFAULT_FG}${CLR_SUFFIX}"
           fi
           # Comput segment separator colors
           # Add colored info to line
+
           if [[ ${iSegment} == "pwd" ]]
           then
             all_info+="${clr_fg} ${info_line_clr[$iSegment]} "
@@ -260,14 +258,14 @@ precmd()
         else
           if [[ $(whoami) == "root" ]]
           then
-            all_info+="${E_NORMAL}${E_BOLD}${hfill}"
+            all_info+="${NORMAL}${BOLD}${hfill}"
           else
-            all_info+="${E_NORMAL}${hfill}"
+            all_info+="${NORMAL}${hfill}"
           fi
         fi
       fi
     done
-    all_info+="${E_NORMAL}"
+    all_info+="${NORMAL}"
     echo -e "${all_info}"
     return
   }
@@ -298,8 +296,8 @@ precmd()
   if [[ -z ${SEGMENT} ]]
   then
     local SEGMENT=(
-      "tmux, pwd, hfill, keepass, whoami, hostname"
-      "vcsh, virtualenv, vcs, kube, openstack"
+      "tmux, pwd, hfill, keepass, username, hostname"
+      "vcsh, virtualenv, vcs, hfill, kube, openstack"
     )
   fi
   if [[ -z ${SEGMENT_PRIORITY} ]]
@@ -382,9 +380,12 @@ precmd()
   do
     local start_info_line=$(date +%S%N)
     line="$(_prompt_info_line ${idx})"
-    if [[ -n "${line}" ]]
+    if [[ -n "${line}" ]] \
+      && [[ ${SEGMENT[idx]} =~ "hfill" ]]
     then
       final_prompt="${line}\n${final_prompt}"
+    else
+      final_prompt="${line}${final_prompt}"
     fi
   done
 
@@ -393,9 +394,9 @@ precmd()
     *bash)
       if [[ $(whoami) == "root" ]]
       then
-        final_prompt+="$(echo -e "${NORMAL}${BOLD} ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${NORMAL}${BOLD}﬌ ")"
+        final_prompt+="$(echo -e "${E_NORMAL}${E_BOLD} ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${E_NORMAL}${E_BOLD}﬌ ")"
       else
-        final_prompt+="$(echo -e "${NORMAL} ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${NORMAL}﬌ ")"
+        final_prompt+="$(echo -e "${E_NORMAL} ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${E_NORMAL}﬌ ")"
       fi
       export PS1=$(echo -e "${final_prompt}")
       ;;
