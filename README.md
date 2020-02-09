@@ -153,34 +153,23 @@ segments/environment are :
 Every environment information, colors and character can be configure
 individually to be shown or not (see [doc/configuration.md][doc_configuration]).
 
+As you can see, `bash` version and `zsh` version are almost the same, only the
+return code has different position (the part in red `130 ↵ ` in `bash` on the
+left, and the part in red `130 ↵ ` in the right in `zsh`) . So following
+exemples will mainly present prompt when using `zsh`.
+
 Moreover, when logged as `root` all the prompt shift to bold, thus I know
 visually that I am `root` and things I do can be dangerous. See below for an
 example.
 
   * The _v1_, "classic" version
 
-``bash``
-
-![root_default_prompt_bash_v1][root_default_prompt_bash_v1]
-
-``zsh``
-
 ![root_default_prompt_zsh_v1][root_default_prompt_zsh_v1]
 
   * The _v2_, "powerline" version
 
-``bash``
-
-![root_default_prompt_bash_v2][root_default_prompt_bash_v2]
-
-``zsh``
-
 ![root_default_prompt_zsh_v2][root_default_prompt_zsh_v2]
 
-As you can see, `bash` version and `zsh` version are almost the same, only the
-return code has different position (the part in red `130 ↵ ` in `bash` on the
-left, and the part in red `130 ↵ ` in the right in `zsh`) . So following
-exemples will mainly present prompt when using `zsh`.
 
 **_REMARK_** When on `tty` or in unsupported terminal emulator, prompt will
 automatically fall back to prompt _v1_.
@@ -482,8 +471,8 @@ the documentation [doc/add_segment.md][doc_add_segment].
 [root_default_prompt_bash_v2]: doc/img/root_full_option_bash_v2.png
 [root_default_prompt_zsh_v2]: doc/img/root_full_option_zsh_v2.png
 
-[shrink_prompt_v1]: doc/img/shrink_prompt_v1.gif
-[shrink_prompt_v2]: doc/img/shrink_prompt_v2.gif
+[shrink_prompt_v1]: doc/img/shrink_v1.gif
+[shrink_prompt_v2]: doc/img/shrink_v2.gif
 
 [resized_terminal_emulator_plus_v1]: doc/img/resize_plus_zsh_v1.png
 [resized_terminal_emulator_minus_v1]: doc/img/resize_minus_zsh_v1.png
