@@ -1,4 +1,4 @@
-# Prompt
+# Dynamic Prompt
 
 -------------------------------------------------------------------------------
 
@@ -11,17 +11,22 @@ dynamically show information about your current environment.
 
 * [Description](#description)
 * [Prompt description](#prompt-description)
+    * [Prompt illustration](#prompt-illustration)
+    * [Environment contraction](#environment-contraction)
+    * [Default prompt when no colors sets](#default-prompt-when-no-colors-sets)
 * [Files and folders](#files-and-folders)
     * [doc/](#doc)
     * [hosts/](#hosts)
     * [segment/](#segment)
     * [test/](#test)
+    * [tools/](#tools)
 * [How to use it ?](#how-to-use-it-)
     * [Testing](#testing)
     * [Configuration](#configuration)
     * [Add your own segments](#add-your-own-segments)
 * [FAQ](#faq)
 * [Know Issues](#know-issues)
+* [TODO](#todo)
 
 # Description
 
@@ -71,6 +76,8 @@ the code, here are some differences I saw (but I may be wrong):
     [doc/configuration.md][doc_configuration].
 
 # Prompt description
+
+## Prompt illustration
 
 In the following section, I will describe the prompt with default prompt line,
 i.e. default segments organisation, and with the colors provided by the file
@@ -174,7 +181,7 @@ example.
 **_REMARK_** When on `tty` or in unsupported terminal emulator, prompt will
 automatically fall back to prompt _v1_.
 
-**Environment contraction**
+## Environment contraction
 
 When there is not enough space to show all environment informations completely,
 they will be contracted to show only the character of the environment. The more
@@ -214,17 +221,17 @@ before pressing `Enter`, you prompt might look like shown below:
 
 ![resized_terminal_emulator_minus_v2][resized_terminal_emulator_minus_v2]
 
-**Default prompt when no colors sets**
+## Default prompt when no colors sets
 
 By default, if no file exists in folder `hosts/` with the name `$(hostname).sh`
 or with the name `common.sh`, no colors will be set, as shown below for both
 versions.
 
-  * The v1 is "classic" as show below for bash and zsh.
+  * The _v1_, "classic" version
 
 ![base_nocolor_prompt_v1][base_nocolor_prompt_v1]
 
-  * The v2 is more "powerline" look alike as show below for bash and zsh.
+  * The _v2_, "powerline" version
 
 ![base_nocolor_prompt_v2][base_nocolor_prompt_v2]
 
@@ -235,9 +242,10 @@ want to upgrade it for yourself or to help you understand what is done.
 
 ## doc/
 
-This folder store the documentation of the prompt, the configuration and
+This folder store the documentation of this prompt, the configuration and
 description for each segments.
-It also store image shown in documentation.
+
+It also store images and gifs shown in documentation.
 
 ## hosts/
 
@@ -245,23 +253,24 @@ This folder is here to store your personnal configuration. By default, there is
 two files that might interest you:
 
   * `common.exemple.sh`: An example of variables I use to have some common
-   configuration accross my computer (like same colors for environment for each
-   computer). This is the file use for the screenshots above. Then for each
-   workstation I have, they have their own configuration file in the form
-   `$(hostname).sh`. For instance, file `death-star.sh` is the configuration for
-   one of my computer which hostname is `death-star`.
+    configuration accross my computer (like same colors for environment for each
+    computer). This is the file use for the screenshots above. Then for each
+    workstation I have, they have their own configuration file in the form
+    `$(hostname).sh`. For instance, file `death-star.sh` is the configuration
+    for one of my computer which hostname is `death-star`.
   * `death-stat.sh`: The file specific to one of my computer which hostname is
-   `death-star` in which I override some commonly shared variables setup in
-   `common.sh`.
+    `death-star` in which I override some commonly shared variables setup in
+    `common.exemple.sh`.
 
 There is also a subfolder `exemples/` for powerline prompt in which I propose
-different powerline character. See TODO: configuration for more informations.
+different powerline character. See [doc/configuration.md][doc_configuration]
 
 ## segment/
 
 This folder store all segments currently supported. If you want to add your own,
 you will simply need to add you script in this file and setup your prompt
-variable to use it.
+variable to use it. See [doc/add_segment.md][doc_add_segment] to add your own
+segment.
 
 ## test/
 
@@ -269,28 +278,31 @@ This folder store docker configuration to test your prompt configuration without
 messing with your current prompt. Normally, nothing need to be done in this
 folder which is automatically used by script `test.sh`
 
+## tools/
+
+This folder store some script I used to ease the way to taking screenshot and
+making gifs for the documentation.
+
 # How to use it ?
 
-This repo is versioned using [git][git]. First install it on
-your computer. If your distro is not shown below is because I did not testing
-command. Feel free to contribute ;-).
-
-**On debian based (Debian/Ubuntu)**
-```bash
-$ sudo apt install git
-```
+This repo is versioned using [git][git]. First install it on your computer.
 
 Once this is done, you can clone the repo whereever you want, let us say in a
-the folder `~/.shell/prompt`
+the folder `~/.shell/prompt` (assuming folder `~/.shell` exists).
 
 ```bash
 $ git clone git@framagit.org:rdeville/dotfiles.shell.git ~/.shell/prompt
 # or
 $ git clone https://framagit.org/rdeville/dotfiles.shell.git ~/.shell/prompt
 ```
+
+Then, make your own configuration, see [doc/configuration.md][doc_configuration]
+to do so.
+
 Finally, you will only need to add the following lines:
 
   * In your `~/.bashrc`:
+
 ```bash
 # Or whereever you clone this repo
 export PROMPT_DIR="${HOME}/.shell/prompt"
@@ -313,6 +325,7 @@ fi
 ```
 
   * In your `~/.zshrc`
+
 ```bash
 # Or whereever you clone this repo
 export PROMPT_DIR="${HOME}/.shell/prompt"
@@ -339,9 +352,6 @@ If you do not want to mess your prompt, you can first testing it in a docker
 container. see section [Testing][testing] before updating your files `~/.bashrc`
 and `~/.zshrc`
 
-Finally, you can configure the prompt to your need. To do so, continue to
-section [Configuration][configuration]
-
 ## Testing
 
 In order to test this prompt or your prompt config, you will just need docker.
@@ -359,10 +369,11 @@ cd ~/.shell/prompt
 ./test.sh
 ```
 
-By default, `test.sh` will start in interactive mode asking your some information
-to configure main variables `SHELL`, `PROMPT_VERSION` and `SHELL_APP` before
-building a docker image and starting the docker container to test your prompt
-config.
+By default, `test.sh` will start in interactive mode asking you some
+informations to configure main variables `SHELL`, `PROMPT_VERSION` and
+`SHELL_APP` before building a docker image and starting the docker container to
+test your prompt config.
+
 I recommend using interactive mode first, before running the docker you will be
 asked confirmation and you will be prompt the command line to avoid passing
 through the interactive mode the next time.
@@ -374,13 +385,12 @@ To see more option of the script, type the following command :
 Or read the following documentation [doc/test.sh.md][doc_test]
 
 Once run, you will automatically be in the container. The repo is mounted as
-volume in the container, in `~/.prompt`. So every configuration you will made in
+volume in the container, in `~/.prompt`. So every configuration you will make in
 the container will be kept outside of the container. Thus, you will be able to
 directly use your configuration once finished in the container.
 
-If you want to keep your configuration versionned, please read [Keep your
-configuration][keep-your-configuration].
-
+If you want to keep your configuration versionned, please read
+[doc/keep_your_configuration.md][keep-your-configuration].
 
 ## Configuration
 
@@ -398,8 +408,8 @@ done in folder `segment`, see section [segment][segment] first to know what
 there is in this folder.
 
 Once done, you can read the complete documentation about adding your own segment
-in [doc/add_segment.md][doc_add_segment]. In this file is
-describe how to develop your own segment.
+in [doc/add_segment.md][doc_add_segment]. In this file is describe how to
+develop your own segment.
 
 Finally, if you want to publish your segment, you can propose a merge request.
 To do so, see [CONTRIBUTING.md][contributing].
@@ -435,6 +445,14 @@ the documentation [doc/add_segment.md][doc_add_segment].
     again to view them (or enter any command). This is due to the fact that the
     direnv hook is executed after `precmd`.
 
+  * When using `direnv`, segment that shoudl be shown because global variables
+    are set by `direnv` are not shown directly. User must press `<Enter>` once
+    again to view them (or enter any command). This is due to the fact that the
+    direnv hook is executed after `precmd`.
+
+# TODO
+
+  - [ ]: Resole issues with direnv
 
 [testing]: #testing
 [configuration]: #configuration
