@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------
 
 This folder allow you to easily configure and use a responsive prompt that will
-dynamically show information about your folder environment.
+dynamically show information about your current environment.
 
 -------------------------------------------------------------------------------
 
@@ -25,10 +25,10 @@ dynamically show information about your folder environment.
 
 # Description
 
-This folder contains scripts allowing to setup a dynamic prompt line. As I live
-mainly in terminal and I am adminsys, I need to know quickly on which kind of
-computer I am, personnal, professional, workstation, server, which OpenStack
-pool variables are loaded, etc.
+This repo contains scripts allowing to setup a dynamic prompt line. As I live
+mainly in terminal and I am mainly do adminsys, I need to know quickly on which
+kind of computer I am, personnal, professional, workstation, server, which
+OpenStack pool variables are loaded, etc.
 
 Its part of my dotfiles repos which optimize my terminal usage. For now, all my
 dotfiles are not yet clean and documented, but once done, a link will be
@@ -47,14 +47,14 @@ The aim of this prompt are :
     to quickly set a common shared configuration (colors, character, etc) and
     some computer specific configuration. This must be done by modifiying the
     less possible files.
-  * **Being extensible**: if user need to add a enw segment, it should be
+  * **Being extensible**: if user need to add a new segment, it should be
     easy enough to do so.
   * **Support `bash` and `zsh` in a transparent way**: before using this prompt,
-    I used shell framework [`bash-it`][bash-it] and [`oh-my-zsh`][oh-my-zsh].
-    So, when a needed to add something, I needed to work on two prompt
+    I used shell frameworks [`bash-it`][bash-it] and [`oh-my-zsh`][oh-my-zsh].
+    So, when I needed to add something, I needed to work on two prompt
     configuration. I wanted to centralize this to manage both at once. Moreover,
     my personnal computer use `zsh` while most server I work on use `bash`, so I
-    must support both with only one repo and the less files possible.
+    must support both with only one repo and the less possible files.
 
 **Why this new prompt while there exists similar project like
 [liquidprompt][liquidprompt]**
@@ -65,29 +65,30 @@ the code, here are some differences I saw (but I may be wrong):
   * Almost all variables used to show this prompt are not exported and so do not
     add useless variables in your shell environment.
   * This prompt allow you to easily add your own segment.
-  * This folder propose you two versions, one quite "classic" and one more
+  * This repo propose you two versions, one quite "classic" and one more
     "powerline" lool alike. Choosing which version to use is done simply by
-    changing variable `PROMPT_VERSION` (see TODO:configuration).
+    changing variable `PROMPT_VERSION` (see
+    [doc/configuration.md][doc_configuration].
 
 # Prompt description
 
 In the following section, I will describe the prompt with default prompt line,
-i.e. default segment organisation, and with the colors provided by the file
-`host/common.exemple.sh`. But you will be able change segment organisation and
-colors, this is descibe in TODO:configuration.
+i.e. default segments organisation, and with the colors provided by the file
+`host/common.example.sh`. But you will be able change segment organisation and
+colors, this is descibe in [doc/configuration.md][doc_configuration].
 
 First of all, here are some screenshots of both prompt version for both
 supported shell:
 
   * The _v1_ is "classic" as show below for bash and zsh.
 
-``zsh``
-
-![default_prompt_zsh_v1][default_prompt_zsh_v1]
-
 ``bash``
 
 ![default_prompt_bash_v1][default_prompt_bash_v1]
+
+``zsh``
+
+![default_prompt_zsh_v1][default_prompt_zsh_v1]
 
   * The _v2_ is more "powerline" look alike as show below for bash and zsh.
 
