@@ -844,12 +844,20 @@ To see how to use `direnv` for your folder, see
 # Additional notes
 
 If you want a good starting point, I provided the file `common.example.sh` that
-I use as base configuration for all my workstations. This file have lots of
-comment to help understand what variables stands for. Moreover, in this file, I
-alread handled most configuration, such as defining variable for 16 colors
-terminal emulator, 256 colors terminal emulator and true colors terminal
-emulator. You can copy it to your desire `$(hostname).sh` or simply modify its
-value to make it your own.
+I use as base configuration for all my workstations.
+
+This file have lots of comment to help understand what variables stands for.
+
+Moreover, in this file, I alread handled most configuration, such as defining
+variable for 16 colors terminal emulator, 256 colors terminal emulator and true
+colors terminal emulator.
+
+You can copy it to your desire `$(hostname).sh` or simply modify its value to
+make it your own.
+
+Finally, if you want to keep your configuration versioned for later used, you
+can take a look at [doc/keep_your_configuration.md][keep-your-configuration].
+
 
 
 [configuring-prompt-line]: #configuring-prompt-line
@@ -868,10 +876,14 @@ value to make it your own.
 [openstack]: #openstack
 [Additional notes]: #additional-notes
 
+
+
 [readme]: README.md
 [Testing]: README.md#testing
 [using_direnv]: doc/direnv.md
 [doc_img]: doc/img
+[keep-your-configuration]: doc/keep_your_configuration.md
+
 
 
 [vcsh]: https://github.com/RichiH/vcsh
@@ -881,6 +893,7 @@ value to make it your own.
 [tldp.org_array]: https://www.tldp.org/LDP/abs/html/arrays.html
 [color_syntaxt]: https://misc.flogisoft.com/bash/tip_colors_and_formatting
 [direnv]: https://direnv.net/
+
 
 
 [no_color_prompt_bash_v1]: doc/img/default_no_color_bash_v1.png
@@ -897,7 +910,6 @@ value to make it your own.
 [minimal_fullline_prompt_zsh_v1]: doc/img/minimal_fullline_config_zsh_v1.png
 [minimal_fullline_prompt_bash_v2]: doc/img/minimal_fullline_config_bash_v2.png
 [minimal_fullline_prompt_zsh_v2]: doc/img/minimal_fullline_config_zsh_v2.png
-
 
 [default_prompt_bash_v1]: doc/img/default_prompt_bash_v1.png
 [default_prompt_zsh_v1]: doc/img/default_prompt_zsh_v1.png
