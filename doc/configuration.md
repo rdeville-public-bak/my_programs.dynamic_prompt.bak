@@ -850,9 +850,14 @@ colors terminal emulator.
 You can copy it to your desire `$(hostname).sh` or simply modify its value to
 make it your own.
 
+Remark that all variables start with `local`, which can be see odds in bash
+scripts, because this should not be working, and you are "almost" right. Alone
+this script will not work, it is because it is sourced by `v1.sh` or `v2.sh`
+that this script work. Moreover, the local in fornt of variable are here to
+avoid making variable global and so adding mess in your environment variables.
+
 Finally, if you want to keep your configuration versioned for later used, you
 can take a look at [doc/keep_your_configuration.md][keep-your-configuration].
-
 
 
 [configuring-prompt-line]: #configuring-prompt-line
