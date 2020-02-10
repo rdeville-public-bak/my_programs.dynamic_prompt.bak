@@ -38,12 +38,13 @@ chars, etc.
 # Global variables
 
 Before configuring your workstations prompt coloration, chars, etc. and as
-quickly described in [README.md][README.md], there are some global variables to
+quickly described in [README.md][readme], there are some global variables to
 export and some lines that need to be added in your `~/.bashrc` or your
 `~/.zshrc` depending on the shell you use.
 
   * In your `~/.bashrc`:
-```
+
+```bash
 # Or whereever you clone this repo
 export PROMPT_DIR="${HOME}/.shell/prompt"
 # The prompt version you want to use, "1" or "2"
@@ -65,7 +66,8 @@ fi
 ```
 
   * In your `~/.zshrc`
-```
+
+```bash
 # Or whereever you clone this repo
 export PROMPT_DIR="${HOME}/.shell/prompt"
 # The prompt version you want to use, "1" or "2"
@@ -96,6 +98,7 @@ be put in your configuration in the `hosts` directory. See following section.
 
 I tried to make my prompt as configurable as possible. It end up by setting
 almost all configuration to variables. Variables are :
+
   * boolean to show or not some section of the prompt
   * colors of these section
   * special character that start a segment
@@ -104,49 +107,59 @@ Prompt _v1_ and _v2_ share almost all variables, just some of them are useless
 in prompt _v1_.
 
 To setup a configuration for your workstations you have two possibilities:
-- create the file `common.sh` from `common.example.sh` which will be loaded if
-  the file exists and will allow you to apply some common variables configuration
-  to any of your workstations.
-- create a file which name is the hostname of your workstation (for instance,
- the file `death-star.sh` is a configuration for one of my workstation which
- hostname is `death-star`).
+
+* create the file `common.sh` from `common.example.sh` which will be loaded if
+  the file exists and will allow you to apply some common variables
+  configuration to any of your workstations.
+* create a file which name is the hostname of your workstation (for instance,
+  the file `death-star.sh` is a configuration for one of my workstation which
+  hostname is `death-star`).
 
 Finally, you can combine both, create/modify file `common.sh` to set some
 default variables for all your workstations and another file with name
-`$(hostname).sh` to setup specific configuration.
+`$(hostname).sh` to setup specific configuration which will override the common
+ones.
 
 Alreay in this repo are files:
-- `common.example.sh` which is my personnal common configuration for all my
-  workstation. It is the one used in all documentation.
-- `death-start.sh` which is the specific configuration of my workstation
-  `death-start`. In this file, I only overwrite variables that define the default
-  background color of my prompt.
+
+* `common.example.sh` which is my personnal common configuration for all my
+  workstation. It is the one used in all documentation, moreover its already
+  handle multiple configuration whether terminal emulator support unicode chars
+  and true colors.
+* `death-start.sh` which is the specific configuration of my workstation
+  `death-start`. In this file, I only overwrite variables that define the
+  default background color of my prompt, i.e. the color of the main line of the
+  prompt.
 
 All variables in these files are optional. If not set, my scripts will load
-default value written as comment in files `common.exemple.sh`.
+default values, i.e. black for background and white for foreground as shown
+below when not configuration exists.
 
-  * The _v1_ is "classic" as show below for bash and zsh.
-
-`zsh`
-
-![default_prompt_zsh_v1][default_zsh_prompt_v1]
+  * The _v1_, "classic" version
 
 `bash`
 
-![default_prompt_bash_v1][default_bash_prompt_v1]
-
-  * The _v2_ is more "powerline" look alike as show below for bash and zsh.
+![no_color_prompt_bash_v1][no_color_prompt_bash_v1]
 
 `zsh`
 
-![default_prompt_zsh_v2][default_zsh_prompt_v2]
+![no_color_prompt_zsh_v1][no_color_prompt_zsh_v1]
+
+
+  * The _v2_, "powerline" version
 
 `bash`
 
-![default_prompt_bash_v2][default_bash_prompt_v2]
+![no_color_prompt_bash_v2][no_color_prompt_bash_v2]
+
+`zsh`
+
+![no_color_prompt_zsh_v2][no_color_prompt_zsh_v2]
 
 
-All modifications done in files in `hosts` folder will be loaded dynamically.
+All modifications done in files in `hosts` folder will be loaded dynamically,
+i.e. no need to reload anything once modified as they will be automatically
+reloaded.
 
 # Configuring Prompt Line
 
@@ -161,8 +174,8 @@ This is done by two variables:
 | `SEGMENT`           | An array which define lines and segment used for the prompt                                                                |
 | `SEGMENT_PRIORITY`  | An array which define in which order segment will be compressed when there is not enough space to print full informations. |
 
-The prompt is able to handle single or multiline with command entry at the end of the
-prompt or below the prompt when line use full length of the prompt.
+The prompt is able to handle single line or multiline with command entry at the
+end of the prompt or below the prompt when line use full length of the prompt.
 
 Exemple are better than long explication.
 
@@ -174,8 +187,8 @@ Exemple are better than long explication.
   * username
   * hostname
   * vcsh
-  * python
-  * git
+  * virtualenv
+  * vcs
   * openstack
   * kubernetes
   * hfill
@@ -187,9 +200,11 @@ this documentation. To see the updated full list of segments, see section
 ## Variable `SEGMENT`
 
 As this variable is an array, the easiest form is:
+
 ```bash
 SEGMENT=("first cell" "second cell")
 ```
+
 You can see this documentation if you want to learn more about arrays in bash
  [Arrays on tldp.org][tldp.org_array]
 
@@ -197,26 +212,35 @@ On this array, each cell will define segments per prompt line. Segment should be
 separated by a comma `,`.
 
 For instance, if you want simple line prompt with only username, hostname and
-pwd segment with command entry at the end (like default
-bash prompt), the variable `SEGMENT` should be:
+pwd segment with command entry at the end (like default bash prompt), the
+variable `SEGMENT` should be:
 
 ```bash
 SEGMENT=("username, hostname, pwd")
 ```
 
-**REMARK** For now, there is an issues in this configuration messing with bash
+**REMARK** For now, there is an issue in this configuration messing with bash
 prompt, so the command entry is force to be below the line.
 
-  * The _v1_ is "classic" as show below for bash and zsh.
-    * ``zsh``
-![mininmal_segment_zsh_prompt_v1][mininmal_segment_zsh_prompt_v1]
-    * ``bash``
-![mininmal_segment_bash_prompt_v1][mininmal_segment_bash_prompt_v1]
-  * The _v2_ is more "powerline" look alike as show below for bash and zsh.
-    * ``zsh``
-![mininmal_segment_zsh_prompt_v2][mininmal_segment_zsh_prompt_v2]
-    * ``bash``
-![mininmal_segment_bash_prompt_v2][mininmal_segment_bash_prompt_v2]
+  * The _v1_, "classic" version
+
+`bash`
+
+![minimal_prompt_bash_v1][minimal_prompt_bash_v1]
+
+`zsh`
+
+![minimal_prompt_zsh_v1][minimal_prompt_zsh_v1]
+
+  * The _v2_, "powerline" version
+
+`bash`
+
+![minimal_prompt_bash_v2][minimal_prompt_bash_v2]
+
+`zsh`
+
+![minimal_prompt_zsh_v2][minimal_prompt_zsh_v2]
 
 For instance, if you want simple line prompt with only username, hostname and
 pwd segment but with command entry below the prompt the variable `SEGMENT`
@@ -225,19 +249,29 @@ should be:
 ```bash
 SEGMENT=("username, hostname, pwd, hfill")
 ```
+
 See the special segment called `hfill` (see section [hfill][hfill]) which will
 fill the line with empty char to colorize a complete line of your terminal.
 
-  * The _v1_ is "classic" as show below for bash and zsh.
-    * ``zsh``
-![mininmal_segment_fulline_zsh_prompt_v1][mininmal_segment_fulline_zsh_prompt_v1]
-    * ``bash``
-![mininmal_segment_fulline_bash_prompt_v1][mininmal_segment_fulline_bash_prompt_v1]
-  * The _v2_ is more "powerline" look alike as show below for bash and zsh.
-    * ``zsh``
-![mininmal_segment_fulline_zsh_prompt_v2][mininmal_segment_fulline_zsh_prompt_v2]
-    * ``bash``
-![mininmal_segment_fulline_bash_prompt_v2][mininmal_segment_fulline_bash_prompt_v2]
+  * The _v1_, "classic" version
+
+`bash`
+
+![minimal_fullline_prompt_bash_v1][minimal_fullline_prompt_bash_v1]
+
+`zsh`
+
+![minimal_fullline_prompt_zsh_v1][minimal_fullline_prompt_zsh_v1]
+
+  * The _v2_, "powerline" version
+
+`bash`
+
+![minimal_fullline_prompt_bash_v2][minimal_fullline_prompt_bash_v2]
+
+`zsh`
+
+![minimal_fullline_prompt_zsh_v2][minimal_fullline_prompt_zsh_v2]
 
 By default, for all exemple showing all segments, the value of `SEGMENT` is:
 
@@ -248,17 +282,25 @@ SEGMENT=(
 )
 ```
 
-  * The _v1_ is "classic" as show below for bash and zsh.
-    * ``zsh``
-![default_prompt_zsh_v1][default_prompt_zsh_v1]
-    * ``bash``
-![default_prompt_bash_v1][default_prompt_bash_v1]
-  * The _v2_ is more "powerline" look alike as show below for bash and zsh.
-    * ``zsh``
-![default_prompt_zsh_v2][default_prompt_zsh_v2]
-    * ``bash``
-![default_prompt_bash_v2][default_prompt_bash_v2]
+  * The _v1_, "classic" version
 
+`zsh`
+
+![default_prompt_zsh_v1][default_prompt_zsh_v1]
+
+`bash`
+
+![default_prompt_bash_v1][default_prompt_bash_v1]
+
+  * The _v2_, "powerline" version
+
+`zsh`
+
+![default_prompt_zsh_v2][default_prompt_zsh_v2]
+
+`bash`
+
+![default_prompt_bash_v2][default_prompt_bash_v2]
 
 **IMPORTANT NOTES**
 
@@ -270,69 +312,50 @@ segment is loaded, using the default multiline configuration. But using
 multiline prompt requires to use hfill, otherwise prompt behaviour is not
 ensure (yet ?).**
 
-  * `home` folder, no environment
+  * Basic folder
  _v1_
-![default_prompt_zsh_v1_home][default_prompt_zsh_v1_home]
+
+![default_prompt_bash_v2][default_prompt_bash_v2]
 
 _v2_
-![default_prompt_zsh_v2_home][default_prompt_zsh_v2_home]
 
-  * `work` folder, every segment loaded
+![default_prompt_zsh_v2][default_prompt_zsh_v2]
+
+  * When every segment is loaded
  _v1_
-![default_prompt_zsh_v1_workdir][default_prompt_zsh_v1_workdir]
+
+![default_full_option_zsh_v1][default_full_option_zsh_v1]
 
 _v2_
-![default_prompt_zsh_v2_workdir][default_prompt_zsh_v2_workdir]
+
+![default_full_option_zsh_v2][default_full_option_zsh_v2]
 
 **REMARK** Only the first line of the prompt in multiline configuration will
 have a full colored line. So if the first line does not show any information,
 you will not have the colored line. See in the examples below the 4 lines
 configuration.
 
-
 ### Some other examples
 
-Here are some other exemples show for _v1_ and _v2_ for zsh only.
+Here are some other exemples show for _v1_ and _v2_ for `zsh` only. More images
+for `bash` can be found in [doc/img][doc_img]
 
  * Single line not filling full terminal size with all segment (not recommended):
+
 ```bash
 SEGMENT=(
     "tmux, vcsh, virtualenv, vcs, kube, openstack, keepass, username, hostname, pwd"
 )
 ```
 
-_v1_
-![example1_segment_prompt_v1][example1_segment_prompt_v1]
+  * _v1_
 
-_v2_
-![example1_segment_prompt_v2][example1_segment_prompt_v2]
+![single_line_full_option_zsh_v1][single_line_full_option_zsh_v1]
 
-  * Single line filling full terminal size with all segment (not recommended):
-```bash
-SEGMENT=(
-    "tmux, vcsh, virtualenv, vcs, kube, openstack, keepass, username, hostname, pwd, hfill"
-)
-```
+  * _v2_
 
-_v1_
-![example2_segment_prompt_v1][example2_segment_prompt_v1]
+![single_line_full_option_zsh_v2][single_line_full_option_zsh_v2]
 
-_v2_
-![example2_segment_prompt_v2][example2_segment_prompt_v2]
-
-  * 2 lines filling full terminal size with all segment reparted on the line:
-```bash
-SEGMENT=(
-    "tmux, keepass, username, hostname, pwd, hfill"
-    "vcsh, virtualenv, vcs, kube, openstack, hfill"
-)
-```
-
-_v1_
-![example3_segment_prompt_v1][example3_segment_prompt_v1]
-
-_v2_
-![example3_segment_prompt_v2][example3_segment_prompt_v2]
 
   * Let's go crazy, use 4 lines filling full terminal size with all segment
     reparted on the lines and add some comment in the array to remember why each
@@ -351,11 +374,13 @@ SEGMENT=(
 )
 ```
 
-_v1_
-![example4_segment_prompt_v1][example4_segment_prompt_v1]
+  * _v1_
 
-_v2_
-![example4_segment_prompt_v2][example4_segment_prompt_v2]
+![four_lines_zsh_v1][four_lines_zsh_v1]
+
+  * _v2_
+
+![four_lines_zsh_v2][four_lines_zsh_v2]
 
 
 **REMARK** Only the first line of the prompt in multiline configuration will
@@ -886,9 +911,10 @@ value to make it your own.
 [openstack]: #openstack
 [Additional notes]: #additional-notes
 
-[README.md]: README.md
+[readme]: README.md
 [Testing]: README.md#testing
 [using_direnv]: doc/direnv.md
+[doc_img]: doc/img
 
 
 [vcsh]: https://github.com/RichiH/vcsh
@@ -900,10 +926,33 @@ value to make it your own.
 [direnv]: https://direnv.net/
 
 
+[no_color_prompt_bash_v1]: doc/img/default_no_color_bash_v1.png
+[no_color_prompt_zsh_v1]: doc/img/default_no_color_zsh_v1.png
+[no_color_prompt_bash_v2]: doc/img/default_no_color_bash_v2.png
+[no_color_prompt_zsh_v2]: doc/img/default_no_color_zsh_v2.png
+
+[minimal_prompt_bash_v1]: doc/img/minimal_config_bash_v1.png
+[minimal_prompt_zsh_v1]: doc/img/minimal_config_zsh_v1.png
+[minimal_prompt_bash_v2]: doc/img/minimal_config_bash_v2.png
+[minimal_prompt_zsh_v2]: doc/img/minimal_config_zsh_v2.png
+
+[minimal_fullline_prompt_bash_v1]: doc/img/minimal_fullline_config_bash_v1.png
+[minimal_fullline_prompt_zsh_v1]: doc/img/minimal_fullline_config_zsh_v1.png
+[minimal_fullline_prompt_bash_v2]: doc/img/minimal_fullline_config_bash_v2.png
+[minimal_fullline_prompt_zsh_v2]: doc/img/minimal_fullline_config_zsh_v2.png
+
 [default_prompt_zsh_v1]: doc/img/default_prompt_zsh_v1.png
 [default_prompt_bash_v1]: doc/img/default_prompt_bash_v1.png
 [default_prompt_zsh_v2]: doc/img/default_prompt_zsh_v2.png
 [default_prompt_bash_v2]: doc/img/default_prompt_bash_v2.png
+
+
+[single_line_full_option_zsh_v1]: doc/img/single_line_full_options_zsh_v1.png
+[single_line_full_option_zsh_v2]: doc/img/single_line_full_options_zsh_v2.png
+
+[four_lines_zsh_v1]: ../doc/img/four_lines_zsh_v1.png
+[four_lines_zsh_v2]: ../doc/img/four_lines_zsh_v2.png
+
 [mininmal_segment_zsh_prompt_v1]: doc/img/mininmal_segment_zsh_prompt_v1.png
 [mininmal_segment_bash_prompt_v1]: doc/img/mininmal_segment_bash_prompt_v1.png
 [mininmal_segment_zsh_prompt_v2]: doc/img/mininmal_segment_zsh_prompt_v2.png
