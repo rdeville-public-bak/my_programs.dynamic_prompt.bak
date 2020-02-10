@@ -394,26 +394,27 @@ ther is not enough place to print all segment.
 
 Below is exemple of this behaviour:
 
-  * The v1 is "classic" as show below for bash and zsh.
+  * The _v1_, "classic" version
 
-![shrink_prompt_zsh_v1][shrink_prompt_zsh_v1]
+![shrink_prompt_v1][shrink_prompt_v1]
 
-  * The v2 is more "powerline" look alike as show below for bash and zsh.
+  * The _v2_, "powerline" version
 
-![shrink_prompt_zsh_v2][shrink_prompt_zsh_v2]
-
+![shrink_prompt_v2][shrink_prompt_v2]
 
 This behaviour is configured through the variable `SEGMENT_PRIORITY` which
 defines the order in which segment will be contracted or hidden.
 
 As this variable is an array, the easiest form is:
+
 ```bash
 SEGMENT_PRIORITY=("first cell" "second cell")
 ```
+
 You can see this documentation if you want to learn more about arrays in bash:
  [Arrays on tldp.org][tldp.org_array]
 
-On this array, each cell will define segments per prompt line. Segment should be
+In this array, each cell will define segments per prompt line. Segment should be
 separated by a comma `,`.
 
 For instance, let us use the default 2 line prompt:
@@ -443,15 +444,7 @@ This means that the prompt will shrink as follow:
     `vcs`. Finally, when none of these segment can be shrink anymore, they will
     disappear in the same order.
 
-Below is an illustrated example of this behaviour for both version for `zsh`.
-
-  * The _v1_ is "classic" as show below for bash and zsh.
-
-![shrink_prompt_zsh_v1_updated][shrink_prompt_zsh_v1_updated]
-
-  * The _v2_ is more "powerline" look alike as show below for bash and zsh.
-
-![shrink_prompt_zsh_v2_updated][shrink_prompt_zsh_v2_updated]
+This behaviour is the one illustratif in the gifs above.
 
 **REMARK** DO NOT PUT `hfill` SEGMENT AS HFILL WILL **NEVER** SHRINK AND IS USED
 TO FULLFILL THE PROMPT LINE BUT ALL OTHER SEGMENT YOU USE MUST BE PRESENT !
@@ -481,21 +474,10 @@ SEGMENT_PRIORITY=(
     "hostname, username, pwd"
 )
 ```
-Here is the illustrated example of this behavoir.
-
-* The _v1_ is "classic" as show below for bash and zsh.
-
-![minimal_shrink_prompt_zsh_v1][minimal_shrink_prompt_zsh_v1]
-
-  * The _v2_ is more "powerline" look alike as show below for bash and zsh.
-
-![minimal_shrink_prompt_zsh_v2][minimal_shrink_prompt_zsh_v2]
-
 ### Some other examples
 
 Here are some other examples show for _v1_ and _v2_ for zsh only, recalling
 some examples used in previous section about `SEGMENT` variables.
-
 
   * Single line not filling full terminal size with all segment (not recommended):
 
@@ -507,31 +489,6 @@ SEGMENT_PRIORITY=(
     "tmux, vcsh, keepass, kube, openstack, virtualenv, vcs, hostname, username pwd"
 )
 ```
-
-_v1_
-![example1_shrink_prompt_zsh_v1][example1_shrink_prompt_zsh_v1]
-
-_v2_
-![example1_shrink_prompt_zsh_v2][example1_shrink_prompt_zsh_v2]
-
-  * 2 lines filling full terminal size with all segment reparted on the line:
-
-```bash
-SEGMENT=(
-    "tmux, keepass, username, hostname, pwd, hfill"
-    "vcsh, virtualenv, vcs, kube, openstack, hfill"
-)
-SEGMENT_PRIORITY=(
-    "tmux, keepass, hostname, username, pwd"
-    "vcsh, kube, openstack, virtualenv, vcs"
-)
-```
-
-_v1_
-![example2_shrink_prompt_zsh_v1][example2_shrink_prompt_zsh_v1]
-
-_v2_
-![example2_shrink_prompt_zsh_v2][example2_shrink_prompt_zsh_v2]
 
   * Let's go crazy, use 4 lines filling full terminal size with all segment
     reparted on the lines and add some comment in the array to remember why each
@@ -560,24 +517,19 @@ SEGMENT_PRIORITY=(
 )
 ```
 
-_v1_
-![example3_shrink_prompt_zsh_v1][example3_shrink_prompt_zsh_v1]
-
-_v2_
-![example3_shrink_prompt_zsh_v2][example3_shrink_prompt_zsh_v2]
-
 Now, you are ready to configure each segment, but before going deeper on
 variables configuration per segments, some remark about special unicode
-character usage and color usage in terminal.
+character and color in terminal.
 
 # Remark about character
 
 If you do not see default values or your char are not printed correctly, this
 means:
-- Your terminal emulator does not support glyphs or unicode encoding
-- Your terminal emulator does support glyphs but the font you choose does not
-- Your terminal emulator does support glyphs and the font you choose does too,
- but you will have to modify a scripts in this repo.
+
+* Your terminal emulator does not support glyphs or unicode encoding
+* Your terminal emulator does support glyphs but the font you choose does not
+* Your terminal emulator does support glyphs and the font you choose does too,
+  but you will have to modify a scripts in this repo.
 
 If it is the first case, unfortunately, you will not be able to print any
 unicode character.
@@ -588,6 +540,7 @@ in order to know how to change the font it uses.
 If it is the last case, you will have to add your terminal name in the table
 `UNICODE_SUPPORTED_TERM` in the file `~/.shell/prompt.sh`, or when testing, you
 can manually set variable `SHELL_APP` like this :
+
 ```bash
 # If your terminal emulator support unicode but not true colors
 export SHELL_APP=xterm
@@ -604,15 +557,17 @@ terminal emulator.
 
 For more information about the syntax for terminal that support up to 16 colors
 or up to 256 colors:
+
   * https://misc.flogisoft.com/bash/tip_colors_and_formatting
 
 To know if your terminal support true colors (i.e. 24 bits colors), and the
 syntax to use:
+
   * https://gist.github.com/XVilka/8346728
 
 Finally, when setting colors variables, you do not need to write the full
-syntax, just enter the color code as value as the color code syntax will be set
-by my scripts depending on your terminal as shown below:
+syntax, just enter the color code. The color code syntax will be set by the
+scripts depending on your terminal as shown below:
 
 | Color          | 16 colors | 256 colors | True colors    | Wrong values |
 |----------------|-----------|------------|----------------|--------------|
@@ -626,6 +581,7 @@ If you know your terminal emulator should support true colors but does not print
 them, you will have to add your terminal name in the table `TRUE_COLOR_TERM` in
 the file `~/.shell/prompt.sh`, or when testing, you can manually set variable
 `SHELL_APP` like this :
+
 ```bash
 # If your terminal emulator support unicode but not true colors
 export SHELL_APP=xterm
@@ -654,15 +610,16 @@ variables `SEGMENT` and `SEGMENT_PRIORITY`, see section
 Below are variables used independently of segments used. They are used to set
 main colors background and foreground.
 
-| Variables           | _v1_  | _v2_  |  Description                                                                                                       |
-|:-------------------:|:-----:|:-----:|--------------------------------------------------------------------------------------------------------------------|
-| `PROMPT_ENV_LEFT`   | `[`   | ` `   | The character on the left of the environment shown for _v1_, <br>The separator for segment on the left for _v2_    |
-| `PROMPT_ENV_RIGHT`  | `]`   | ` `   | The character on the right of the environment shown for _v1_, <br> The separator for segment on the right for _v2_ |
-| `DEFAULT_FG`        | white | white | Default foreground color, a fallback colors when not defined                                                       |
-| `DEFAULT_BG`        | black | black | Default background color, i.e. the color of the horizontal line                                                    |
-| `RETURN_CODE_FG`    | white | white | The foreground color of the return code                                                                            |
-| `CORRECT_WRONG_FG`  | white | white | If using zsh, the foreground colors of the wrong command when printing correction                                  |
-| `CORRECT_RIGHT_FG`  | white | white | If using zsh, the foreground colors of the proposed command when printing correction                               |
+| Variables                | _v1_  | _v2_  |  Description                                                                                                       |
+|:------------------------:|:-----:|:-----:|--------------------------------------------------------------------------------------------------------------------|
+| `PROMPT_ENV_LEFT`        | `[`   | ` `   | The character on the left of the environment shown for _v1_, <br>The separator for segment on the left for _v2_    |
+| `PROMPT_ENV_RIGHT`       | `]`   | ` `   | The character on the right of the environment shown for _v1_, <br> The separator for segment on the right for _v2_ |
+| `SINGLE_LINE_PROMPT_END` | ` `   | ` `   | The character at the end of the segment line when not using `hfill`.<br> Same behaviour for _v1_ and _v2_.         |
+| `DEFAULT_FG`             | white | white | Default foreground color, a fallback colors when not defined                                                       |
+| `DEFAULT_BG`             | black | black | Default background color, i.e. the color of the horizontal line                                                    |
+| `RETURN_CODE_FG`         | white | white | The foreground color of the return code                                                                            |
+| `CORRECT_WRONG_FG`       | white | white | If using zsh, the foreground colors of the wrong command when printing correction                                  |
+| `CORRECT_RIGHT_FG`       | white | white | If using zsh, the foreground colors of the proposed command when printing correction                               |
 
 ## Per segment configuration
 
@@ -941,11 +898,14 @@ value to make it your own.
 [minimal_fullline_prompt_bash_v2]: doc/img/minimal_fullline_config_bash_v2.png
 [minimal_fullline_prompt_zsh_v2]: doc/img/minimal_fullline_config_zsh_v2.png
 
-[default_prompt_zsh_v1]: doc/img/default_prompt_zsh_v1.png
-[default_prompt_bash_v1]: doc/img/default_prompt_bash_v1.png
-[default_prompt_zsh_v2]: doc/img/default_prompt_zsh_v2.png
-[default_prompt_bash_v2]: doc/img/default_prompt_bash_v2.png
 
+[default_prompt_bash_v1]: doc/img/default_prompt_bash_v1.png
+[default_prompt_zsh_v1]: doc/img/default_prompt_zsh_v1.png
+[default_prompt_bash_v2]: doc/img/default_prompt_bash_v2.png
+[default_prompt_zsh_v2]: doc/img/default_prompt_zsh_v2.png
+
+[default_full_option_zsh_v1]: doc/img/default_prompt_full_option_zsh_v1.png
+[default_full_option_zsh_v2]: doc/img/default_prompt_full_option_zsh_v2.png
 
 [single_line_full_option_zsh_v1]: doc/img/single_line_full_options_zsh_v1.png
 [single_line_full_option_zsh_v2]: doc/img/single_line_full_options_zsh_v2.png
@@ -953,35 +913,6 @@ value to make it your own.
 [four_lines_zsh_v1]: ../doc/img/four_lines_zsh_v1.png
 [four_lines_zsh_v2]: ../doc/img/four_lines_zsh_v2.png
 
-[mininmal_segment_zsh_prompt_v1]: doc/img/mininmal_segment_zsh_prompt_v1.png
-[mininmal_segment_bash_prompt_v1]: doc/img/mininmal_segment_bash_prompt_v1.png
-[mininmal_segment_zsh_prompt_v2]: doc/img/mininmal_segment_zsh_prompt_v2.png
-[mininmal_segment_bash_prompt_v2]: doc/img/mininmal_segment_bash_prompt_v2.png
-[mininmal_segment_fulline_zsh_prompt_v1]: doc/img/mininmal_segment_fulline_zsh_prompt_v1.png
-[mininmal_segment_fulline_bash_prompt_v1]: doc/img/mininmal_segment_fulline_bash_prompt_v1.png
-[mininmal_segment_fulline_zsh_prompt_v2]: doc/img/mininmal_segment_fulline_zsh_prompt_v2.png
-[mininmal_segment_fulline_bash_prompt_v2]: doc/img/mininmal_segment_fulline_bash_prompt_v2.png
-[default_prompt_zsh_v1_home]: doc/img/default_prompt_zsh_v1_home.png
-[default_prompt_zsh_v2_home]: doc/img/default_prompt_zsh_v2_home.png
-[default_prompt_zsh_v1_workdir]: doc/img/default_prompt_zsh_v1_workdir.png
-[default_prompt_zsh_v2_workdir]: doc/img/default_prompt_zsh_v2_workdir.png
-[example1_segment_prompt_v1]: doc/img/example1_segment_prompt_v1.png
-[example1_segment_prompt_v2]: doc/img/example1_segment_prompt_v2.png
-[example2_segment_prompt_v1]: doc/img/example2_segment_prompt_v1.png
-[example2_segment_prompt_v2]: doc/img/example2_segment_prompt_v2.png
-[example3_segment_prompt_v1]: doc/img/example3_segment_prompt_v1.png
-[example3_segment_prompt_v2]: doc/img/example3_segment_prompt_v2.png
-[example4_segment_prompt_v1]: doc/img/example4_segment_prompt_v1.png
-[example4_segment_prompt_v2]: doc/img/example4_segment_prompt_v2.png
-[shrink_prompt_zsh_v1]: doc/img/shrink_prompt_zsh_v1.png
-[shrink_prompt_zsh_v2]: doc/img/shrink_prompt_zsh_v2.png
-[shrink_prompt_zsh_v1_updated]: doc/img/shrink_prompt_zsh_v1_updated.png
-[shrink_prompt_zsh_v2_updated]: doc/img/shrink_prompt_zsh_v2_updated.png
-[minimal_shrink_prompt_zsh_v1]: doc/img/minimal_shrink_prompt_zsh_v1.png
-[minimal_shrink_prompt_zsh_v2]: doc/img/minimal_shrink_prompt_zsh_v2.png
-[example1_shrink_prompt_zsh_v1]: doc/img/example1_minimal_shrink_prompt_zsh_v1.png
-[example1_shrink_prompt_zsh_v2]: doc/img/example1_minimal_shrink_prompt_zsh_v2.png
-[example2_shrink_prompt_zsh_v1]: doc/img/example2_minimal_shrink_prompt_zsh_v1.png
-[example2_shrink_prompt_zsh_v2]: doc/img/example2_minimal_shrink_prompt_zsh_v2.png
-[example3_shrink_prompt_zsh_v1]: doc/img/example3_minimal_shrink_prompt_zsh_v1.png
-[example3_shrink_prompt_zsh_v2]: doc/img/example3_minimal_shrink_prompt_zsh_v2.png
+[shrink_prompt_v1]: doc/img/shrink_v1.gif
+[shrink_prompt_v2]: doc/img/shrink_v2.gif
+

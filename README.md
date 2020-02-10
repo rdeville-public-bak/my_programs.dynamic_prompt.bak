@@ -440,19 +440,21 @@ the documentation [doc/add_segment.md][doc_add_segment].
 
 # Know Issues
 
-  * When using `direnv`, segment that shoudl be shown because global variables
+  * When using `direnv`, segment that should be shown because global variables
     are set by `direnv` are not shown directly. User must press `<Enter>` once
     again to view them (or enter any command). This is due to the fact that the
     direnv hook is executed after `precmd`.
 
-  * When using `direnv`, segment that shoudl be shown because global variables
-    are set by `direnv` are not shown directly. User must press `<Enter>` once
-    again to view them (or enter any command). This is due to the fact that the
-    direnv hook is executed after `precmd`.
+  * When using `bash` single line without `hfill` segment, input line erease
+    part of the line. For now, the quickfix is to force the input line to be
+    below the single line.
 
 # TODO
 
-  - [ ]: Resole issues with direnv
+  - [ ] : Resole issues with direnv
+  - [ ] : Resole issues `bash` single line
+  - [ ] : Test integration with [bash-it][bash-it], [oh-my-zsh][oh-my-zsh] and
+          [prezto][prezto].
 
 [testing]: #testing
 [configuration]: #configuration
