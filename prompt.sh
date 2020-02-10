@@ -15,13 +15,13 @@ which_term(){
   # Also set supported list of terminal emulator that support unicode char.
   # Main resource come from :
   # https://askubuntu.com/questions/476641/how-can-i-get-the-name-of-the-current-terminal-from-command-line
-  local term  
-  if who am i | grep tty &> /dev/null && [ "$(uname)" != Darwin ]
+  local term
+  if who am i | grep tty &> /dev/null && ! [[ "$(uname)" =~ "*Darwin*" ]]
   then
     term="tty"
-  elif [[ "${TERM_PROGRAM}" == "iTerm.app" ]]
+  elif [[ -n "${TERM_PROGRAM}" ]]
   then
-    term=st # plutot ajouter un terminal dans v1.sh / v2.sh
+    term="${TERM_PROGRAM}"
   elif ! command -v xdotool &> /dev/null || ! xdotool getactivewindow &> /dev/null
   then
     term="unkown"
@@ -83,25 +83,30 @@ export E_INFO="\e[32m"    # Green fg
 export E_WARNING="\e[33m" # Yellow fg
 export E_ERROR="\e[31m"   # Red fg
 
-if [[ -n "${SHELL_APP}" ]]
-then
-  export SHELL_APP="${SHELL_APP}"
-else
-  export SHELL_APP="$(which_term)"
-fi
+main()
+{
+  if [[ -n "${SHELL_APP}" ]]
+  then
+    export SHELL_APP="${SHELL_APP}"
+  else
+    export SHELL_APP="$(which_term)"
+  fi
 
-# Determine prompt to load
-if [[ -z "${SHELL_APP}" ]] \
-  || [[ "${SHELL_APP}" == "tty" ]] \
-  || [[ "${SHELL_APP}" == "unkown" ]]
-then
-  # If terminal is tty or unkonwn, force V1 of prompt that is more readable when
-  # in TTY
-  PROMPT_VERSION=1
-fi
+  # Determine prompt to load
+  if [[ -z "${SHELL_APP}" ]] \
+    || [[ "${SHELL_APP}" == "tty" ]] \
+    || [[ "${SHELL_APP}" == "unkown" ]]
+  then
+    # If terminal is tty or unkonwn, force V1 of prompt that is more readable when
+    # in TTY
+    PROMPT_VERSION=1
+  fi
 
-# Load the desired prompt.
-source "${PROMPT_DIR}/v${PROMPT_VERSION}.sh"
+  # Load the desired prompt.
+  source "${PROMPT_DIR}/v${PROMPT_VERSION}.sh"
+}
+
+main
 
 # *****************************************************************************
 # EDITOR CONFIG

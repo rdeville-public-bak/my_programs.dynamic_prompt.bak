@@ -346,9 +346,7 @@ precmd()
     return
   }
 
-  local HOST=$(hostname)
-  local UNICODE_SUPPORTED_TERM=("st" "terminator" "xterm")
-  local TRUE_COLOR_TERM=("st" "terminator")
+  source <(cat "${PROMPT_DIR}/prompt_var.sh")
 
   if [ -f "${PROMPT_DIR}/hosts/common.sh" ]
   then
@@ -496,7 +494,9 @@ precmd()
   # Unset function to not be shown as autocompletion
   unset -f _prompt_printf
   unset -f _prompt_info_line
+
 }
+
 
 # *****************************************************************************
 # EDITOR CONFIG
