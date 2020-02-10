@@ -137,20 +137,12 @@ below when not configuration exists.
 
   * The _v1_, "classic" version
 
-`bash`
-
-![no_color_prompt_bash_v1][no_color_prompt_bash_v1]
-
 `zsh`
 
 ![no_color_prompt_zsh_v1][no_color_prompt_zsh_v1]
 
 
   * The _v2_, "powerline" version
-
-`bash`
-
-![no_color_prompt_bash_v2][no_color_prompt_bash_v2]
 
 `zsh`
 
@@ -896,9 +888,7 @@ can take a look at [doc/keep_your_configuration.md][keep-your-configuration].
 
 
 
-[no_color_prompt_bash_v1]: doc/img/default_no_color_bash_v1.png
 [no_color_prompt_zsh_v1]: doc/img/default_no_color_zsh_v1.png
-[no_color_prompt_bash_v2]: doc/img/default_no_color_bash_v2.png
 [no_color_prompt_zsh_v2]: doc/img/default_no_color_zsh_v2.png
 
 [minimal_prompt_bash_v1]: doc/img/minimal_config_bash_v1.png
