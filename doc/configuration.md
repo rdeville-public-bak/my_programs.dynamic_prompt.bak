@@ -540,6 +540,9 @@ export SHELL_APP=xterm
 export SHELL_APP=st
 ```
 
+Last note, some default character in `common.example.sh` are better interpreted
+when using [NerdFonts][nerd_fonts].
+
 # Remark about colors in terminal
 
 Some terminal emulator support only 8/16 colors, others 256 colors and others
@@ -885,7 +888,7 @@ can take a look at [doc/keep_your_configuration.md][keep-your-configuration].
 [tldp.org_array]: https://www.tldp.org/LDP/abs/html/arrays.html
 [color_syntaxt]: https://misc.flogisoft.com/bash/tip_colors_and_formatting
 [direnv]: https://direnv.net/
-
+[nerd_fonts]: https://github.com/ryanoasis/nerd-fonts
 
 
 [no_color_prompt_zsh_v1]: doc/img/default_no_color_zsh_v1.png
