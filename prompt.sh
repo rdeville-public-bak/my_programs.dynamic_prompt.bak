@@ -15,10 +15,13 @@ which_term(){
   # Also set supported list of terminal emulator that support unicode char.
   # Main resource come from :
   # https://askubuntu.com/questions/476641/how-can-i-get-the-name-of-the-current-terminal-from-command-line
-  local term
-  if who am i | grep tty &> /dev/null
+  local term  
+  if who am i | grep tty &> /dev/null && [ "$(uname)" != Darwin ]
   then
     term="tty"
+  elif [[ "${TERM_PROGRAM}" == "iTerm.app" ]]
+  then
+    term=st # plutot ajouter un terminal dans v1.sh / v2.sh
   elif ! command -v xdotool &> /dev/null || ! xdotool getactivewindow &> /dev/null
   then
     term="unkown"
