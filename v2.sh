@@ -409,8 +409,8 @@ precmd()
       *bash)
         local CLR_PREFIX="\[\e["
         local CLR_SUFFIX="m\]"
-        local BASE_CLR_PREFIX="\[\e["
-        local BASE_CLR_SUFFIX="m\]"
+        local BASE_CLR_PREFIX="\e["
+        local BASE_CLR_SUFFIX="m"
         ;;
       *zsh)
         local CLR_PREFIX="%{\033["
@@ -438,6 +438,7 @@ precmd()
 #  local PROMPT_ENV_RIGHT="${PROMPT_ENV_RIGHT:- }"
   local PROMPT_ENV_LEFT="${PROMPT_ENV_LEFT:-""}"
   local PROMPT_ENV_RIGHT="${PROMPT_ENV_RIGHT:-""}"
+  local SINGLE_LINE_PROMPT_END="${SINGLE_LINE_PROMPT_END:-""}"
 
   # Compute final prompt
   local final_prompt
@@ -453,6 +454,7 @@ precmd()
       idx_stop_segment=$(( ${#SEGMENT[@]} + 1 ))
       ;;
   esac
+
   for (( idx=$(( ${idx_stop_segment} - 1 )); idx >= ${idx_start_segment} ; idx--))
   do
     line="$(_prompt_info_line ${idx})"
@@ -468,6 +470,10 @@ precmd()
   # Compute end of final prompt  depending on the terminal
   case ${SHELL} in
     *bash)
+      if [[ ${#SEGMENT[@]} -eq 1 ]]
+      then
+        final_prompt+="\n"
+      fi
       if [[ $(whoami) == "root" ]]
       then
         final_prompt+="$(echo -e " ${BOLD}${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${NORMAL}${BOLD}﬌ ")"
@@ -486,7 +492,7 @@ precmd()
 
       if [[ ${#SEGMENT[@]} -ne 1 ]] || [[ ${SEGMENT[@]} =~ "hfill" ]]
       then
-        final_prompt+="$(echo -e "﬌ ")"
+        final_prompt+="$(echo -e " ﬌ ")"
       fi
       export PROMPT=$(echo -e "${final_prompt}")
       export RPROMPT=$(echo -e "${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}%(?..%? ↵)${NORMAL}")
