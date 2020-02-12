@@ -48,14 +48,17 @@ ask_segment_name()
   # Ask the user the name of the new segment
   # NO PARAM
   local segment_name=""
-  if command -v whiptail &> /dev/null
+  if ! command -v whiptail &> /dev/null
   then
     segment_name=$(
       NEWT_COLORS="${NEWTCOLS[@]}" \
       whiptail --title "Segment Name" --inputbox \
       "\n    What is the name you want to use for your new segment ?" 20 ${TERMSIZE} \
       3>&1 1>&2 2>&3)
-    if [[ -z ${segment_name} ]]
+    if [[ $? -eq  1 ]]
+    then
+      exit 0
+    elif [[ -z ${segment_name} ]]
     then
       NEWT_COLORS="${NEWTCOLS[@]}" \
         whiptail --title "Segment Name" --msgbox \
@@ -64,23 +67,33 @@ ask_segment_name()
       exit 1
     fi
   else
-    while [[ ${answer} -ne 1 ]] && [[ ${answer} -ne 2 ]]
+    while [[ -z "${segment_name}" ]]
     do
       echo -e "What is the name you want to use for your new segment ?"
+      echo -e "Press ${E_BOLD}<Ctrl+C>${E_NORMAL} to Cancel"
       read -e segment_name
+      if [[ -z "${segment_name}" ]]
+      then
+        echo -e "${E_ERROR}ERROR - You did not provide any segment name !"
+        echo -e "Please run the script again${E_NORMAL}"
+      fi
     done
-    if [[ -z ${segment_name} ]]
-    then
-      echo -e "${E_ERROR}ERROR - You did not provide any segment name !"
-      echo -e "Please run the script again${E_NORMAL}"
-      exit 1
-    fi
   fi
   create_new_segment_from_template $segment_name
   return 0
 }
 
-ask_segment_name
+main()
+{
+  if [[ -z "$1" ]]
+  then
+    ask_segment_name
+  else
+    create_new_segment_from_template $1
+  fi
+}
+
+main $@
 
 # *****************************************************************************
 # EDITOR CONFIG
