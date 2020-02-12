@@ -314,8 +314,8 @@ precmd()
       *bash)
         local CLR_PREFIX="\x1b["
         local CLR_SUFFIX="m"
-        local BASE_CLR_PREFIX="\[\e["
-        local BASE_CLR_SUFFIX="m\]"
+        local BASE_CLR_PREFIX="\e["
+        local BASE_CLR_SUFFIX="m"
         ;;
       *zsh)
         local CLR_PREFIX="%{\x1b["
@@ -331,10 +331,10 @@ precmd()
   else
     case ${SHELL} in
       *bash)
-        local CLR_PREFIX="\[\e["
+        local CLR_PREFIX="\e["
         local CLR_SUFFIX="m\]"
-        local BASE_CLR_PREFIX="\[\e["
-        local BASE_CLR_SUFFIX="m\]"
+        local BASE_CLR_PREFIX="\e["
+        local BASE_CLR_SUFFIX="m"
         ;;
       *zsh)
         local CLR_PREFIX="%{\033["
@@ -392,11 +392,15 @@ precmd()
   # Compute end of final prompt  depending on the terminal
   case ${SHELL} in
     *bash)
+      if [[ ${#SEGMENT[@]} -eq  1 ]]
+      then
+        final_prompt+="\n"
+      fi
       if [[ $(whoami) == "root" ]]
       then
-        final_prompt+="$(echo -e "${E_NORMAL}${E_BOLD} ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${E_NORMAL}${E_BOLD}﬌ ")"
+        final_prompt+="${NORMAL}${BOLD} ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${NORMAL}${BOLD}﬌ "
       else
-        final_prompt+="$(echo -e "${E_NORMAL} ${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${E_NORMAL}﬌ ")"
+        final_prompt+="${CLR_PREFIX}${RETURN_CODE_FG}${CLR_SUFFIX}\$? ↵ ${NORMAL}﬌ "
       fi
       export PS1=$(echo -e "${final_prompt}")
       ;;
