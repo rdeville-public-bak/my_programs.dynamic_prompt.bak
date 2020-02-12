@@ -337,32 +337,17 @@ run_docker()
     cp ${SCRIPTPATH}/hosts/common.example.sh ${SCRIPTPATH}/host/${container_name}.sh
   fi
 
-  case ${shell} in
-    bash)
-      echo -e "${E_INFO}[INFO] Running container ${container_name}${E_NORMAL}"
-      docker run \
-        -e SHELL_APP="${shell_app}" \
-        -e PROMPT_VERSION="${prompt_version}" \
-        -v "${SCRIPTPATH}:/root/.prompt" \
-        -it \
-        --name ${container_name} \
-        --rm  \
-        --hostname ${container_name} ${image_name} \
-        '/bin/bash'
-      ;;
-    zsh)
-      echo -e "${E_INFO}[INFO] Running container ${container_name}${E_NORMAL}"
-      docker run \
-        -e SHELL_APP="${shell_app}" \
-        -e PROMPT_VERSION="${prompt_version}" \
-        -v "${SCRIPTPATH}:/root/.prompt" \
-        -it \
-        --rm  \
-        --name ${container_name} \
-        --hostname ${container_name} ${image_name} \
-        '/bin/zsh'
-      ;;
-  esac
+  echo -e "${E_INFO}[INFO] Running container ${container_name}${E_NORMAL}"
+  docker run \
+    -e SHELL_APP="${shell_app}" \
+    -e SHELL="/bin/${shell}" \
+    -e PROMPT_VERSION="${prompt_version}" \
+    -v "${SCRIPTPATH}:/root/.prompt" \
+    -it \
+    --name ${container_name} \
+    --rm  \
+    --hostname ${container_name} ${image_name} \
+    "/bin/${shell}"
   return 0
 }
 
