@@ -43,6 +43,7 @@ If you want to help developing this repos, here are some code style I used :
 
 
 Below is an example using these code style:
+
 ```bash
 #!/bin/bash
 
@@ -163,6 +164,38 @@ Then, code the segment `date`, to do so, use the example provided in
 
 If when make your own segment or when
 
+## Ensure performance
+
+Before merge on your own repo, ensure your work does not impact the prompt
+performance, i.e. prompt should be printed in less than 250 ms in average.
+
+To do so, there is two things to do:
+
+  - export variable `DEBUG=1` to activate the debug mode of the prompt
+  - force activation of all segments
+
+This can be done all at once by sourcing file `debug_mode.sh`.
+
+```bash
+# Go to where you clone this repo
+cd ~/.shell/prompt
+# source the file
+source debug_mode.sh
+```
+
+Normally, your prompt will automatically update as shown below:
+
+
+If constraint of performance is fulfilled, you can leave debug mode the same way
+you enter it, by sourcing file `debug_mode.sh`
+
+```bash
+# Go to where you clone this repo
+cd ~/.shell/prompt
+# source the file
+source debug_mode.sh
+```
+
 ## Once finish, merge on your own repo (optional)
 
 Now you have finish your segment, you can merge this feature into your `develop`
@@ -181,13 +214,13 @@ Before proposing your merge request, ensure that :
     `hosts/common.sh`
   - Your segment is documented
     - In its code
-    - In [doc/configuration.md#Per segment configuration][per-segment-configuration]
+    - In [doc/configuration.md#per-segment-configuration][per-segment-configuration]
   - Your segment is working for:
     - `bash` and `zsh`
     - _v1_ and _v2_ of the prompt
 
-    To do so, not not hesitate to use script `test.sh`, see
-    [doc/test.sh.md][doc_test_sh] if needed
+To do so, not not hesitate to use script `test.sh`, see
+[doc/test.sh.md][doc_test_sh] if needed
 
 Do not hesitate to make screenshot (optional) of this segment in prompt line.
 
@@ -209,7 +242,8 @@ git remote add upstream-fork https://framagit.org/<USER>/<REPO_NAME>
 git push upstream-fork --all
 ```
 
-Then propose your merge request, as shown below.
+Then propose your merge request on the branch `develop` of the main repo, as
+shown below.
 
 
 

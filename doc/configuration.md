@@ -566,8 +566,8 @@ scripts depending on your terminal as shown below:
 
 | Color          | 16 colors | 256 colors | True colors    | Wrong values |
 |----------------|-----------|------------|----------------|--------------|
-| Red Foreground | 31        | 38;2;196   | 38;2;255;0;0;0 | \e[31m       |
-| Red Background | 41        | 48;2;196   | 48;2;255;0;0;0 | \e[41m       |
+| Red Foreground | 31        | 38;2;196   | 38;2;255;0;0 | \e[31m       |
+| Red Background | 41        | 48;2;196   | 48;2;255;0;0 | \e[41m       |
 
 Set of 256 hexadecimal colors supported by 256 colors terminal are shown at the
 end of the file `common.exemple.sh`.

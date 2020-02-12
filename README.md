@@ -452,9 +452,11 @@ the documentation [doc/add_segment.md][doc_add_segment].
 # TODO
 
   - [ ] : Resole issues with direnv
-  - [ ] : Resole issues `bash` single line
+  - [ ] : Resole issues with `bash` single line
   - [ ] : Test integration with [bash-it][bash-it], [oh-my-zsh][oh-my-zsh] and
           [prezto][prezto].
+  - [ ] : More optimization in `v1.sh` and `v2.sh` and refactoring code
+  - [ ] : Add more screenshots and review documentation
 
 [testing]: #testing
 [configuration]: #configuration
