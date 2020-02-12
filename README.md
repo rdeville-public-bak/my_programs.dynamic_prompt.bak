@@ -457,6 +457,10 @@ the documentation [doc/add_segment.md][doc_add_segment].
           [prezto][prezto].
   - [ ] : More optimization in `v1.sh` and `v2.sh` and refactoring code
   - [ ] : Add more screenshots and review documentation
+  - [ ] : Document source code
+  - [ ] : Finish support of single line
+  - [ ] : Implement debug_mode in v1.sh and v2.sh to print time spend to
+          show/compute prompt
 
 [testing]: #testing
 [configuration]: #configuration
