@@ -12,12 +12,12 @@
 # file.
 
 local SEGMENT=(
-  "tmux, pwd, hfill, keepass, username, hostname"
+  "tmux, date, pwd, hfill, keepass, username, hostname"
   "vcsh, virtualenv, vcs, hfill, kube, openstack"
 )
 
 local SEGMENT_PRIORITY=(
-  "tmux, username, hostname, keepass, pwd"
+  "tmux, date, username, hostname, keepass, pwd"
   "vcsh, virtualenv, kube, openstack, vcs"
 )
 
@@ -34,6 +34,7 @@ then
   else
     local PROMPT_ENV_LEFT=" "     # v2 Default " " | v1 Default "]"
     local PROMPT_ENV_RIGHT=" "    # v2 Default " " | v1 Default "["
+    local SINGLE_LINE_PROMPT_END=" "
   fi
   local KEEPASS_CHAR="K|"         # Default " "
   local TMUX_CHAR="T|"            # Default " "
@@ -70,9 +71,13 @@ else
     local PROMPT_ENV_LEFT="["     # v2 Default " " | v1 Default "]"
     local PROMPT_ENV_RIGHT="]"    # v2 Default " " | v1 Default "["
   else
+    local PROMPT_ENV_LEFT=""    # v2 Default " " | v1 Default "]"
+    local PROMPT_ENV_RIGHT=""   # v2 Default " " | v1 Default "["
+    local SINGLE_LINE_PROMPT_END=""
     local PROMPT_ENV_LEFT=" "    # v2 Default " " | v1 Default "]"
     local PROMPT_ENV_RIGHT=" "   # v2 Default " " | v1 Default "["
   fi
+  local DATE_CHAR=" "
   local KEEPASS_CHAR=" "         # Default " "
   local TMUX_CHAR=" "            # Default " "
   local KUBE_CHAR="⎈ "            # Default "⎈ "
@@ -126,7 +131,7 @@ local VCS_CHAR=${GIT_CHAR}        # Default ""
 # the end of this file.
 
 # Check what kind of terminal we are in.
-if [[ "${TRUE_COLOR_TERM[@]}" =~ ${SHELL_APP} ]]
+ if [[ "${TRUE_COLOR_TERM[@]}" =~ ${SHELL_APP} ]]
 then
   # If terminal emulator is know to support true colors
   if [[ ${PROMPT_VERSION} -eq 1 ]]
@@ -136,6 +141,7 @@ then
     local RETURN_CODE_FG="38;2;200;0;0"     #rgb(200,0,0)
     local CORRECT_WRONG_FG="38;2;200;0;0"   #rgb(200,0,0)
     local CORRECT_RIGHT_FG="38;2;0;200;0"   #rgb(0,200,0)
+    local DATE_FG="38;2;255;255;0"
     local PWD_FG="38;2;225;225;225"         #rgb(225,225,225)
     local USER_FG="38;2;0;135;0"            #rgb(0,135,0)
     local HOSTNAME_FG="38;2;175;135;0"      #rgb(175,135,0)
@@ -152,6 +158,8 @@ then
     local RETURN_CODE_FG="38;2;200;0;0"     #rgb(200,0,0)
     local CORRECT_WRONG_FG="38;2;200;0;0"   #rgb(200,0,0)
     local CORRECT_RIGHT_FG="38;2;0;200;0"   #rgb(0,200,0)
+    local DATE_FG="38;2;255;255;0"
+    local DATE_BG="48;2;255;0;255"
     local PWD_FG="38;2;225;225;225"         #rgb(225,225,225)
     local PWD_BG="48;2;25;25;25"            #rgb(25,25,25)
     local USER_FG="38;2;0;0;0"              #rgb(0,0,0)
@@ -192,62 +200,62 @@ then
   if [[ ${PROMPT_VERSION} -eq 1 ]]
   then
     # Prompt colors that support only 256
-    local DEFAULT_FG="38;5;231"       #ffffff
-    local DEFAULT_BG="48;5;52"        #5f0000
-    local RETURN_CODE_FG="38;5;124"   #af0000
-    local CORRECT_WRONG_FG="38;5;124" #af0000
-    local CORRECT_RIGHT_FG="38;5;34"  #00af00
-    local PWD_FG="38;5;254"           #e4e4e4
-    local USER_FG="38;5;64"           #5f8700
-    local HOSTNAME_FG="38;5;136"      #af8700
-    local KEEPASS_FG="38;5;23"        #005f5f
-    local TMUX_FG="38;5;29"           #00875f
-    local VCSH_FG="38;5;30"           #008787
-    local VIRTUALENV_FG="38;5;106"    #87af00
-    local KUBE_FG="38;5;33"           #0087ff
-    local OPENSTACK_FG="38;5;160"     #d70000
+    local DEFAULT_FG="38 ;2;231"       #ffffff
+    local DEFAULT_BG="48;2;52"        #5f0000
+    local RETURN_CODE_FG="38;2;124"   #af0000
+    local CORRECT_WRONG_FG="38;2;124" #af0000
+    local CORRECT_RIGHT_FG="38;2;34"  #00af00
+    local PWD_FG="38;2;254"           #e4e4e4
+    local USER_FG="38;2;64"           #5f8700
+    local HOSTNAME_FG="38;2;136"      #af8700
+    local KEEPASS_FG="38;2;23"        #005f5f
+    local TMUX_FG="38;2;29"           #00875f
+    local VCSH_FG="38;2;30"           #008787
+    local VIRTUALENV_FG="38;2;106"    #87af00
+    local KUBE_FG="38;2;33"           #0087ff
+    local OPENSTACK_FG="38;2;160"     #d70000
     # Set VCS colors
-    local VCS_FG="38;5;52"            #5f0000
+    local VCS_FG="38;2;52"            #5f0000
   else
-    local DEFAULT_BG="48;5;52"        #5f0000
-    local DEFAULT_FG="38;5;231"       #ffffff
-    local RETURN_CODE_FG="38;5;124"   #af0000
-    local CORRECT_WRONG_FG="38;5;124" #af0000
-    local CORRECT_RIGHT_FG="38;5;34"  #00af00
-    local PWD_FG="38;5;254"           #e4e4e4
-    local PWD_BG="48;5;234"           #1c1c1c
-    local USER_FG="38;5;16"           #000000
-    local USER_BG="48;5;64"           #5f8700
-    local HOSTNAME_FG="38;5;16"       #000000
-    local HOSTNAME_BG="48;5;136"      #af8700
-    local KEEPASS_FG="38;5;231"       #ffffff
-    local KEEPASS_BG="48;5;23"        #005f5f
-    local TMUX_FG="38;5;16"           #000000
-    local TMUX_BG="48;5;39"           #00875f
-    local VCSH_FG="38;5;16"           #000000
-    local VCSH_BG="48;5;30"           #008787
-    local VIRTUALENV_FG="38;5;16"     #000000
-    local VIRTUALENV_BG="48;5;106"    #87af00
-    local KUBE_FG="38;5;16"           #000000
-    local KUBE_BG="48;5;33"           #0087ff
-    local OPENSTACK_FG="38;5;231"     #000000
-    local OPENSTACK_BG="48;5;160"     #d70000
+    local DEFAULT_BG="48;2;52"        #5f0000
+    local DEFAULT_FG="38;2;231"       #ffffff
+    local RETURN_CODE_FG="38;2;124"   #af0000
+    local CORRECT_WRONG_FG="38;2;124" #af0000
+    local CORRECT_RIGHT_FG="38;2;34"  #00af00
+    local PWD_FG="38;2;254"           #e4e4e4
+    local PWD_BG="48;2;234"           #1c1c1c
+    local USER_FG="38;2;16"           #000000
+    local USER_BG="48;2;64"           #5f8700
+    local HOSTNAME_FG="38;2;16"       #000000
+    local HOSTNAME_BG="48;2;136"      #af8700
+    local KEEPASS_FG="38;2;231"       #ffffff
+    local KEEPASS_BG="48;2;23"        #005f5f
+    local TMUX_FG="38;2;16"           #000000
+    local TMUX_BG="48;2;39"           #00875f
+    local VCSH_FG="38;2;16"           #000000
+    local VCSH_BG="48;2;30"           #008787
+    local VIRTUALENV_FG="38;2;16"     #000000
+    local VIRTUALENV_BG="48;2;106"    #87af00
+    local KUBE_FG="38;2;16"           #000000
+    local KUBE_BG="48;2;33"           #0087ff
+    local OPENSTACK_FG="38;2;231"     #000000
+    local OPENSTACK_BG="48;2;160"     #d70000
     # Set VCS colors
-    local VCS_FG="38;5;52"            #5f0000
-    local VCS_BG="48;5;236"           #303030
+    local VCS_FG="38;2;52"            #5f0000
+    local VCS_BG="48;2;236"           #303030
   fi
-  local VCS_PROMPT_DIRTY_FG="38;5;52" #5f0000
-  local VCS_PROMPT_CLEAN_FG="38;5;22" #005f00
-  local VCS_BRANCH_FG="38;5;24"       #005f87
-  local VCS_TAG_FG="38;5;52"          #5f0000
-  local VCS_DETACHED_FG="38;5;52"     #5f0000
-  local VCS_COMMIT_FG="38;5;24"       #005f87
-  local VCS_AHEAD_FG="38;5;22"        #005f00
-  local VCS_BEHIND_FG="38;5;52"       #5f0000
-  local VCS_UNTRACKED_FG="38;5;255"   #eeeeee
-  local VCS_UNSTAGED_FG="38;5;136"    #af8700
-  local VCS_STAGED_FG="38;5;22"       #005f00
-  local VCS_STASH_FG="38;5;52"        #5f005f
+  local VCS_PROMPT_DIRTY_FG="38;2;52" #5f0000
+  local VCS_PROMPT_CLEAN_FG="38;2;22" #005f00
+  local VCS_BRANCH_FG="38;2;24"       #005f87
+  local VCS_TAG_FG="38;2;52"          #5f0000
+  local VCS_DETACHED_FG="38;2;52"     #5f0000
+  local VCS_COMMIT_FG="38;2;24"       #005f87
+  local VCS_AHEAD_FG="38;2;22"        #005f00
+  local VCS_BEHIND_FG="38;2;52"       #5f0000
+  local VCS_UNTRACKED_FG="38;2;255"   #eeeeee
+  local VCS_UNSTAGED_FG="38;2;136"    #af8700
+  local VCS_STAGED_FG="38;2;22"       #005f00
+  local VCS_STASH_FG="38;2;52"        #5f005f
 elif [[ -z "${SHELL_APP}" ]] || [[ "${SHELL_APP}" == "unkown" ]] \
   || [[ "${SHELL_APP}" == "tty" ]] || [[ $(tput colors) -eq 16 ]]
 then
@@ -320,9 +328,9 @@ fi
 # colors. Base on only 8 colors to ensure portability of color when in tty
 export E_NORMAL="\e[0m"
 export E_BOLD="\e[1m"
-export E_INFO="\e[0;38;5;2m"
-export E_WARNING="\e[0;38;5;3m"
-export E_ERROR="\e[0;38;5;1m"
+export E_INFO="\e[0;38;2;2m"
+export E_WARNING="\e[0;38;2;3m"
+export E_ERROR="\e[0;38;2;1m"
 
 # Equivalent hexadecimal color for each code value for the 256 colors when term
 # support it.
