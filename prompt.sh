@@ -16,7 +16,7 @@ which_term(){
   # Main resource come from :
   # https://askubuntu.com/questions/476641/how-can-i-get-the-name-of-the-current-terminal-from-command-line
   local term
-  if who am i | grep tty &> /dev/null && ! [[ "$(uname)" =~ "*Darwin*" ]]
+  if who am i | grep tty &> /dev/null && ! [[ "$(uname)" =~ ".*Darwin.*" ]]
   then
     term="tty"
   elif [[ -n "${TERM_PROGRAM}" ]]
