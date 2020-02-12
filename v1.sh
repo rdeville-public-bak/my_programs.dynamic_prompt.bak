@@ -270,10 +270,7 @@ precmd()
     return
   }
 
-  local HOST=$(hostname)
-  local UNICODE_SUPPORTED_TERM=("st" "terminator" "xterm")
-  local TRUE_COLOR_TERM=("st" "terminator")
-
+  source <(cat "${PROMPT_DIR}/prompt_var.sh")
   if [ -f "${PROMPT_DIR}/hosts/common.sh" ]
   then
     # shellcheck disable=SC1090
