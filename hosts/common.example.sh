@@ -12,12 +12,12 @@
 # file.
 
 local SEGMENT=(
-  "tmux, date, pwd, hfill, keepass, username, hostname"
+  "tmux, pwd, hfill, keepass, username, hostname"
   "vcsh, virtualenv, vcs, hfill, kube, openstack"
 )
 
 local SEGMENT_PRIORITY=(
-  "tmux, date, username, hostname, keepass, pwd"
+  "tmux, username, hostname, keepass, pwd"
   "vcsh, virtualenv, kube, openstack, vcs"
 )
 
@@ -77,7 +77,6 @@ else
     local PROMPT_ENV_LEFT=" "    # v2 Default " " | v1 Default "]"
     local PROMPT_ENV_RIGHT=" "   # v2 Default " " | v1 Default "["
   fi
-  local DATE_CHAR=" "
   local KEEPASS_CHAR=" "         # Default " "
   local TMUX_CHAR=" "            # Default " "
   local KUBE_CHAR="⎈ "            # Default "⎈ "
@@ -141,7 +140,6 @@ then
     local RETURN_CODE_FG="38;2;200;0;0"     #rgb(200,0,0)
     local CORRECT_WRONG_FG="38;2;200;0;0"   #rgb(200,0,0)
     local CORRECT_RIGHT_FG="38;2;0;200;0"   #rgb(0,200,0)
-    local DATE_FG="38;2;255;255;0"
     local PWD_FG="38;2;225;225;225"         #rgb(225,225,225)
     local USER_FG="38;2;0;135;0"            #rgb(0,135,0)
     local HOSTNAME_FG="38;2;175;135;0"      #rgb(175,135,0)
@@ -158,8 +156,6 @@ then
     local RETURN_CODE_FG="38;2;200;0;0"     #rgb(200,0,0)
     local CORRECT_WRONG_FG="38;2;200;0;0"   #rgb(200,0,0)
     local CORRECT_RIGHT_FG="38;2;0;200;0"   #rgb(0,200,0)
-    local DATE_FG="38;2;255;255;0"
-    local DATE_BG="48;2;255;0;255"
     local PWD_FG="38;2;225;225;225"         #rgb(225,225,225)
     local PWD_BG="48;2;25;25;25"            #rgb(25,25,25)
     local USER_FG="38;2;0;0;0"              #rgb(0,0,0)
